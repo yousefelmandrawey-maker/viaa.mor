@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "vercel/functions/submit-payment.js", "use": "@vercel/node" },
+    { "src": "vercel/functions/approve-payment.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/submit-payment", "dest": "/vercel/functions/submit-payment.js" },
+    { "src": "/api/approve-payment", "dest": "/vercel/functions/approve-payment.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Payment — Viaa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root{
+  --bg:#F8FAFC; --card:#FFFFFF; --coral:#FF8A65; --coral3:rgba(255,138,101,.12);
+  --text:#1E293B; --muted:#64748B; --muted2:#94A3B8;
+  --bord:rgba(0,0,0,.08); --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.05);
+  --fd:'Playfair Display',Georgia,serif; --fu:'Inter',system-ui,sans-serif;
+}
+body{ font-family:var(--fu); background:var(--bg); color:var(--text); min-height:100vh; padding:24px 16px 60px; }
+.wrap{ max-width:480px; margin:0 auto; }
+.back{ display:inline-flex; align-items:center; gap:6px; color:var(--muted); text-decoration:none; font-size:14px; font-weight:500; margin-bottom:20px; }
+.card{ background:var(--card); border:1px solid var(--bord); border-radius:20px; padding:28px 24px; box-shadow:var(--sh-md); }
+h1{ font-family:var(--fd); font-size:24px; margin-bottom:4px; }
+.sub{ color:var(--muted); font-size:14px; margin-bottom:22px; }
+.amount-box{ background:var(--coral3); border-radius:14px; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
+.amount-box .label{ font-size:13px; color:var(--muted); }
+.amount-box .value{ font-family:var(--fd); font-size:22px; color:var(--coral); font-weight:700; }
+.method-tabs{ display:flex; gap:8px; margin-bottom:18px; }
+.method-tab{ flex:1; padding:12px; border-radius:12px; border:1.5px solid var(--bord); background:#fff; text-align:center; font-weight:600; font-size:14px; cursor:pointer; color:var(--muted); transition:.15s; }
+.method-tab.active{ border-color:var(--coral); color:var(--coral); background:var(--coral3); }
+.pay-number{ background:#111827; color:#fff; border-radius:14px; padding:16px 18px; text-align:center; margin-bottom:22px; }
+.pay-number .pn-label{ font-size:12px; opacity:.7; margin-bottom:6px; }
+.pay-number .pn-value{ font-family:var(--fd); font-size:26px; letter-spacing:1px; font-weight:700; }
+.pay-number .pn-copy{ margin-top:8px; font-size:12px; color:var(--coral); cursor:pointer; display:inline-block; }
+.steps{ font-size:13px; color:var(--muted); line-height:1.8; margin-bottom:22px; padding-left:18px; }
+.form-group{ margin-bottom:14px; }
+.form-label{ font-size:13px; font-weight:600; margin-bottom:6px; display:block; }
+.cinput{ width:100%; padding:13px 14px; border-radius:12px; border:1.5px solid var(--bord); font-family:var(--fu); font-size:14px; background:#fff; color:var(--text); outline:none; transition:.15s; }
+.cinput:focus{ border-color:var(--coral); }
+.cinput.err{ border-color:#EF4444; }
+.file-drop{ border:1.5px dashed var(--bord); border-radius:12px; padding:20px; text-align:center; cursor:pointer; color:var(--muted); font-size:13px; transition:.15s; }
+.file-drop.has-file{ border-color:var(--coral); background:var(--coral3); color:var(--coral); }
+.file-drop input{ display:none; }
+.preview{ max-width:100%; max-height:160px; border-radius:10px; margin-top:10px; display:none; }
+.btn{ width:100%; padding:15px; border-radius:14px; border:none; font-family:var(--fu); font-weight:700; font-size:15px; cursor:pointer; margin-top:8px; }
+.btn.pri{ background:linear-gradient(120deg,var(--coral),#FF6F3D); color:#fff; }
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+.status{ font-size:13px; margin-top:12px; text-align:center; min-height:18px; }
+.status.e{ color:#EF4444; }
+.status.s{ color:#16A34A; }
+.spin{ display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; margin-right:6px; vertical-align:-2px; }
+@keyframes sp{ to{ transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Back</a>
+  <div class="card">
+    <h1 id="productTitle">Complete Your Payment</h1>
+    <p class="sub">Pay via Vodafone Cash or InstaPay, upload your screenshot, and we'll confirm within minutes.</p>
+
+    <div class="amount-box">
+      <span class="label" id="productLabel">Viaa Access Code</span>
+      <span class="value" id="amountLabel">99 EGP</span>
+    </div>
+
+    <div class="method-tabs">
+      <div class="method-tab active" data-method="vodafone_cash">Vodafone Cash</div>
+      <div class="method-tab" data-method="instapay">InstaPay</div>
+    </div>
+
+    <div class="pay-number">
+      <div class="pn-label">Send payment to</div>
+      <div class="pn-value">01060577088</div>
+      <div class="pn-copy" id="copyNum">Tap to copy</div>
+    </div>
+
+    <ol class="steps">
+      <li>Send the exact amount above to <strong>01060577088</strong>.</li>
+      <li>Take a screenshot of the confirmation.</li>
+      <li>Fill in the form below and upload the screenshot.</li>
+      <li>You'll get your access code by email once approved (usually within minutes).</li>
+    </ol>
+
+    <form id="payForm">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="cinput" id="pName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="cinput" id="pEmail" type="email" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="cinput" id="pPhone" type="tel" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Number you paid from</label>
+        <input class="cinput" id="pSender" placeholder="01xxxxxxxxx" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Screenshot</label>
+        <label class="file-drop" id="dropZone">
+          <span id="dropText">Tap to upload screenshot</span>
+          <input type="file" id="pFile" accept="image/*" required>
+        </label>
+        <img class="preview" id="preview" alt="">
+      </div>
+      <button class="btn pri" type="submit" id="submitBtn">Submit Payment</button>
+      <p class="status" id="formStatus"></p>
+    </form>
+  </div>
+</div>
+
+<script src="payment.js"></script>
+</body>
+</html>
