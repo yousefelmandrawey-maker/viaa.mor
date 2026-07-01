@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -1307,20 +1307,23 @@
         }
 
         .gen-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             width: 100%;
-            padding: 18px;
+            padding: 17px;
             background: linear-gradient(135deg,var(--rose),var(--rose2));
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             color: #fff;
             font-family: var(--fu);
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: .04em;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: .02em;
             cursor: pointer;
-            transition: all .25s;
-            box-shadow: 0 10px 36px rgba(184,90,112,.35);
+            transition: transform .28s var(--ease), box-shadow .28s var(--ease), opacity .2s;
+            box-shadow: 0 8px 28px rgba(184,90,112,.32);
             position: relative;
             overflow: hidden;
         }
@@ -1334,16 +1337,43 @@
                 height: 50%;
                 background: linear-gradient(180deg,rgba(255,255,255,.18),transparent);
                 border-radius: inherit;
+                pointer-events: none;
             }
 
             .gen-btn:hover:not(:disabled) {
-                transform: translateY(-3px);
-                box-shadow: 0 18px 50px rgba(184,90,112,.55);
+                transform: translateY(-2px);
+                box-shadow: 0 14px 40px rgba(184,90,112,.42);
+            }
+
+            .gen-btn:active:not(:disabled) {
+                transform: translateY(0) scale(.98);
             }
 
             .gen-btn:disabled {
-                opacity: .5;
+                opacity: .68;
                 cursor: not-allowed;
+                box-shadow: 0 4px 16px rgba(184,90,112,.18);
+            }
+
+            /* CSS-only loading spinner — appears automatically whenever the
+               button is disabled, no JS changes required. */
+            .gen-btn:disabled span {
+                opacity: .85;
+            }
+
+            .gen-btn:disabled::after {
+                content: '';
+                width: 15px;
+                height: 15px;
+                margin-inline-start: 2px;
+                border: 2px solid rgba(255,255,255,.35);
+                border-top-color: #fff;
+                border-radius: 50%;
+                animation: gen-spin .7s linear infinite;
+            }
+
+            @keyframes gen-spin {
+                to { transform: rotate(360deg); }
             }
 
         .post-gen {
@@ -1421,22 +1451,35 @@
         }
 
         .uc-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
-            padding: 11px;
-            background: linear-gradient(135deg,rgba(201,168,76,.8),rgba(170,130,30,.8));
+            padding: 13px;
+            background: linear-gradient(135deg,rgba(201,168,76,.85),rgba(170,130,30,.85));
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
             color: #1a1000;
             font-family: var(--fu);
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            transition: all .2s;
+            transition: transform .22s var(--ease), box-shadow .22s var(--ease), opacity .2s;
+            box-shadow: 0 6px 20px rgba(170,130,30,.22);
         }
 
-            .uc-btn:hover {
-                opacity: .9;
+            .uc-btn:hover:not(:disabled) {
+                transform: translateY(-1px);
+                box-shadow: 0 10px 28px rgba(170,130,30,.32);
+            }
+
+            .uc-btn:active:not(:disabled) {
+                transform: translateY(0) scale(.98);
+            }
+
+            .uc-btn:disabled {
+                opacity: .6;
+                cursor: not-allowed;
             }
 
         /* ── STEP NAVIGATION (mobile bottom) ────────────────────────── */
@@ -1458,7 +1501,7 @@
         @media(min-width:900px) {
             .step-footer {
                 position: relative;
-                padding: 24px 48px;
+                padding: 20px 0 0;
                 background: transparent;
                 backdrop-filter: none;
                 border-top: 1px solid var(--bord);
@@ -1479,8 +1522,11 @@
             }
 
             .sf-next {
-                font-size: 12px;
-                letter-spacing: .04em;
+                font-size: 13px;
+            }
+
+            .sf-btn {
+                height: 50px;
             }
 
             .tgrid {
@@ -1507,7 +1553,7 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all .28s var(--ease);
+            transition: transform .22s var(--ease), box-shadow .22s var(--ease), opacity .2s, background .22s;
             border: none;
             display: flex;
             align-items: center;
@@ -1515,70 +1561,78 @@
             gap: 7px;
         }
 
+            .sf-btn:disabled {
+                opacity: .55;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+
         .sf-prev {
             flex: 0 0 48px;
-            background: rgba(255,255,255,.07);
+            width: 48px;
+            background: rgba(245,237,224,.06);
             color: var(--muted);
             border: 1px solid var(--bord);
-            border-radius: 13px;
-            font-size: 18px;
+            border-radius: 14px;
+            font-size: 17px;
         }
 
             .sf-prev:hover {
-                background: rgba(255,255,255,.12);
+                background: rgba(245,237,224,.11);
                 color: var(--ivory);
+                border-color: var(--bord2);
             }
 
+            .sf-prev:active {
+                transform: scale(.96);
+            }
+
+        /* Same solid coral system as .gen-btn — Next/Continue/Generate now
+           read as one consistent action language instead of three. */
         .sf-next {
             flex: 1;
-            background: transparent;
-            color: var(--ivory);
-            border: 1px solid rgba(212,128,140,.45) !important;
+            background: linear-gradient(135deg,var(--rose),var(--rose2));
+            color: #fff;
+            border: none;
             position: relative;
             overflow: hidden;
-            letter-spacing: .06em;
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            box-shadow: inset 0 0 0 0 rgba(212,128,140,0), 0 2px 16px rgba(184,90,112,.12);
-            transition: all .38s cubic-bezier(.16,1,.3,1);
+            letter-spacing: .02em;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: none;
+            box-shadow: 0 8px 26px rgba(184,90,112,.30);
         }
 
             .sf-next::before {
                 content: '';
                 position: absolute;
-                inset: 0;
-                background: linear-gradient(135deg, rgba(212,128,140,.18) 0%, rgba(184,90,106,.22) 100%);
-                opacity: 0;
-                transition: opacity .38s var(--ease);
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                background: linear-gradient(180deg,rgba(255,255,255,.16),transparent);
+                border-radius: inherit;
+                pointer-events: none;
             }
 
-            .sf-next::after {
+            .sf-next:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 14px 36px rgba(184,90,112,.40);
+            }
+
+            .sf-next:active:not(:disabled) {
+                transform: translateY(0) scale(.98);
+            }
+
+            .sf-next:disabled::after {
                 content: '';
-                position: absolute;
-                bottom: 0;
-                left: 10%;
-                right: 10%;
-                height: 1px;
-                background: linear-gradient(90deg, transparent, rgba(212,128,140,.7), transparent);
-                transition: opacity .38s;
-                opacity: .6;
-            }
-
-            .sf-next:hover {
-                border-color: rgba(212,128,140,.75) !important;
-                color: #fff;
-                box-shadow: 0 0 28px rgba(184,90,112,.28), inset 0 0 20px rgba(212,128,140,.06);
-                letter-spacing: .10em;
-            }
-
-                .sf-next:hover::before {
-                    opacity: 1;
-                }
-
-            .sf-next:active {
-                transform: scale(.98);
-                box-shadow: 0 0 12px rgba(184,90,112,.18);
+                width: 15px;
+                height: 15px;
+                margin-inline-start: 8px;
+                border: 2px solid rgba(255,255,255,.35);
+                border-top-color: #fff;
+                border-radius: 50%;
+                animation: gen-spin .7s linear infinite;
             }
 
             .sf-next span {
@@ -2072,10 +2126,6 @@
 
         .sn-item {
             transition: background .2s var(--ease), border-color .2s;
-        }
-
-        .sf-btn {
-            transition: all .28s var(--ease);
         }
 
         .at-tab {
