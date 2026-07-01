@@ -5,7 +5,7 @@
 'use strict';
 
 const Busboy = require('busboy');
-const { supabaseAdmin } = require('./_lib/storage');
+const { supabaseAdmin, assertConfigured } = require('./_lib/storage');
 const store = require('./_lib/store');
 const ids = require('./_lib/ids');
 const telegram = require('./_lib/telegram');
