@@ -112,20 +112,60 @@ async function handlePost(req, res) {
 
   let screenshotUrl = null;
   try {
+    // Fail fast with a specific message if SUPABASE_SERVICE_ROLE_KEY isn't
+    // set, instead of letting the upload call below fail with an opaque
+    // Supabase auth error.
+    const client = assertConfigured();
+
     const ext = (file.info?.filename?.split('.').pop() || 'jpg').toLowerCase();
     const path = `${referenceId}.${ext}`;
-    const { error: uploadErr } = await supabaseAdmin.storage
+    const contentType = file.info?.mimeType || 'image/jpeg';
+
+    console.log(`[submit-payment] uploading to bucket="${BUCKET}" path="${path}" contentType="${contentType}" size=${file.buffer.length}`);
+
+    const { data: uploadData, error: uploadErr } = await client.storage
       .from(BUCKET)
-      .upload(path, file.buffer, {
-        contentType: file.info?.mimeType || 'image/jpeg',
-        upsert: false,
+      .upload(path, file.buffer, { contentType, upsert: false });
+
+    if (uploadErr) {
+      // Log the full Supabase error object server-side (status, statusCode,
+      // name, message — whatever Supabase attached) for real diagnosis.
+      console.error('[submit-payment] Supabase storage upload failed:', {
+        message: uploadErr.message,
+        name: uploadErr.name,
+        status: uploadErr.status || uploadErr.statusCode,
+        cause: uploadErr.cause,
+        raw: uploadErr,
       });
-    if (uploadErr) throw uploadErr;
-    const { data: pub } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(path);
+      throw uploadErr;
+    }
+
+    console.log('[submit-payment] upload succeeded:', uploadData);
+
+    const { data: pub, error: urlErr } = client.storage.from(BUCKET).getPublicUrl(path);
+    if (urlErr) {
+      console.error('[submit-payment] getPublicUrl failed:', urlErr);
+      throw urlErr;
+    }
+    if (!pub?.publicUrl) {
+      throw new Error(`getPublicUrl returned no URL for bucket "${BUCKET}" path "${path}" — check the bucket exists and is set to public.`);
+    }
     screenshotUrl = pub.publicUrl;
   } catch (err) {
-    console.error('Supabase storage upload failed:', err);
-    return res.status(500).json({ error: 'Could not upload screenshot, please try again' });
+    console.error('[submit-payment] screenshot upload failed:', err);
+    // Return the REAL failure instead of a generic message, so the actual
+    // Supabase/config error is visible in the frontend and in logs.
+    return res.status(500).json({
+      error: err.message || 'Could not upload screenshot, please try again',
+      code: err.code || err.name || null,
+      details: {
+        bucket: BUCKET,
+        status: err.status || err.statusCode || null,
+        hint: err.code === 'MISSING_SERVICE_ROLE_KEY'
+          ? 'SUPABASE_SERVICE_ROLE_KEY is missing/invalid in Vercel env vars.'
+          : 'Check the bucket name, that it exists in this Supabase project, and that SUPABASE_SERVICE_ROLE_KEY is the service_role key (not anon).',
+      },
+    });
   }
 
   const record = await store.createPayment({
