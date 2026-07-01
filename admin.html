@@ -6,52 +6,161 @@
 <title>Admin — Payments</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root{
-  --bg:#F8FAFC; --card:#FFFFFF; --coral:#FF8A65; --coral3:rgba(255,138,101,.12);
-  --text:#1E293B; --muted:#64748B; --bord:rgba(0,0,0,.08);
+  --bg:#F5F6F8; --card:#FFFFFF; --coral:#FF8A65; --coral-d:#F2703F; --coral3:rgba(255,138,101,.10);
+  --text:#161B22; --muted:#66707D; --muted2:#9AA3AF;
+  --bord:rgba(15,23,42,.08); --bord2:rgba(15,23,42,.14);
+  --sh-sm:0 1px 2px rgba(15,23,42,.04);
+  --sh-md:0 6px 20px rgba(15,23,42,.06), 0 1px 4px rgba(15,23,42,.04);
+  --r-sm:10px; --r-md:14px; --r-lg:18px;
   --fd:'Playfair Display',Georgia,serif; --fu:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ok:#1A9E5C; --err:#E5484D;
 }
-body{ font-family:var(--fu); background:var(--bg); color:var(--text); padding:24px 16px 60px; }
-.wrap{ max-width:760px; margin:0 auto; }
-h1{ font-family:var(--fd); font-size:24px; margin-bottom:18px; }
-.gate{ max-width:360px; margin:80px auto; background:#fff; border:1px solid var(--bord); border-radius:16px; padding:26px; text-align:center; }
-.gate input{ width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--bord); margin:14px 0; font-size:14px; }
-.gate button{ width:100%; padding:12px; border-radius:10px; border:none; background:var(--coral); color:#fff; font-weight:700; cursor:pointer; }
+html{ -webkit-font-smoothing:antialiased; }
+body{ font-family:var(--fu); background:var(--bg); color:var(--text); min-height:100vh; line-height:1.5; }
+
+/* ── GATE ───────────────────────────────────────────── */
+.gate{ max-width:380px; margin:110px auto; background:var(--card); border:1px solid var(--bord); border-radius:var(--r-lg); padding:34px 28px; text-align:center; box-shadow:var(--sh-md); animation:fadeUp .45s var(--ease); }
+@keyframes fadeUp{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+.gate .gi{ font-size:26px; margin-bottom:10px; }
+.gate h1{ font-family:var(--fd); font-size:20px; font-weight:700; margin-bottom:6px; }
+.gate p{ font-size:13px; color:var(--muted); margin-bottom:20px; }
+.gate input{ width:100%; padding:13px 14px; border-radius:var(--r-sm); border:1.5px solid var(--bord); margin-bottom:12px; font-size:14.5px; font-family:var(--fu); outline:none; transition:border-color .18s var(--ease), box-shadow .18s var(--ease); background:#FBFCFD; }
+.gate input:focus{ border-color:var(--coral); background:#fff; box-shadow:0 0 0 3.5px rgba(255,138,101,.12); }
+.gate button{ width:100%; padding:13px; border-radius:var(--r-sm); border:none; background:linear-gradient(135deg,var(--coral),var(--coral-d)); color:#fff; font-weight:600; font-size:14.5px; cursor:pointer; box-shadow:0 8px 22px rgba(255,138,101,.28); transition:transform .2s var(--ease), box-shadow .2s var(--ease); }
+.gate button:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(255,138,101,.36); }
+.gate button:active{ transform:translateY(0) scale(.98); }
+
+/* ── DASHBOARD SHELL ────────────────────────────────── */
 #dashboard{ display:none; }
-.toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
-.toolbar button{ background:#fff; border:1.5px solid var(--bord); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; }
-.empty{ color:var(--muted); text-align:center; padding:60px 0; font-size:14px; }
-.row{ background:#fff; border:1px solid var(--bord); border-radius:14px; padding:16px; margin-bottom:12px; display:flex; gap:14px; align-items:flex-start; }
-.row img{ width:64px; height:64px; object-fit:cover; border-radius:10px; flex-shrink:0; cursor:pointer; }
+.topbar{ background:var(--card); border-bottom:1px solid var(--bord); padding:18px 24px; position:sticky; top:0; z-index:10; }
+.topbar-inner{ max-width:920px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand-mark{ width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--coral-d)); display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 4px 12px rgba(255,138,101,.3); }
+.brand h1{ font-family:var(--fd); font-size:18px; font-weight:700; }
+.brand .brand-sub{ font-size:11.5px; color:var(--muted); font-weight:500; }
+.topbar-actions{ display:flex; align-items:center; gap:10px; }
+
+.wrap{ max-width:920px; margin:0 auto; padding:24px 20px 60px; }
+
+.stats-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:22px; }
+.stat-card{ background:var(--card); border:1px solid var(--bord); border-radius:var(--r-md); padding:16px 18px; box-shadow:var(--sh-sm); }
+.stat-card .sv{ font-family:var(--fd); font-size:26px; font-weight:700; margin-bottom:2px; }
+.stat-card .sl{ font-size:12px; color:var(--muted); font-weight:500; }
+
+.toolbar{ display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
+.search-wrap{ position:relative; flex:1; min-width:200px; }
+.search-wrap .si{ position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:14px; color:var(--muted2); pointer-events:none; }
+.search-input{ width:100%; padding:11px 14px 11px 36px; border-radius:var(--r-sm); border:1.5px solid var(--bord); font-family:var(--fu); font-size:13.5px; background:var(--card); outline:none; transition:border-color .18s var(--ease), box-shadow .18s var(--ease); }
+.search-input:focus{ border-color:var(--coral); box-shadow:0 0 0 3.5px rgba(255,138,101,.10); }
+.filter-chips{ display:flex; gap:6px; }
+.chip{ padding:9px 14px; border-radius:20px; border:1.5px solid var(--bord); background:var(--card); font-size:12.5px; font-weight:600; color:var(--muted); cursor:pointer; transition:all .18s var(--ease); white-space:nowrap; }
+.chip:hover{ border-color:var(--bord2); color:var(--text); }
+.chip.active{ background:var(--text); border-color:var(--text); color:#fff; }
+.icon-btn{ background:var(--card); border:1.5px solid var(--bord); border-radius:var(--r-sm); padding:10px 14px; font-size:13px; font-weight:600; cursor:pointer; color:var(--text); transition:all .18s var(--ease); display:flex; align-items:center; gap:6px; }
+.icon-btn:hover{ border-color:var(--bord2); background:#FBFCFD; }
+.icon-btn:active{ transform:scale(.97); }
+
+.empty{ color:var(--muted); text-align:center; padding:70px 20px; font-size:14px; background:var(--card); border:1px dashed var(--bord2); border-radius:var(--r-lg); }
+.empty .ee{ font-size:32px; margin-bottom:10px; display:block; }
+
+.list{ display:flex; flex-direction:column; gap:10px; }
+.row{ background:var(--card); border:1px solid var(--bord); border-radius:var(--r-md); padding:16px; display:flex; gap:14px; align-items:flex-start; box-shadow:var(--sh-sm); transition:box-shadow .2s var(--ease), transform .2s var(--ease), opacity .3s, height .3s; animation:rowIn .35s var(--ease); }
+@keyframes rowIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+.row:hover{ box-shadow:var(--sh-md); }
+.row.removing{ opacity:0; transform:scale(.97); }
+.row .thumb{ width:60px; height:60px; object-fit:cover; border-radius:var(--r-sm); flex-shrink:0; cursor:pointer; border:1px solid var(--bord); transition:transform .18s var(--ease); }
+.row .thumb:hover{ transform:scale(1.04); }
 .row .info{ flex:1; min-width:0; }
-.row .name{ font-weight:700; font-size:15px; }
-.row .meta{ font-size:12px; color:var(--muted); margin-top:2px; line-height:1.6; }
-.row .actions{ display:flex; gap:8px; margin-top:10px; }
-.row .actions button{ padding:8px 14px; border-radius:8px; border:none; font-weight:700; font-size:12px; cursor:pointer; }
-.btn-approve{ background:#16A34A; color:#fff; }
-.btn-reject{ background:#EF4444; color:#fff; }
-.row .actions button:disabled{ opacity:.5; cursor:not-allowed; }
+.row-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:4px; }
+.row .name{ font-weight:700; font-size:14.5px; }
+.badge{ font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; }
+.badge.method-vodafone_cash{ background:rgba(230,0,35,.08); color:#C7002B; }
+.badge.method-instapay{ background:rgba(40,80,220,.08); color:#2850DC; }
+.row .meta{ font-size:12.5px; color:var(--muted); line-height:1.7; }
+.row .meta b{ color:var(--text); font-weight:600; }
+.row .actions{ display:flex; gap:8px; margin-top:12px; }
+.row .actions button{ padding:9px 16px; border-radius:var(--r-sm); border:none; font-weight:700; font-size:12.5px; cursor:pointer; transition:transform .15s var(--ease), box-shadow .15s var(--ease), opacity .2s; display:flex; align-items:center; gap:6px; }
+.btn-approve{ background:linear-gradient(135deg,#25B673,#1A9E5C); color:#fff; box-shadow:0 4px 14px rgba(26,158,92,.28); }
+.btn-approve:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 8px 20px rgba(26,158,92,.36); }
+.btn-reject{ background:#fff; color:var(--err); border:1.5px solid rgba(229,72,77,.3) !important; box-shadow:none; }
+.btn-reject:hover:not(:disabled){ background:rgba(229,72,77,.06); }
+.row .actions button:disabled{ opacity:.5; cursor:not-allowed; transform:none !important; }
+.btn-spin{ width:12px; height:12px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; }
+.btn-reject .btn-spin{ border:2px solid rgba(229,72,77,.25); border-top-color:var(--err); }
+@keyframes sp{ to{ transform:rotate(360deg); } }
+
+/* skeleton loading */
+.skel-row{ background:var(--card); border:1px solid var(--bord); border-radius:var(--r-md); padding:16px; display:flex; gap:14px; }
+.skel-box{ background:linear-gradient(90deg,#EEF0F3 25%,#F6F7F9 37%,#EEF0F3 63%); background-size:400% 100%; animation:shimmer 1.4s ease infinite; border-radius:var(--r-sm); }
+@keyframes shimmer{ 0%{ background-position:100% 0; } 100%{ background-position:0 0; } }
+
+@media (max-width:560px){
+  .topbar{ padding:14px 16px; }
+  .wrap{ padding:18px 14px 50px; }
+  .row{ flex-wrap:wrap; }
+  .row .thumb{ width:52px; height:52px; }
+  .row .actions{ width:100%; }
+  .row .actions button{ flex:1; justify-content:center; }
+}
 </style>
 </head>
 <body>
   <div class="gate" id="gate">
-    <h1 style="font-size:18px">Admin Access</h1>
+    <div class="gi">🔒</div>
+    <h1>Admin Access</h1>
+    <p>Enter your admin token to view pending payments.</p>
     <input type="password" id="tokenInput" placeholder="Admin token">
-    <button id="gateBtn">Enter</button>
+    <button id="gateBtn">Enter Dashboard →</button>
   </div>
 
-  <div class="wrap" id="dashboard">
-    <div class="toolbar">
-      <h1>Pending Payments</h1>
-      <button id="refreshBtn">↻ Refresh</button>
+  <div id="dashboard">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark">💳</div>
+          <div>
+            <h1>Payments</h1>
+            <div class="brand-sub">Viaa Admin</div>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="refreshBtn">↻ Refresh</button>
+        </div>
+      </div>
     </div>
-    <div id="list"></div>
+
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat-card"><div class="sv" id="statTotal">–</div><div class="sl">Pending Payments</div></div>
+        <div class="stat-card"><div class="sv" id="statVF">–</div><div class="sl">Vodafone Cash</div></div>
+        <div class="stat-card"><div class="sv" id="statIP">–</div><div class="sl">InstaPay</div></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="si">🔍</span>
+          <input class="search-input" id="searchInput" placeholder="Search by name, email, or ID…">
+        </div>
+        <div class="filter-chips" id="filterChips">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="vodafone_cash">Vodafone Cash</button>
+          <button class="chip" data-filter="instapay">InstaPay</button>
+        </div>
+      </div>
+
+      <div id="list"></div>
+    </div>
   </div>
 
 <script>
 (function () {
   let token = sessionStorage.getItem('viaa_admin_token') || '';
+  let allPayments = [];
+  let activeFilter = 'all';
+  let searchTerm = '';
 
   function showDashboard() {
     document.getElementById('gate').style.display = 'none';
@@ -67,12 +176,46 @@ h1{ font-family:var(--fd); font-size:24px; margin-bottom:18px; }
     sessionStorage.setItem('viaa_admin_token', token);
     showDashboard();
   });
+  document.getElementById('tokenInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('gateBtn').click();
+  });
 
   document.getElementById('refreshBtn').addEventListener('click', loadList);
 
-  async function loadList() {
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchTerm = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  document.getElementById('filterChips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('.chip').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    render();
+  });
+
+  function skeletons(n) {
     const list = document.getElementById('list');
-    list.innerHTML = '<p class="empty">Loading…</p>';
+    list.innerHTML = '';
+    for (let i = 0; i < n; i++) {
+      const row = document.createElement('div');
+      row.className = 'skel-row';
+      row.style.marginBottom = '10px';
+      row.innerHTML = `
+        <div class="skel-box" style="width:60px;height:60px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div class="skel-box" style="width:40%;height:14px;margin-bottom:8px"></div>
+          <div class="skel-box" style="width:70%;height:11px;margin-bottom:6px"></div>
+          <div class="skel-box" style="width:55%;height:11px"></div>
+        </div>`;
+      list.appendChild(row);
+    }
+  }
+
+  async function loadList() {
+    skeletons(3);
     try {
       const res = await fetch(`/api/submit-payment?admin=1&token=${encodeURIComponent(token)}&action=list`);
       const data = await res.json();
@@ -84,44 +227,80 @@ h1{ font-family:var(--fd); font-size:24px; margin-bottom:18px; }
       }
       if (!res.ok) throw new Error(data.error || 'Failed to load');
 
-      const payments = (data.payments || []).sort((a, b) => b.createdAt - a.createdAt);
-      if (!payments.length) {
-        list.innerHTML = '<p class="empty">No pending payments 🎉</p>';
-        return;
-      }
-      list.innerHTML = '';
-      payments.forEach((p) => list.appendChild(renderRow(p)));
+      allPayments = (data.payments || []).sort((a, b) => b.createdAt - a.createdAt);
+      updateStats();
+      render();
     } catch (err) {
-      list.innerHTML = `<p class="empty">${err.message}</p>`;
+      document.getElementById('list').innerHTML = `<div class="empty"><span class="ee">⚠️</span>${escapeHtml(err.message)}</div>`;
     }
+  }
+
+  function updateStats() {
+    document.getElementById('statTotal').textContent = allPayments.length;
+    document.getElementById('statVF').textContent = allPayments.filter((p) => p.method === 'vodafone_cash').length;
+    document.getElementById('statIP').textContent = allPayments.filter((p) => p.method === 'instapay').length;
+  }
+
+  function render() {
+    const list = document.getElementById('list');
+    let filtered = allPayments;
+    if (activeFilter !== 'all') filtered = filtered.filter((p) => p.method === activeFilter);
+    if (searchTerm) {
+      filtered = filtered.filter((p) =>
+        (p.name || '').toLowerCase().includes(searchTerm) ||
+        (p.email || '').toLowerCase().includes(searchTerm) ||
+        (p.id || '').toLowerCase().includes(searchTerm)
+      );
+    }
+
+    if (!allPayments.length) {
+      list.innerHTML = '<div class="empty"><span class="ee">🎉</span>No pending payments</div>';
+      return;
+    }
+    if (!filtered.length) {
+      list.innerHTML = '<div class="empty"><span class="ee">🔍</span>No payments match your search</div>';
+      return;
+    }
+
+    const wrap = document.createElement('div');
+    wrap.className = 'list';
+    filtered.forEach((p) => wrap.appendChild(renderRow(p)));
+    list.innerHTML = '';
+    list.appendChild(wrap);
   }
 
   function renderRow(p) {
     const row = document.createElement('div');
     row.className = 'row';
+    row.dataset.id = p.id;
     const methodLabel = p.method === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay';
     row.innerHTML = `
-      <img src="${p.screenshotUrl}" alt="screenshot" onclick="window.open('${p.screenshotUrl}','_blank')">
+      <img class="thumb" src="${p.screenshotUrl}" alt="screenshot" onclick="window.open('${p.screenshotUrl}','_blank')">
       <div class="info">
-        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="row-head">
+          <span class="name">${escapeHtml(p.name)}</span>
+          <span class="badge method-${p.method}">${methodLabel}</span>
+        </div>
         <div class="meta">
           ${escapeHtml(p.email)} · ${escapeHtml(p.phone)}<br>
-          ${methodLabel} · transaction ${escapeHtml(p.senderNumber)} · ${escapeHtml(String(p.amount))} EGP<br>
+          <b>${escapeHtml(String(p.amount))} EGP</b> · transaction ${escapeHtml(p.senderNumber)}<br>
           ${escapeHtml(p.product)} · ${new Date(p.createdAt).toLocaleString()}
         </div>
         <div class="actions">
-          <button class="btn-approve" data-id="${p.id}">Approve</button>
-          <button class="btn-reject" data-id="${p.id}">Reject</button>
+          <button class="btn-approve" data-id="${p.id}">✓ Approve</button>
+          <button class="btn-reject" data-id="${p.id}">✕ Reject</button>
         </div>
       </div>`;
-    row.querySelector('.btn-approve').addEventListener('click', (e) => act(p.id, 'approve', e.target));
-    row.querySelector('.btn-reject').addEventListener('click', (e) => act(p.id, 'reject', e.target));
+    row.querySelector('.btn-approve').addEventListener('click', (e) => act(p.id, 'approve', e.target, row));
+    row.querySelector('.btn-reject').addEventListener('click', (e) => act(p.id, 'reject', e.target, row));
     return row;
   }
 
-  async function act(id, action, btn) {
-    btn.disabled = true;
-    btn.parentElement.querySelectorAll('button').forEach((b) => (b.disabled = true));
+  async function act(id, action, btn, row) {
+    const buttons = row.querySelectorAll('button');
+    buttons.forEach((b) => (b.disabled = true));
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = `<span class="btn-spin"></span> ${action === 'approve' ? 'Approving…' : 'Rejecting…'}`;
     try {
       const res = await fetch('/api/approve-payment', {
         method: 'POST',
@@ -130,10 +309,17 @@ h1{ font-family:var(--fd); font-size:24px; margin-bottom:18px; }
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Action failed');
-      loadList();
+
+      row.classList.add('removing');
+      setTimeout(() => {
+        allPayments = allPayments.filter((p) => p.id !== id);
+        updateStats();
+        render();
+      }, 280);
     } catch (err) {
       alert(err.message);
-      loadList();
+      buttons.forEach((b) => (b.disabled = false));
+      btn.innerHTML = originalHtml;
     }
   }
 
