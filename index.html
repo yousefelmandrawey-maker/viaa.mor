@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -43,59 +43,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <link rel="stylesheet" href="design-tokens.css">
     <style>
-        /* VARIABLES */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        /* Reset, --bg, --card, --dark, --text, --muted, --bord, --sh-sm/md/lg/xl/
+           card/card-hover, --ease, --spring all now come from design-tokens.css —
+           their values here were byte-identical to the shared tokens and have
+           been removed. What remains: aliases so this page's differently-named
+           vars (--pink2 vs --pink-2, --bord2 vs --bord-2, etc.) resolve to the
+           same shared values, --muted2 which differs by one hex digit from the
+           shared --muted-2 (kept exact to guarantee identical output), the two
+           dual-tone accent shadows unique to this marketing page, and font
+           aliases. */
         :root {
-            --bg: #F8FAFC;
-            --card: #FFFFFF;
-            --pink: #FF5FA2;
-            --pink2: #FF3380;
-            --pink3: rgba(255,95,162,.12);
-            --pink4: rgba(255,95,162,.06);
-            --purple: #7C4DFF;
-            --purple2: #5C2EE8;
-            --purple3: rgba(124,77,255,.12);
-            --cyan: #00D4FF;
-            --cyan3: rgba(0,212,255,.12);
-            --gold: #FFB800;
-            --gold3: rgba(255,184,0,.12);
-            --coral: #FF8A65;
-            --coral3: rgba(255,138,101,.12);
-            --dark: #111827;
-            --text: #1E293B;
-            --muted: #64748B;
+            --pink2: var(--pink-2); --pink3: var(--pink-3); --pink4: var(--pink-4);
+            --purple2: var(--purple-2); --purple3: var(--purple-3);
+            --cyan3: var(--cyan-3);
+            --gold3: var(--gold-3);
+            --coral3: var(--coral-3);
             --muted2: #94A3B8;
-            --bord: rgba(0,0,0,.07);
-            --bord2: rgba(0,0,0,.11);
-            --sh-sm: 0 1px 4px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
-            --sh-md: 0 4px 20px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.05);
-            --sh-lg: 0 14px 50px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.07);
+            --bord2: var(--bord-2);
             --sh-pink: 0 10px 40px rgba(255,95,162,.40);
             --sh-purple: 0 10px 40px rgba(124,77,255,.34);
-            --fd: 'Playfair Display',Georgia,serif;
-            --fu: 'Inter',system-ui,sans-serif;
-            --ease: cubic-bezier(.16,1,.3,1);
-            --spring: cubic-bezier(.34,1.56,.64,1);
-            --sh-xl: 0 30px 90px rgba(17,24,39,.16),0 10px 30px rgba(17,24,39,.08);
-            --sh-card: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
-            --sh-card-hover: 0 24px 60px rgba(17,24,39,.14),0 6px 18px rgba(17,24,39,.07);
-        }
-
-        ::selection {
-            background: var(--pink3);
-            color: var(--pink2);
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--pink);
-            outline-offset: 3px;
+            --fd: var(--f-display);
+            --fu: var(--f-body);
         }
 
         html {
@@ -109,18 +79,10 @@
             background: var(--bg);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            animation: pageFadeIn .6s var(--ease) both;
+            animation: v-fade-in .6s var(--ease) both;
         }
 
-        @keyframes pageFadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
+        /* local @keyframes pageFadeIn removed — identical to shared v-fade-in */
 
         @media (prefers-reduced-motion: reduce) {
             body {
@@ -129,17 +91,13 @@
         }
 
         /* SHIMMER (shared skeleton loading effect) */
-        @keyframes shimmerSweep {
-            to {
-                background-position: -135% 0;
-            }
-        }
+        /* local @keyframes shimmerSweep removed — identical to shared v-shimmer */
 
         .skel-shimmer {
             background-image: linear-gradient(100deg, rgba(0,0,0,.05) 18%, rgba(0,0,0,.10) 33%, rgba(0,0,0,.05) 48%);
             background-size: 250% 100%;
             background-position: 0 0;
-            animation: shimmerSweep 1.5s ease-in-out infinite;
+            animation: v-shimmer 1.5s ease-in-out infinite;
         }
 
         a {
@@ -2037,7 +1995,7 @@
             background-image: linear-gradient(100deg, rgba(0,0,0,0) 18%, rgba(0,0,0,.06) 33%, rgba(0,0,0,0) 48%);
             background-size: 250% 100%;
             background-position: 0 0;
-            animation: shimmerSweep 1.5s ease-in-out infinite;
+            animation: v-shimmer 1.5s ease-in-out infinite;
             opacity: 1;
             transition: opacity .45s var(--ease);
             pointer-events: none;
@@ -3517,16 +3475,12 @@
             border: 2px solid rgba(255,95,162,.25);
             border-top-color: var(--pink);
             border-radius: 50%;
-            animation: sp .65s linear infinite;
+            animation: v-spin .65s linear infinite;
             vertical-align: middle;
             margin-right: 7px;
         }
 
-        @keyframes sp {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        /* local @keyframes sp removed — identical to shared v-spin */
 
         /* REVEALS */
         .rv {
