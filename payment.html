@@ -6,19 +6,22 @@
 <title>Complete Payment — Viaa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-tokens.css">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+/* Reset, spacing scale, radius (sm/md), and easing now come from design-tokens.css.
+   Only page-specific colors/shadows/radius overrides that differ from the shared
+   tokens (navy-tinted shadows, this page's exact bg/text/muted/border tints, and
+   the 10% coral tint) remain here, plus font-family aliases to the shared fonts. */
 :root{
-  --bg:#F7F8FA; --card:#FFFFFF; --coral:#FF8A65; --coral-d:#F2703F; --coral3:rgba(255,138,101,.10);
+  --bg:#F7F8FA;
+  --coral3:rgba(255,138,101,.10);
+  --coral-d: var(--coral-2);
   --text:#161B22; --muted:#66707D; --muted2:#9AA3AF;
   --bord:rgba(15,23,42,.08); --bord2:rgba(15,23,42,.14);
   --sh-sm:0 1px 2px rgba(15,23,42,.04), 0 1px 1px rgba(15,23,42,.03);
   --sh-md:0 8px 24px rgba(15,23,42,.07), 0 2px 6px rgba(15,23,42,.04);
   --sh-lg:0 20px 48px rgba(15,23,42,.12), 0 4px 12px rgba(15,23,42,.05);
-  --r-sm:10px; --r-md:14px; --r-lg:20px;
-  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px;
-  --fd:'Playfair Display',Georgia,serif; --fu:'Inter',system-ui,sans-serif;
-  --ease:cubic-bezier(.16,1,.3,1);
+  --fd: var(--f-display); --fu: var(--f-body);
 }
 html{ -webkit-font-smoothing:antialiased; }
 body{ font-family:var(--fu); background:var(--bg); color:var(--text); min-height:100vh; padding:28px 16px 60px; line-height:1.5; }
@@ -79,8 +82,8 @@ h1{ font-family:var(--fd); font-size:23px; font-weight:700; margin-bottom:5px; l
 .status{ font-size:13px; margin-top:12px; text-align:center; min-height:18px; font-weight:500; }
 .status.e{ color:#E5484D; }
 .status.s{ color:#1A9E5C; }
-.spin{ display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; margin-right:7px; vertical-align:-2px; }
-@keyframes sp{ to{ transform:rotate(360deg); } }
+.spin{ display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:v-spin .7s linear infinite; margin-right:7px; vertical-align:-2px; }
+/* local @keyframes sp removed — identical to shared v-spin in design-tokens.css */
 
 @media (max-width:420px){
   body{ padding:20px 12px 48px; }
@@ -89,7 +92,7 @@ h1{ font-family:var(--fd); font-size:23px; font-weight:700; margin-bottom:5px; l
 }
 </style>
 </head>
-<body>
+<body data-surface="coral">
 <div class="wrap">
   <a class="back" href="index.html">← Back</a>
   <div class="card">
