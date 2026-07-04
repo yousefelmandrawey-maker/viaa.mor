@@ -281,12 +281,12 @@
                 display: flex;
                 flex-direction: column;
                 border-right: 1px solid var(--bord);
-                padding: 28px 16px;
+                padding: 32px 18px;
                 position: sticky;
                 top: var(--nav-h);
                 height: calc(100dvh - var(--nav-h));
                 overflow-y: auto;
-                gap: 4px;
+                gap: 5px;
                 background: rgba(248,250,252,.6);
             }
 
@@ -307,35 +307,38 @@
         .sn-title {
             font-size: 9px;
             color: var(--muted2);
-            letter-spacing: .14em;
+            letter-spacing: .16em;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             padding: 0 4px;
+            font-weight: 600;
         }
 
         .sn-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 12px;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 13px;
             cursor: pointer;
             transition: all .22s;
             position: relative;
+            border: 1px solid transparent;
         }
 
             .sn-item:hover {
-                background: rgba(255,255,255,.04);
+                background: rgba(30,41,59,.04);
             }
 
             .sn-item.active {
-                background: rgba(255,95,162,.10);
-                border: 1px solid rgba(255,95,162,.2);
+                background: rgba(255,95,162,.08);
+                border: 1px solid rgba(255,95,162,.22);
+                box-shadow: 0 4px 16px rgba(255,95,162,.10);
             }
 
         .sn-num {
-            width: 26px;
-            height: 26px;
+            width: 27px;
+            height: 27px;
             border-radius: 50%;
             border: 1px solid var(--bord);
             display: flex;
@@ -349,15 +352,15 @@
         }
 
         .sn-item.active .sn-num {
-            background: var(--rose);
-            border-color: var(--rose);
+            background: linear-gradient(135deg,var(--rose),var(--rose2));
+            border-color: transparent;
             color: #fff;
-            box-shadow: 0 0 12px rgba(255,95,162,.4);
+            box-shadow: 0 0 12px rgba(255,95,162,.45);
         }
 
         .sn-item.done .sn-num {
-            background: rgba(107,255,184,.12);
-            border-color: rgba(107,255,184,.3);
+            background: rgba(16,185,129,.10);
+            border-color: rgba(16,185,129,.3);
             color: var(--ok);
         }
 
@@ -366,20 +369,22 @@
             }
 
         .sn-label {
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 500;
             color: var(--muted);
+            letter-spacing: -.005em;
         }
 
         .sn-item.active .sn-label {
             color: var(--ivory);
+            font-weight: 600;
         }
 
         .sn-connector {
             width: 1px;
             height: 16px;
             background: var(--bord);
-            margin-left: 24px;
+            margin-left: 25px;
         }
 
         /* ── CANVAS ─────────────────────────────────────────────────── */
@@ -427,12 +432,12 @@
         /* Step header */
         .step-eye {
             font-size: 11px;
-            font-weight: 500;
-            letter-spacing: .14em;
+            font-weight: 600;
+            letter-spacing: .16em;
             text-transform: uppercase;
             color: var(--rose);
-            opacity: .8;
-            margin-bottom: 10px;
+            opacity: .85;
+            margin-bottom: 12px;
         }
 
         .step-headline {
@@ -442,7 +447,7 @@
             line-height: 1.0;
             letter-spacing: -.025em;
             color: var(--ivory);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
             .step-headline em {
@@ -454,7 +459,7 @@
             color: var(--muted);
             line-height: 1.7;
             font-weight: 300;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
             max-width: 440px;
         }
 
@@ -1053,12 +1058,13 @@
         }
 
         .tc {
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
             border: 2px solid transparent;
             cursor: pointer;
             transition: all .28s var(--ease);
             position: relative;
+            box-shadow: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
         }
 
             .tc:hover {
@@ -1180,26 +1186,28 @@
 
         /* ── EXPERIENCE TOGGLES ──────────────────────────────────────── */
         .exp-card {
-            background: rgba(255,255,255,.04);
+            background: rgba(255,255,255,.5);
             border: 1px solid var(--bord);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 12px;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 14px;
             cursor: pointer;
             transition: all .25s;
             display: flex;
             align-items: flex-start;
-            gap: 14px;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
         }
 
             .exp-card:hover {
                 border-color: rgba(255,95,162,.28);
-                background: rgba(255,95,162,.05);
+                background: rgba(255,95,162,.04);
+                box-shadow: 0 8px 24px rgba(17,24,39,.06),0 2px 8px rgba(17,24,39,.04);
             }
 
             .exp-card.on {
                 border-color: var(--rose);
-                background: rgba(255,95,162,.08);
+                background: rgba(255,95,162,.06);
             }
 
         .exp-icon {
@@ -1664,24 +1672,35 @@
         /* ── PREVIEW PANEL ──────────────────────────────────────────── */
         .pv-title {
             font-size: 9px;
+            font-weight: 600;
             color: var(--muted2);
-            letter-spacing: .14em;
+            letter-spacing: .16em;
             text-transform: uppercase;
-            margin-bottom: 14px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .pv-phone {
             width: 130px;
             height: 258px;
-            border-radius: 24px;
+            border-radius: 26px;
             background: var(--surf);
             border: 1px solid rgba(30,41,59,.14);
-            margin: 0 auto 16px;
+            margin: 0 auto 18px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 0 0 3px rgba(255,255,255,.02),0 20px 50px rgba(0,0,0,.6);
+            box-shadow: 0 0 0 3px rgba(255,255,255,.4),0 24px 50px -10px rgba(255,95,162,.28),0 20px 50px rgba(17,24,39,.14);
         }
+
+            .pv-phone::before {
+                content: '';
+                position: absolute;
+                inset: -18px;
+                z-index: -1;
+                background: radial-gradient(ellipse at 50% 40%,rgba(255,95,162,.20),transparent 70%);
+                filter: blur(10px);
+                pointer-events: none;
+            }
 
         .pv-ph-notch {
             position: absolute;
@@ -1762,26 +1781,29 @@
         }
 
         .pv-prog {
-            margin-top: 16px;
+            margin-top: 18px;
         }
 
         .pv-prog-bar {
-            height: 2px;
-            background: rgba(255,255,255,.07);
-            border-radius: 2px;
+            height: 4px;
+            background: rgba(30,41,59,.08);
+            border-radius: 99px;
             overflow: hidden;
-            margin-bottom: 5px;
+            margin-bottom: 7px;
         }
 
         .pv-prog-fill {
             height: 100%;
             background: linear-gradient(90deg,var(--rose),var(--rose2));
-            border-radius: 2px;
+            border-radius: 99px;
+            box-shadow: 0 0 10px rgba(255,95,162,.45);
             transition: width .4s var(--ease);
         }
 
         .pv-prog-label {
             font-size: 10px;
+            font-weight: 500;
+            letter-spacing: .03em;
             color: var(--muted2);
             text-align: center;
         }
@@ -2671,7 +2693,7 @@
                             <p class="field-hint">Something they say, or how they know you.</p>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" id="prev1" onclick="goStep(0)" style="visibility:hidden"><span id="btn_back_1">←</span></button>
+                            <button class="sf-btn sf-prev" id="prev1" onclick="goStep(0)" style="visibility:hidden">←</button>
                             <div style="flex:1;"><p class="sf-err" id="err1"></p><button class="sf-btn sf-next" id="next1" onclick="nextStep(1)"><span id="btn_next_1">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2690,7 +2712,7 @@
                             <p class="field-hint">This chapter becomes part of their memory.</p>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(1)"><span id="btn_back_2">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(1)">←</button>
                             <div style="flex:1;"><p class="sf-err" id="err2"></p><button class="sf-btn sf-next" onclick="nextStep(2)"><span id="btn_next_2">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2743,7 +2765,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(2)"><span id="btn_back_3">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(2)">←</button>
                             <div style="flex:1;"><p class="sf-err" id="err3"></p><button class="sf-btn sf-next" onclick="nextStep(3)"><span id="btn_next_3">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2775,7 +2797,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(3)"><span id="btn_back_4">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(3)">←</button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(4)"><span id="btn_next_4">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2821,7 +2843,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(4)"><span id="btn_back_5">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(4)">←</button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(5)"><span id="btn_next_5">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2835,7 +2857,7 @@
                             <div class="tgrid" id="themeGrid"></div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(5)"><span id="btn_back_6">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(5)">←</button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(6)"><span id="btn_next_6">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2882,7 +2904,7 @@
                             <button class="opt-toggle-btn" style="margin-top:12px;" onclick="document.getElementById('secretExpand').classList.toggle('show')"><span id="s7_more">Advanced Options</span><span class="arr">▾</span></button>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(6)"><span id="btn_back_7">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(6)">←</button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(7)"><span id="btn_next_7">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2903,7 +2925,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(7)"><span id="btn_back_8">←</span></button>
+                            <button class="sf-btn sf-prev" onclick="goStep(7)">←</button>
                             <div style="flex:1;"></div>
                         </div>
                     </div>
@@ -3011,8 +3033,6 @@
             document.getElementById('dbDiscard').textContent = t('db_dis');
             // Update btn_next for current step
             document.querySelectorAll('[id^="btn_next_"]').forEach(el => el.textContent = t('btn_next'));
-            // Update Back-button arrow direction for current language (RTL flips arrow)
-            document.querySelectorAll('[id^="btn_back_"]').forEach(el => el.textContent = t('btn_back'));
             buildSnav(); buildChips(); buildThemeGrid(); updatePreview();
         }
         function toggleLang() { lang = lang === 'en' ? 'ar' : 'en'; try { localStorage.setItem('vl', lang); } catch (_) { } applyI18n(); if (currentEdition === 'friendship') applyEdition(); if (window._repopulateDateSelects) window._repopulateDateSelects(); }
