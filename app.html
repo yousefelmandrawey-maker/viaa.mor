@@ -2671,7 +2671,7 @@
                             <p class="field-hint">Something they say, or how they know you.</p>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" id="prev1" onclick="goStep(0)" style="visibility:hidden">←</button>
+                            <button class="sf-btn sf-prev" id="prev1" onclick="goStep(0)" style="visibility:hidden"><span id="btn_back_1">←</span></button>
                             <div style="flex:1;"><p class="sf-err" id="err1"></p><button class="sf-btn sf-next" id="next1" onclick="nextStep(1)"><span id="btn_next_1">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2690,7 +2690,7 @@
                             <p class="field-hint">This chapter becomes part of their memory.</p>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(1)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(1)"><span id="btn_back_2">←</span></button>
                             <div style="flex:1;"><p class="sf-err" id="err2"></p><button class="sf-btn sf-next" onclick="nextStep(2)"><span id="btn_next_2">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2743,7 +2743,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(2)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(2)"><span id="btn_back_3">←</span></button>
                             <div style="flex:1;"><p class="sf-err" id="err3"></p><button class="sf-btn sf-next" onclick="nextStep(3)"><span id="btn_next_3">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2775,7 +2775,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(3)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(3)"><span id="btn_back_4">←</span></button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(4)"><span id="btn_next_4">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2821,7 +2821,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(4)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(4)"><span id="btn_back_5">←</span></button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(5)"><span id="btn_next_5">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2835,7 +2835,7 @@
                             <div class="tgrid" id="themeGrid"></div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(5)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(5)"><span id="btn_back_6">←</span></button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(6)"><span id="btn_next_6">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2882,7 +2882,7 @@
                             <button class="opt-toggle-btn" style="margin-top:12px;" onclick="document.getElementById('secretExpand').classList.toggle('show')"><span id="s7_more">Advanced Options</span><span class="arr">▾</span></button>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(6)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(6)"><span id="btn_back_7">←</span></button>
                             <div style="flex:1;"><button class="sf-btn sf-next" onclick="nextStep(7)"><span id="btn_next_7">Continue →</span></button></div>
                         </div>
                     </div>
@@ -2903,7 +2903,7 @@
                             </div>
                         </div>
                         <div class="step-footer">
-                            <button class="sf-btn sf-prev" onclick="goStep(7)">←</button>
+                            <button class="sf-btn sf-prev" onclick="goStep(7)"><span id="btn_back_8">←</span></button>
                             <div style="flex:1;"></div>
                         </div>
                     </div>
@@ -3011,6 +3011,8 @@
             document.getElementById('dbDiscard').textContent = t('db_dis');
             // Update btn_next for current step
             document.querySelectorAll('[id^="btn_next_"]').forEach(el => el.textContent = t('btn_next'));
+            // Update Back-button arrow direction for current language (RTL flips arrow)
+            document.querySelectorAll('[id^="btn_back_"]').forEach(el => el.textContent = t('btn_back'));
             buildSnav(); buildChips(); buildThemeGrid(); updatePreview();
         }
         function toggleLang() { lang = lang === 'en' ? 'ar' : 'en'; try { localStorage.setItem('vl', lang); } catch (_) { } applyI18n(); if (currentEdition === 'friendship') applyEdition(); if (window._repopulateDateSelects) window._repopulateDateSelects(); }
