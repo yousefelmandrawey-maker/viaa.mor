@@ -43,8 +43,8 @@
             --fu: 'Inter',system-ui,sans-serif;
             --ease: cubic-bezier(.16,1,.3,1);
             --spring: cubic-bezier(.34,1.56,.64,1);
-            --nav-h: 68px;
-            --nav-h-total: 68px;
+            --nav-h: 60px;
+            --nav-h-total: 60px;
         }
 
         html {
@@ -161,35 +161,25 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 22px;
+            padding: 0 20px;
             background: rgba(248,250,252,.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--bord);
-            box-shadow: 0 1px 20px rgba(0,0,0,.05);
         }
 
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 8px;
             font-family: var(--fd);
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--ivory);
         }
 
         .nav-ico {
-            font-size: 24px;
-            filter: drop-shadow(0 0 10px rgba(255,95,162,.6));
-            animation: navIconGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes navIconGlow {
-            50% {
-                filter: drop-shadow(0 0 18px rgba(255,95,162,.9));
-                transform: scale(1.06);
-            }
+            font-size: 20px;
+            filter: drop-shadow(0 0 12px rgba(255,95,162,.8));
         }
 
         .nav-center {
@@ -222,22 +212,21 @@
         }
 
         .nav-lang {
-            height: 38px;
-            padding: 0 16px;
+            height: 32px;
+            padding: 0 12px;
             border-radius: 99px;
-            background: rgba(255,255,255,.8);
-            border: 1px solid var(--bord2);
+            background: rgba(255,255,255,.06);
+            border: 1px solid var(--bord);
             color: var(--muted);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            backdrop-filter: blur(10px);
             cursor: pointer;
             transition: all .2s;
         }
 
             .nav-lang:hover {
                 border-color: var(--rose);
-                color: var(--rose);
+                color: var(--ivory);
             }
 
         .nav-save {
@@ -292,12 +281,12 @@
                 display: flex;
                 flex-direction: column;
                 border-right: 1px solid var(--bord);
-                padding: 32px 18px;
+                padding: 28px 16px;
                 position: sticky;
                 top: var(--nav-h);
                 height: calc(100dvh - var(--nav-h));
                 overflow-y: auto;
-                gap: 5px;
+                gap: 4px;
                 background: rgba(248,250,252,.6);
             }
 
@@ -318,38 +307,35 @@
         .sn-title {
             font-size: 9px;
             color: var(--muted2);
-            letter-spacing: .16em;
+            letter-spacing: .14em;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             padding: 0 4px;
-            font-weight: 600;
         }
 
         .sn-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 12px;
-            border-radius: 13px;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all .22s;
             position: relative;
-            border: 1px solid transparent;
         }
 
             .sn-item:hover {
-                background: rgba(30,41,59,.04);
+                background: rgba(255,255,255,.04);
             }
 
             .sn-item.active {
-                background: rgba(255,95,162,.08);
-                border: 1px solid rgba(255,95,162,.22);
-                box-shadow: 0 4px 16px rgba(255,95,162,.10);
+                background: rgba(255,95,162,.10);
+                border: 1px solid rgba(255,95,162,.2);
             }
 
         .sn-num {
-            width: 27px;
-            height: 27px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             border: 1px solid var(--bord);
             display: flex;
@@ -363,15 +349,15 @@
         }
 
         .sn-item.active .sn-num {
-            background: linear-gradient(135deg,var(--rose),var(--rose2));
-            border-color: transparent;
+            background: var(--rose);
+            border-color: var(--rose);
             color: #fff;
-            box-shadow: 0 0 12px rgba(255,95,162,.45);
+            box-shadow: 0 0 12px rgba(255,95,162,.4);
         }
 
         .sn-item.done .sn-num {
-            background: rgba(16,185,129,.10);
-            border-color: rgba(16,185,129,.3);
+            background: rgba(107,255,184,.12);
+            border-color: rgba(107,255,184,.3);
             color: var(--ok);
         }
 
@@ -380,22 +366,20 @@
             }
 
         .sn-label {
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--muted);
-            letter-spacing: -.005em;
         }
 
         .sn-item.active .sn-label {
             color: var(--ivory);
-            font-weight: 600;
         }
 
         .sn-connector {
             width: 1px;
             height: 16px;
             background: var(--bord);
-            margin-left: 25px;
+            margin-left: 24px;
         }
 
         /* ── CANVAS ─────────────────────────────────────────────────── */
@@ -443,12 +427,12 @@
         /* Step header */
         .step-eye {
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .16em;
+            font-weight: 500;
+            letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--rose);
-            opacity: .85;
-            margin-bottom: 12px;
+            opacity: .8;
+            margin-bottom: 10px;
         }
 
         .step-headline {
@@ -458,7 +442,7 @@
             line-height: 1.0;
             letter-spacing: -.025em;
             color: var(--ivory);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
             .step-headline em {
@@ -470,7 +454,7 @@
             color: var(--muted);
             line-height: 1.7;
             font-weight: 300;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
             max-width: 440px;
         }
 
@@ -1069,13 +1053,12 @@
         }
 
         .tc {
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             border: 2px solid transparent;
             cursor: pointer;
             transition: all .28s var(--ease);
             position: relative;
-            box-shadow: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
         }
 
             .tc:hover {
@@ -1197,28 +1180,26 @@
 
         /* ── EXPERIENCE TOGGLES ──────────────────────────────────────── */
         .exp-card {
-            background: rgba(255,255,255,.5);
+            background: rgba(255,255,255,.04);
             border: 1px solid var(--bord);
-            border-radius: 20px;
-            padding: 22px;
-            margin-bottom: 14px;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all .25s;
             display: flex;
             align-items: flex-start;
-            gap: 16px;
-            box-shadow: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
+            gap: 14px;
         }
 
             .exp-card:hover {
                 border-color: rgba(255,95,162,.28);
-                background: rgba(255,95,162,.04);
-                box-shadow: 0 8px 24px rgba(17,24,39,.06),0 2px 8px rgba(17,24,39,.04);
+                background: rgba(255,95,162,.05);
             }
 
             .exp-card.on {
                 border-color: var(--rose);
-                background: rgba(255,95,162,.06);
+                background: rgba(255,95,162,.08);
             }
 
         .exp-icon {
@@ -1440,6 +1421,134 @@
             padding: 18px;
             margin-top: 4px;
         }
+
+        /* ── TRAILER CARDS (Step 7) ──────────────────────────────────── */
+        .trailer-section {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .trailer-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted2);
+            margin-bottom: 10px;
+        }
+
+        .trailer-card {
+            background: rgba(255,255,255,.5);
+            border: 1px solid var(--bord);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all .25s;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .trailer-card:hover {
+                border-color: var(--tc-a1,var(--rose));
+                background: color-mix(in srgb, var(--tc-a1,var(--rose)) 6%, transparent);
+            }
+
+            .trailer-card.on {
+                border-color: var(--tc-a1,var(--rose));
+                background: color-mix(in srgb, var(--tc-a1,var(--rose)) 8%, transparent);
+                box-shadow: 0 2px 30px color-mix(in srgb, var(--tc-a1,var(--rose)) 18%, transparent);
+            }
+
+        .trailer-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--tc-a1,var(--rose)) 14%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            transition: all .25s;
+        }
+
+        .trailer-card.on .trailer-icon {
+            background: linear-gradient(135deg,var(--tc-a1,var(--rose)),var(--tc-a2,var(--rose2)));
+            box-shadow: 0 6px 16px color-mix(in srgb, var(--tc-a1,var(--rose)) 35%, transparent);
+        }
+
+        .trailer-body {
+            flex: 1;
+        }
+
+        .trailer-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--ivory);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trailer-price-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--tc-a1,var(--rose)) 16%, transparent);
+            color: var(--tc-a1,var(--rose));
+        }
+
+        .trailer-desc {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .trailer-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--bord);
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #fff;
+            transition: all .25s;
+        }
+
+        .trailer-card.on .trailer-check {
+            border-color: var(--tc-a1,var(--rose));
+            background: var(--tc-a1,var(--rose));
+        }
+
+        .trailer-status-pill {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+            .trailer-status-pill.pending {
+                background: rgba(255,184,0,.14);
+                color: var(--champ);
+            }
+
+            .trailer-status-pill.unlocked {
+                background: rgba(16,185,129,.14);
+                color: var(--ok);
+            }
 
         .uc-badge {
             font-size: 10px;
@@ -1683,35 +1792,24 @@
         /* ── PREVIEW PANEL ──────────────────────────────────────────── */
         .pv-title {
             font-size: 9px;
-            font-weight: 600;
             color: var(--muted2);
-            letter-spacing: .16em;
+            letter-spacing: .14em;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             text-align: center;
         }
 
         .pv-phone {
             width: 130px;
             height: 258px;
-            border-radius: 26px;
+            border-radius: 24px;
             background: var(--surf);
             border: 1px solid rgba(30,41,59,.14);
-            margin: 0 auto 18px;
+            margin: 0 auto 16px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 0 0 3px rgba(255,255,255,.4),0 24px 50px -10px rgba(255,95,162,.28),0 20px 50px rgba(17,24,39,.14);
+            box-shadow: 0 0 0 3px rgba(255,255,255,.02),0 20px 50px rgba(0,0,0,.6);
         }
-
-            .pv-phone::before {
-                content: '';
-                position: absolute;
-                inset: -18px;
-                z-index: -1;
-                background: radial-gradient(ellipse at 50% 40%,rgba(255,95,162,.20),transparent 70%);
-                filter: blur(10px);
-                pointer-events: none;
-            }
 
         .pv-ph-notch {
             position: absolute;
@@ -1780,6 +1878,31 @@
             letter-spacing: .04em;
         }
 
+        .pv-ph-trailer {
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            margin-top: 6px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: none;
+        }
+
+            .pv-ph-trailer.show {
+                display: inline-block;
+            }
+
+            .pv-ph-trailer.free {
+                background: rgba(255,255,255,.14);
+                color: #fff;
+            }
+
+            .pv-ph-trailer.premium {
+                background: linear-gradient(135deg,rgba(201,168,76,.9),rgba(170,130,30,.9));
+                color: #1a1000;
+            }
+
         .pv-quote {
             text-align: center;
             font-family: var(--fc);
@@ -1792,29 +1915,26 @@
         }
 
         .pv-prog {
-            margin-top: 18px;
+            margin-top: 16px;
         }
 
         .pv-prog-bar {
-            height: 4px;
-            background: rgba(30,41,59,.08);
-            border-radius: 99px;
+            height: 2px;
+            background: rgba(255,255,255,.07);
+            border-radius: 2px;
             overflow: hidden;
-            margin-bottom: 7px;
+            margin-bottom: 5px;
         }
 
         .pv-prog-fill {
             height: 100%;
             background: linear-gradient(90deg,var(--rose),var(--rose2));
-            border-radius: 99px;
-            box-shadow: 0 0 10px rgba(255,95,162,.45);
+            border-radius: 2px;
             transition: width .4s var(--ease);
         }
 
         .pv-prog-label {
             font-size: 10px;
-            font-weight: 500;
-            letter-spacing: .03em;
             color: var(--muted2);
             text-align: center;
         }
@@ -2906,6 +3026,26 @@
                                 </div>
                                 <div class="exp-check" id="discoverCheck"></div>
                             </div>
+                            <div class="trailer-section">
+                                <p class="trailer-label" id="s7_tr_label">Add a Trailer</p>
+                                <div class="trailer-card" id="freeTrailerCard" onclick="selectTrailer('free')">
+                                    <div class="trailer-icon">🎬</div>
+                                    <div class="trailer-body">
+                                        <p class="trailer-title"><span id="s7_ft_t">Free Trailer</span><span class="trailer-price-tag" id="s7_ft_price">Included</span></p>
+                                        <p class="trailer-desc" id="s7_ft_d">An animated preview clip built from your theme, names, and message — included at no extra cost.</p>
+                                    </div>
+                                    <div class="trailer-check" id="freeTrailerCheck"></div>
+                                </div>
+                                <div class="trailer-card" id="premiumTrailerCard" onclick="selectTrailer('premium')">
+                                    <div class="trailer-icon">⭐</div>
+                                    <div class="trailer-body">
+                                        <p class="trailer-title"><span id="s7_pt_t">Premium Trailer</span><span class="trailer-price-tag" id="s7_pt_price">100 EGP</span></p>
+                                        <p class="trailer-desc" id="s7_pt_d">A 60-second cinematic vertical trailer for Reels & TikTok — professionally rendered, emotional, ready to share.</p>
+                                        <span class="trailer-status-pill pending" id="trailerPaymentPill" style="display:none"><span id="s7_pt_pending">Payment pending</span></span>
+                                    </div>
+                                    <div class="trailer-check" id="premiumTrailerCheck"></div>
+                                </div>
+                            </div>
                             <div class="secret-expand" id="secretExpand">
                                 <label class="chk-row"><input type="checkbox" id="hasSecretCode"><span id="s7_sc">Protect with a secret word</span></label>
                                 <div id="secretCodeField" style="display:none"><div class="form-group"><label class="form-label" id="s7_sl">Secret word</label><input type="text" class="cinput" id="secretCodeInput" maxlength="50" autocomplete="off"></div></div>
@@ -2932,7 +3072,7 @@
                             <div class="post-gen" id="postGen" style="display:none">
                                 <a class="post-link primary" id="viewPageLink" href="#" target="_blank"><span id="pg_view">💝 View Your Love Page →</span></a>
                                 <a class="post-link" id="manageLink" href="update.html"><span id="pg_manage">✨ Add Memories — Viaa Forever</span></a>
-                                <div class="upsell-card"><p class="uc-badge" id="uc_badge">⭐ Upgrade Available</p><p class="uc-title" id="uc_title">Premium Trailer</p><p class="uc-desc" id="uc_desc">60-second cinematic trailer for Reels & TikTok. Professional. Emotional.</p><p class="uc-price" id="uc_price">100 EGP</p><button class="uc-btn" id="uc_btn">Upgrade to Premium Trailer ⭐</button></div>
+                                <div class="upsell-card" id="trailerUpsell" style="display:none"><p class="uc-badge" id="uc_badge">⭐ Complete Your Payment</p><p class="uc-title" id="uc_title">Premium Trailer</p><p class="uc-desc" id="uc_desc">60-second cinematic trailer for Reels & TikTok. Professional. Emotional.</p><p class="uc-price" id="uc_price">100 EGP</p><button class="uc-btn" id="uc_btn">Unlock Premium Trailer ⭐</button></div>
                             </div>
                         </div>
                         <div class="step-footer">
@@ -2953,6 +3093,7 @@
                         <p class="pv-ph-names" id="pvNames">—</p>
                         <p class="pv-ph-msg" id="pvMsg"></p>
                         <p class="pv-ph-theme" id="pvTheme"></p>
+                        <span class="pv-ph-trailer" id="pvTrailer"></span>
                     </div>
                 </div>
                 <p class="pv-quote" id="pvQuote"></p>
@@ -2982,6 +3123,7 @@
                 s5_ey: 'Chapter 5', s5_h: 'The soundtrack.', s5_sub: 'The music or voice that plays while they read.', tab_song: '🎵 Song', tab_voice: '🎤 Voice', s5_drop: 'Drop your song here', s5_drop_sub: 'MP3 · M4A · AAC · Max 20MB', s5_rec_p: 'Tap to start recording', s5_rec_h: 'Recording will start immediately.', s5_ready: 'Voice message ready',
                 s6_ey: 'Chapter 6', s6_h: 'Choose your world.', s6_sub: 'Each theme is a different universe. Pick the one that feels like your love story.',
                 s7_ey: 'Chapter 7', s7_h: 'The experience.', s7_sub: 'How will they receive this memory?', s7_gt: 'Gift Mode 2.0', s7_gd: 'A luxury unboxing experience before the page reveals. Ribbon. Glow. Confetti.', s7_st: 'Surprise Mode 2.0', s7_sd: 'Each section reveals cinematically, one by one, like a film.', s7_sc: 'Protect with a secret word', s7_sl: 'Secret word', s7_sph: 'e.g. a song, a place, your nickname', s7_dc: 'Lock until a special date', s7_dl: 'Unlock date', s7_more: 'Advanced Options',
+                s7_tr_label: 'Add a Trailer', s7_ft_t: 'Free Trailer', s7_ft_price: 'Included', s7_ft_d: 'An animated preview clip built from your theme, names, and message — included at no extra cost.', s7_pt_t: 'Premium Trailer', s7_pt_price: '100 EGP', s7_pt_d: 'A 60-second cinematic vertical trailer for Reels & TikTok — professionally rendered, emotional, ready to share.', s7_pt_pending: 'Payment pending',
                 s8_ey: 'Chapter 8', s8_h: 'Ready to create.', s8_sub: "Review your story. When you're ready, bring it to life.", s8_btn: 'Create My Love Page ❤️', s8_err: 'Something went wrong. Please try again.',
                 pg_view: '💝 View Your Love Page →', pg_manage: '✨ Add Memories — Viaa Forever',
                 uc_badge: '⭐ Upgrade Available', uc_title: 'Premium Trailer', uc_desc: '60-second cinematic trailer for Reels & TikTok. Professional. Emotional.', uc_price: '100 EGP', uc_btn: 'Upgrade to Premium Trailer ⭐',
@@ -3007,6 +3149,7 @@
                 s5_ey: 'الفصل الخامس', s5_h: 'الموسيقى.', s5_sub: 'الموسيقى أو الصوت الذي يعزف بينما يقرؤون.', tab_song: '🎵 أغنية', tab_voice: '🎤 صوت', s5_drop: 'أسقط أغنيتك هنا', s5_drop_sub: 'MP3 · M4A · AAC · حجم أقصى 20 ميجا', s5_rec_p: 'اضغط لبدء التسجيل', s5_rec_h: 'سيبدأ التسجيل فوراً.', s5_ready: 'الرسالة الصوتية جاهزة',
                 s6_ey: 'الفصل السادس', s6_h: 'اختر عالمك.', s6_sub: 'كل تصميم عالم مختلف. اختر الذي يشبه قصة حبك.',
                 s7_ey: 'الفصل السابع', s7_h: 'التجربة.', s7_sub: 'كيف سيتلقون هذه الذاكرة؟', s7_gt: 'وضع الهدية ٢.٠', s7_gd: 'تجربة فتح هدية فاخرة قبل أن تكشف الصفحة. شريط. توهج. قصاصات ملونة.', s7_st: 'وضع المفاجأة ٢.٠', s7_sd: 'كل قسم يكشف نفسه سينمائياً، واحداً تلو الآخر، كأنه فيلم.', s7_sc: 'حماية بكلمة سرية', s7_sl: 'الكلمة السرية', s7_sph: 'مثال: أغنية، مكان، لقبك', s7_dc: 'قفل حتى تاريخ خاص', s7_dl: 'تاريخ الفتح', s7_more: 'خيارات متقدمة',
+                s7_tr_label: 'أضف تريلر', s7_ft_t: 'تريلر مجاني', s7_ft_price: 'مُضمّن', s7_ft_d: 'مقطع معاينة متحرك مبني على تصميمك وأسمائك ورسالتك — مُضمّن بدون تكلفة إضافية.', s7_pt_t: 'تريلر مميز', s7_pt_price: '١٠٠ جنيه', s7_pt_d: 'تريلر سينمائي عمودي لمدة ٦٠ ثانية للريلز وتيك توك — احترافي، عاطفي، وجاهز للمشاركة.', s7_pt_pending: 'بانتظار الدفع',
                 s8_ey: 'الفصل الثامن', s8_h: 'مستعد للإنشاء.', s8_sub: 'راجع قصتك. عندما تكون مستعداً، أحضرها إلى الحياة.', s8_btn: 'أنشئ صفحة الحب ❤️', s8_err: 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
                 pg_view: '💝 شاهد صفحة الحب →', pg_manage: '✨ إضافة ذكريات — Viaa للأبد',
                 uc_badge: '⭐ ترقية متاحة', uc_title: 'مقطورة متميزة', uc_desc: 'مقطورة سينمائية لمدة ٦٠ ثانية للريلز وتيك توك. احترافية. عاطفية.', uc_price: '١٠٠ جنيه', uc_btn: 'ترقية إلى المقطورة المتميزة ⭐',
@@ -3030,6 +3173,7 @@
             's5_ey', 's5_h', 's5_sub', 'tab_song', 'tab_voice', 's5_drop', 's5_drop_sub',
             's6_ey', 's6_h', 's6_sub',
             's7_ey', 's7_h', 's7_sub', 's7_gt', 's7_gd', 's7_st', 's7_sd', 's7_sc', 's7_sl', 's7_dc', 's7_dl', 's7_more',
+            's7_tr_label', 's7_ft_t', 's7_ft_price', 's7_ft_d', 's7_pt_t', 's7_pt_price', 's7_pt_d', 's7_pt_pending',
             's8_ey', 's8_h', 's8_sub', 's8_btn',
             'pg_view', 'pg_manage', 'uc_badge', 'uc_title', 'uc_desc', 'uc_price', 'uc_btn',
             'db_t', 'db_res', 'db_dis', 'pv_title', 'rec_start', 'rec_stop', 'rec_play', 'rec_del',
@@ -3371,7 +3515,7 @@
         }
 
         /* ── STATE ────────────────────────────────────────────────────── */
-        let currentStep = 1; let selectedMedia = []; let selectedAudioFile = null; let recordedBlob = null; let audioType = 'music'; let selectedTheme = 'classic'; let selectedMsgStyle = 'typewriter'; let milestones = []; let giftMode = false; let surpriseMode = false; let discoverMode = false; let draftTimer = null;
+        let currentStep = 1; let selectedMedia = []; let selectedAudioFile = null; let recordedBlob = null; let audioType = 'music'; let selectedTheme = 'classic'; let selectedMsgStyle = 'typewriter'; let milestones = []; let giftMode = false; let surpriseMode = false; let discoverMode = false; let draftTimer = null; let trailerType = 'none'; // 'none' | 'free' | 'premium'
         const DRAFT_KEY = 'viaa_draft_v2';
         function isRTL(t) { return /[\u0591-\u07FF\u200F\u202B\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(t || ''); }
         function fmtBytes(b) { if (!b) return '0B'; if (b < 1048576) return (b / 1024).toFixed(0) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
@@ -3508,6 +3652,21 @@
 
         /* ── EXPERIENCE TOGGLES ───────────────────────────────────────── */
         function toggleExp(cardId, stateVar) { const card = document.getElementById(cardId); const check = card?.querySelector('.exp-check'); if (stateVar === 'giftMode') { giftMode = !giftMode; card?.classList.toggle('on', giftMode); if (check) check.textContent = giftMode ? '✓' : ''; } else if (stateVar === 'surpriseMode') { surpriseMode = !surpriseMode; card?.classList.toggle('on', surpriseMode); if (check) check.textContent = surpriseMode ? '✓' : ''; } else if (stateVar === 'discoverMode') { discoverMode = !discoverMode; card?.classList.toggle('on', discoverMode); if (check) check.textContent = discoverMode ? '✓' : ''; } autoSave(); }
+        /* ── TRAILER SELECTION (single-select: none / free / premium) ── */
+        function selectTrailer(type) {
+            trailerType = (trailerType === type) ? 'none' : type; // tap again to deselect
+            renderTrailerCards();
+            autoSave();
+            updatePreview();
+        }
+        function renderTrailerCards() {
+            const freeCard = document.getElementById('freeTrailerCard'); const freeCheck = document.getElementById('freeTrailerCheck');
+            const premCard = document.getElementById('premiumTrailerCard'); const premCheck = document.getElementById('premiumTrailerCheck');
+            if (freeCard) freeCard.classList.toggle('on', trailerType === 'free');
+            if (freeCheck) freeCheck.textContent = trailerType === 'free' ? '✓' : '';
+            if (premCard) premCard.classList.toggle('on', trailerType === 'premium');
+            if (premCheck) premCheck.textContent = trailerType === 'premium' ? '✓' : '';
+        }
 
         /* ── OPT PANELS ───────────────────────────────────────────────── */
         function toggleOptPanel(contentId, btn) { const c = document.getElementById(contentId); const show = c.style.display !== 'none'; c.style.display = show ? 'none' : 'block'; if (btn) btn.classList.toggle('open', !show); }
@@ -3529,6 +3688,8 @@
             const pvT = document.getElementById('pvTheme'); if (pvT) pvT.textContent = lang === 'ar' ? th.ar : th.en;
             const pvSc = document.getElementById('pvSc'); if (pvSc) pvSc.style.background = th.bg;
             const pvHrt = document.getElementById('pvHrt'); if (pvHrt) pvHrt.style.filter = `drop-shadow(0 0 8px ${th.a1})`;
+            const trailerSec = document.querySelector('.trailer-section'); if (trailerSec) { trailerSec.style.setProperty('--tc-a1', th.a1); trailerSec.style.setProperty('--tc-a2', th.a1); }
+            const pvTr = document.getElementById('pvTrailer'); if (pvTr) { pvTr.classList.remove('free', 'premium', 'show'); if (trailerType === 'free') { pvTr.textContent = lang === 'ar' ? '🎬 تريلر مجاني' : '🎬 Free Trailer'; pvTr.classList.add('free', 'show'); } else if (trailerType === 'premium') { pvTr.textContent = lang === 'ar' ? '⭐ تريلر مميز' : '⭐ Premium Trailer'; pvTr.classList.add('premium', 'show'); } }
             const pct = Math.round(currentStep / 8 * 100); const fill = document.getElementById('pvProgFill'); if (fill) fill.style.width = pct + '%';
             const lbl = document.getElementById('pvProgLabel'); if (lbl) lbl.textContent = t('pv_step').replace('{n}', currentStep);
             if (!pvQTimer) { rotPvQuote(); pvQTimer = setInterval(rotPvQuote, 5000); }
@@ -3553,7 +3714,8 @@
                 document.getElementById('hasSecretCode')?.checked ? `🔐 ${lang === 'ar' ? 'محمي بكلمة سرية' : 'Secret word protected'}` : '',
                 document.getElementById('hasSecretDate')?.checked ? `🗓 ${lang === 'ar' ? 'مقفول حتى تاريخ محدد' : 'Locked until a date'}` : '',
                 giftMode ? `🎁 ${lang === 'ar' ? 'وضع الهدية' : 'Gift Mode'}` : '',
-                surpriseMode ? `✨ ${lang === 'ar' ? 'وضع المفاجأة' : 'Surprise Mode'}` : ''
+                surpriseMode ? `✨ ${lang === 'ar' ? 'وضع المفاجأة' : 'Surprise Mode'}` : '',
+                trailerType === 'free' ? `🎬 ${lang === 'ar' ? 'تريلر مجاني' : 'Free Trailer'}` : trailerType === 'premium' ? `⭐ ${lang === 'ar' ? 'تريلر مميز (بانتظار الدفع)' : 'Premium Trailer (payment pending)'}` : ''
             ].filter(Boolean);
             const gs = document.getElementById('genSummary'); if (gs) gs.innerHTML = lines.join('<br>');
         }
@@ -3632,11 +3794,11 @@
 
         /* ── DRAFT SAVE ───────────────────────────────────────────────── */
         function autoSave() { clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 1800); }
-        function saveDraft() { try { const d = { boyName: document.getElementById('boyName')?.value || '', girlName: document.getElementById('girlName')?.value || '', message: document.getElementById('msgInput')?.value || '', startDate: document.getElementById('startDate')?.value || '', msgStyle: selectedMsgStyle, theme: selectedTheme, hasSecretDate: document.getElementById('hasSecretDate')?.checked || false, hasSecretCode: document.getElementById('hasSecretCode')?.checked || false, secretDate: document.getElementById('secretDateInput')?.value || '', secretCode: document.getElementById('secretCodeInput')?.value || '', hasTimeline: document.getElementById('hasTimeline')?.checked || false, milestones: milestones.filter(m => m.title || m.date), giftMode, surpriseMode, edition: currentEdition, step: currentStep, ts: Date.now() }; localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); setSaveStatus(t('nav_saved')); } catch (e) { } }
+        function saveDraft() { try { const d = { boyName: document.getElementById('boyName')?.value || '', girlName: document.getElementById('girlName')?.value || '', message: document.getElementById('msgInput')?.value || '', startDate: document.getElementById('startDate')?.value || '', msgStyle: selectedMsgStyle, theme: selectedTheme, hasSecretDate: document.getElementById('hasSecretDate')?.checked || false, hasSecretCode: document.getElementById('hasSecretCode')?.checked || false, secretDate: document.getElementById('secretDateInput')?.value || '', secretCode: document.getElementById('secretCodeInput')?.value || '', hasTimeline: document.getElementById('hasTimeline')?.checked || false, milestones: milestones.filter(m => m.title || m.date), giftMode, surpriseMode, trailerType, edition: currentEdition, step: currentStep, ts: Date.now() }; localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); setSaveStatus(t('nav_saved')); } catch (e) { } }
         function setSaveStatus(txt) { const el = document.getElementById('draftStatus'); if (el) { el.textContent = txt; el.classList.add('saved'); setTimeout(() => { el.textContent = t('nav_builder'); el.classList.remove('saved'); }, 2200); } }
         function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (_) { } stopMusicFab(); }
         function checkDraft() { try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); if (!d || Date.now() - d.ts > 48 * 3600000) { clearDraft(); return; } if (!d.boyName && !d.girlName && !d.message) return; const age = Math.round((Date.now() - d.ts) / 60000); const ageStr = age < 60 ? `${age}m` : age < 1440 ? `${Math.round(age / 60)}h` : `${Math.round(age / 1440)}d`; const icoEm = d.edition === 'friendship' ? '🫂' : '❤️'; const s = document.getElementById('db_s'); if (s) s.textContent = `${d.boyName || '?'} ${icoEm} ${d.girlName || '?'} · ${ageStr} ago`; const b = document.getElementById('draftBanner'); if (b) b.style.display = 'flex'; document.getElementById('dbResume')?.addEventListener('click', () => { resumeDraft(d); b.style.display = 'none'; }, { once: true }); document.getElementById('dbDiscard')?.addEventListener('click', () => { clearDraft(); b.style.display = 'none'; }, { once: true }); } catch (e) { } }
-        function resumeDraft(d) { if (d.edition) setEdition(d.edition); if (d.boyName) { const el = document.getElementById('boyName'); if (el) { el.value = d.boyName; el.setAttribute('dir', isRTL(d.boyName) ? 'rtl' : 'ltr'); } } if (d.girlName) { const el = document.getElementById('girlName'); if (el) { el.value = d.girlName; el.setAttribute('dir', isRTL(d.girlName) ? 'rtl' : 'ltr'); } } if (d.message) { const el = document.getElementById('msgInput'); if (el) { el.value = d.message; el.setAttribute('dir', isRTL(d.message) ? 'rtl' : 'ltr'); document.getElementById('cLen').textContent = d.message.length; } } if (d.startDate) { const el = document.getElementById('startDate'); if (el) el.value = d.startDate; } if (d.msgStyle) selectedMsgStyle = d.msgStyle; if (d.theme) { selectedTheme = d.theme; buildThemeGrid(); } if (d.hasSecretDate) { const el = document.getElementById('hasSecretDate'); if (el) el.checked = true; document.getElementById('secretDateField').style.display = 'block'; } if (d.secretDate) { const el = document.getElementById('secretDateInput'); if (el) el.value = d.secretDate; } if (d.hasSecretCode) { const el = document.getElementById('hasSecretCode'); if (el) el.checked = true; document.getElementById('secretCodeField').style.display = 'block'; } if (d.secretCode) { const el = document.getElementById('secretCodeInput'); if (el) el.value = d.secretCode; } if (d.giftMode) { giftMode = true; document.getElementById('giftCard')?.classList.add('on'); const gc = document.getElementById('giftCheck'); if (gc) gc.textContent = '✓'; } if (d.surpriseMode) { surpriseMode = true; document.getElementById('surpriseCard')?.classList.add('on'); const sc = document.getElementById('surpriseCheck'); if (sc) sc.textContent = '✓'; } if (d.hasTimeline) { const el = document.getElementById('hasTimeline'); if (el) { el.checked = true; document.getElementById('timelineFields').style.display = 'block'; } d.milestones?.forEach(m => addMilestone(m.date, m.title, m.desc)); } goStep(d.step || 1); updatePreview(); }
+        function resumeDraft(d) { if (d.edition) setEdition(d.edition); if (d.boyName) { const el = document.getElementById('boyName'); if (el) { el.value = d.boyName; el.setAttribute('dir', isRTL(d.boyName) ? 'rtl' : 'ltr'); } } if (d.girlName) { const el = document.getElementById('girlName'); if (el) { el.value = d.girlName; el.setAttribute('dir', isRTL(d.girlName) ? 'rtl' : 'ltr'); } } if (d.message) { const el = document.getElementById('msgInput'); if (el) { el.value = d.message; el.setAttribute('dir', isRTL(d.message) ? 'rtl' : 'ltr'); document.getElementById('cLen').textContent = d.message.length; } } if (d.startDate) { const el = document.getElementById('startDate'); if (el) el.value = d.startDate; } if (d.msgStyle) selectedMsgStyle = d.msgStyle; if (d.theme) { selectedTheme = d.theme; buildThemeGrid(); } if (d.hasSecretDate) { const el = document.getElementById('hasSecretDate'); if (el) el.checked = true; document.getElementById('secretDateField').style.display = 'block'; } if (d.secretDate) { const el = document.getElementById('secretDateInput'); if (el) el.value = d.secretDate; } if (d.hasSecretCode) { const el = document.getElementById('hasSecretCode'); if (el) el.checked = true; document.getElementById('secretCodeField').style.display = 'block'; } if (d.secretCode) { const el = document.getElementById('secretCodeInput'); if (el) el.value = d.secretCode; } if (d.giftMode) { giftMode = true; document.getElementById('giftCard')?.classList.add('on'); const gc = document.getElementById('giftCheck'); if (gc) gc.textContent = '✓'; } if (d.surpriseMode) { surpriseMode = true; document.getElementById('surpriseCard')?.classList.add('on'); const sc = document.getElementById('surpriseCheck'); if (sc) sc.textContent = '✓'; } if (d.trailerType) { trailerType = d.trailerType; renderTrailerCards(); } if (d.hasTimeline) { const el = document.getElementById('hasTimeline'); if (el) { el.checked = true; document.getElementById('timelineFields').style.display = 'block'; } d.milestones?.forEach(m => addMilestone(m.date, m.title, m.desc)); } goStep(d.step || 1); updatePreview(); }
 
         /* ── GEN OVERLAY ──────────────────────────────────────────────── */
         const GEN_QUOTES_KEY = 'gen_quotes'; let gqIdx = 0, gqInt = null;
@@ -3667,9 +3829,9 @@
                 const results = await Promise.all(uploadTasks);
                 setGenStep(4, 72);
                 const audioUrl = results.find(r => r.type === 'audio')?.url || null; const mediaUrls = results.filter(r => r.type === 'media').map(r => r.url);
-                const pageObj = { owner_code: user.access_code, boy_name: boyName, girl_name: girlName, message, start_date: startDate, music_url: audioUrl, user_id: user.id, edition: currentEdition, theme: selectedTheme !== 'classic' ? selectedTheme : null, message_style: selectedMsgStyle !== 'typewriter' ? selectedMsgStyle : null, secret_date: secretDate, secret_code: secretCode, audio_type: audioFileToUpload ? audioType : null, timeline: timelineData, gift_mode: giftMode || null, surprise_mode: surpriseMode || null };
+                const pageObj = { owner_code: user.access_code, boy_name: boyName, girl_name: girlName, message, start_date: startDate, music_url: audioUrl, user_id: user.id, edition: currentEdition, theme: selectedTheme !== 'classic' ? selectedTheme : null, message_style: selectedMsgStyle !== 'typewriter' ? selectedMsgStyle : null, secret_date: secretDate, secret_code: secretCode, audio_type: audioFileToUpload ? audioType : null, timeline: timelineData, gift_mode: giftMode || null, surprise_mode: surpriseMode || null, trailer_type: trailerType !== 'none' ? trailerType : null, trailer_status: trailerType === 'free' ? 'unlocked' : trailerType === 'premium' ? 'pending' : 'none' };
                 let res = await db.from('pages').insert(pageObj).select('id').single();
-                if (res.error?.code === '42703') { const { timeline, gift_mode, surprise_mode, ...base } = pageObj; res = await db.from('pages').insert(base).select('id').single(); }
+                if (res.error?.code === '42703') { const { timeline, gift_mode, surprise_mode, trailer_type, trailer_status, ...base } = pageObj; res = await db.from('pages').insert(base).select('id').single(); }
                 if (res.error) throw res.error;
                 const pageId = res.data.id;
                 if (mediaUrls.length > 0) { const { error: phErr } = await db.from('photos').insert(mediaUrls.map(url => ({ page_id: pageId, photo_url: url }))); if (phErr) throw phErr; }
@@ -3682,7 +3844,11 @@
                 if (vl) vl.href = `${pageFile}?id=${pageId}`;
                 const ml = document.getElementById('manageLink'); if (ml) ml.href = `update.html?page=${pageId}`;
                 const pg = document.getElementById('postGen'); if (pg) pg.style.display = 'flex';
-                document.getElementById('uc_btn')?.addEventListener('click', () => { const params = new URLSearchParams({ product: 'Premium Trailer Upgrade', amount: '100', pageId: String(pageId), email: (user && user.email) || '' }); window.location.href = `payment.html?${params.toString()}`; }, { once: true });
+                const upsell = document.getElementById('trailerUpsell');
+                if (trailerType === 'premium') {
+                    if (upsell) upsell.style.display = 'block';
+                    document.getElementById('uc_btn')?.addEventListener('click', () => { const params = new URLSearchParams({ product: 'Premium Trailer Upgrade', amount: '100', pageId: String(pageId), email: (user && user.email) || '' }); window.location.href = `payment.html?${params.toString()}`; }, { once: true });
+                } else if (upsell) { upsell.style.display = 'none'; }
                 setTimeout(() => { hideGenOverlay(); document.getElementById('genBtn').disabled = false; document.getElementById('genBtn').textContent = lang === 'ar' ? '✅ تم الإنشاء!' : '✅ Created!'; }, 800);
             } catch (err) { console.error(err); hideGenOverlay(); document.getElementById('genBtn').disabled = false; document.getElementById('genErr').textContent = err.message || t('s8_err'); }
         }
