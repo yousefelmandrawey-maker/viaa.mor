@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Status — Viaa</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -315,6 +316,10 @@
 
     <script>
         (function () {
+            const SURL = 'https://ufxixlqznhzyfrartjgp.supabase.co';
+            const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmeGl4bHF6bmh6eWZyYXJ0amdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMTg4NjYsImV4cCI6MjA5NjU5NDg2Nn0.3S5dVhTBtSCCTNs0W6rQrpGNmlDXChF9DzGrT4gY80w';
+            const db = window.supabase.createClient(SURL, SKEY);
+
             const qs = new URLSearchParams(window.location.search);
             const id = qs.get('id');
             const card = document.getElementById('card');
@@ -335,6 +340,25 @@
             let attempts = 0;
             const maxAttempts = 200; // ~10 minutes at 3s interval
 
+            /* Unlock a paid Premium Trailer for real: flips the owning page's
+               trailer_status to 'unlocked' in Supabase once payment is approved.
+               Defensive: only runs when the approved payment record is actually
+               a trailer purchase tied to a pageId (regular access-code payments
+               have no pageId/product-trailer match, so this is a no-op for them). */
+            async function unlockTrailerIfApplicable(data) {
+                const pageId = data.pageId || data.page_id || null;
+                const product = (data.product || '').toLowerCase();
+                if (!pageId || !product.includes('trailer')) return null;
+                try {
+                    const { data: pageRow, error } = await db.from('pages').update({ trailer_status: 'unlocked' }).eq('id', pageId).select('edition').single();
+                    if (error) { console.error('[VIAA] trailer unlock error:', error); return null; }
+                    return pageRow;
+                } catch (err) {
+                    console.error('[VIAA] trailer unlock error:', err);
+                    return null;
+                }
+            }
+
             async function poll() {
                 attempts++;
                 try {
@@ -349,12 +373,26 @@
                         icon.style.display = 'block';
                         icon.textContent = '✅';
                         icon.classList.add('pop');
-                        title.textContent = 'Payment Confirmed!';
-                        sub.textContent = 'Your access code is ready.';
-                        codeBox.classList.add('show');
-                        codeValue.textContent = data.code;
-                        builderLink.style.display = 'flex';
-                        builderLink.href = `app.html?code=${encodeURIComponent(data.code)}`;
+                        const trailerPageRow = await unlockTrailerIfApplicable(data);
+                        const isTrailer = (data.product || '').toLowerCase().includes('trailer');
+                        if (isTrailer) {
+                            title.textContent = 'Premium Trailer Unlocked!';
+                            sub.textContent = 'Your cinematic trailer is now unlocked on your page.';
+                            const pageId = data.pageId || data.page_id || null;
+                            if (pageId) {
+                                const pageFile = trailerPageRow?.edition === 'friendship' ? 'friendship.html' : 'love.html';
+                                builderLink.style.display = 'flex';
+                                builderLink.textContent = 'Back to Your Page →';
+                                builderLink.href = `${pageFile}?id=${encodeURIComponent(pageId)}`;
+                            }
+                        } else {
+                            title.textContent = 'Payment Confirmed!';
+                            sub.textContent = 'Your access code is ready.';
+                            codeBox.classList.add('show');
+                            codeValue.textContent = data.code;
+                            builderLink.style.display = 'flex';
+                            builderLink.href = `app.html?code=${encodeURIComponent(data.code)}`;
+                        }
                         return; // stop polling
                     }
                     if (data.status === 'rejected') {
