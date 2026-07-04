@@ -7,66 +7,13 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💝</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="components.css">
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         :root {
-            --bg: #F8FAFC;
-            --card: #FFFFFF;
-            --pink: #FF5FA2;
-            --pink2: #FF3380;
-            --pink3: rgba(255,95,162,.12);
-            --pink4: rgba(255,95,162,.06);
-            --purple: #7C4DFF;
-            --purple2: #5C2EE8;
-            --purple3: rgba(124,77,255,.12);
-            --cyan: #00D4FF;
-            --cyan3: rgba(0,212,255,.12);
-            --gold: #FFB800;
-            --gold3: rgba(255,184,0,.12);
-            --coral: #FF8A65;
-            --coral3: rgba(255,138,101,.12);
-            --dark: #111827;
-            --text: #1E293B;
-            --muted: #64748B;
-            --muted2: #94A3B8;
-            --bord: rgba(0,0,0,.07);
-            --bord2: rgba(0,0,0,.11);
-            --sh-sm: 0 1px 4px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
-            --sh-md: 0 4px 20px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.05);
-            --sh-lg: 0 14px 50px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.07);
-            --sh-pink: 0 10px 40px rgba(255,95,162,.40);
-            --sh-purple: 0 10px 40px rgba(124,77,255,.34);
-            --sh-xl: 0 30px 90px rgba(17,24,39,.16),0 10px 30px rgba(17,24,39,.08);
-            --sh-card: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
-            --sh-card-hover: 0 24px 60px rgba(17,24,39,.14),0 6px 18px rgba(17,24,39,.07);
-            --fd: 'Playfair Display',Georgia,serif;
-            --fu: 'Inter',system-ui,sans-serif;
-            --fc: 'Playfair Display',Georgia,serif;
-            --ease: cubic-bezier(.16,1,.3,1);
+            --fc: 'Cormorant Garamond',Georgia,serif;
         }
-
-        html {
-            background: var(--bg);
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--fu);
-            color: var(--text);
-            background: var(--bg);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            animation: pageFadeIn .6s var(--ease) both;
-        }
-
-        @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         a {
             text-decoration: none;
@@ -78,7 +25,7 @@
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            opacity: .5;
+            opacity: .4;
         }
 
         .nav {
@@ -87,16 +34,14 @@
             left: 0;
             right: 0;
             z-index: 200;
-            height: 68px;
+            height: 66px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            background: rgba(248,250,252,.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(248,250,252,.88);
+            backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--bord);
-            box-shadow: 0 1px 20px rgba(0,0,0,.05);
         }
 
         .nav-brand {
@@ -104,24 +49,15 @@
             align-items: center;
             gap: 9px;
             font-family: var(--fd);
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
             color: var(--dark);
             cursor: pointer;
         }
 
         .nav-icon {
-            font-size: 24px;
+            font-size: 22px;
             filter: drop-shadow(0 0 10px rgba(255,95,162,.6));
-            animation: iconGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes iconGlow { 50% { filter: drop-shadow(0 0 18px rgba(255,95,162,.9)); transform: scale(1.06); } }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .nav-link {
@@ -129,54 +65,10 @@
             color: var(--muted);
             cursor: pointer;
             transition: color .2s;
-            font-weight: 500;
         }
 
             .nav-link:hover {
-                color: var(--pink);
-            }
-
-        .lang-toggle {
-            height: 38px;
-            padding: 0 16px;
-            border-radius: 99px;
-            background: rgba(255,255,255,.8);
-            border: 1px solid var(--bord2);
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all .2s;
-        }
-
-            .lang-toggle:hover {
-                border-color: var(--pink);
-                color: var(--pink);
-            }
-
-        .nav-cta {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 44px;
-            padding: 0 24px;
-            background: linear-gradient(140deg,#FF6EB0 0%,#FF3380 55%,#E8005E 100%);
-            border: 1px solid rgba(255,255,255,.28);
-            border-radius: 99px;
-            color: #fff;
-            font-family: var(--fu);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: -.005em;
-            box-shadow: var(--sh-pink);
-            transition: transform .28s var(--ease),box-shadow .28s var(--ease);
-        }
-
-            .nav-cta:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 20px 60px rgba(255,95,162,.55);
+                color: var(--text);
             }
 
         @media(max-width:640px) {
@@ -200,7 +92,7 @@
         .about-hero-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 30%,rgba(255,95,162,.14) 0%,transparent 65%);
+            background: radial-gradient(ellipse at 50% 30%,rgba(255,95,162,.20) 0%,transparent 65%);
         }
 
         .about-hero-content {
@@ -210,17 +102,16 @@
         }
 
         .about-eyebrow {
-            display: inline-flex;
-            align-items: center;
+            display: inline-block;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .07em;
+            font-weight: 500;
+            letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--pink);
-            background: var(--pink3);
-            border: 1px solid rgba(255,95,162,.2);
-            border-radius: 99px;
-            padding: 5px 16px;
+            background: rgba(255,95,162,.10);
+            border: 1px solid rgba(255,95,162,.22);
+            border-radius: 30px;
+            padding: 4px 16px;
             margin-bottom: 24px;
         }
 
@@ -231,7 +122,6 @@
             line-height: 1.1;
             letter-spacing: -.02em;
             margin-bottom: 24px;
-            color: var(--dark);
         }
 
             .about-hero h1 em {
@@ -243,7 +133,7 @@
             font-family: var(--fc);
             font-style: italic;
             font-size: clamp(18px,2.5vw,26px);
-            color: var(--muted);
+            color: rgba(30,41,59,.55);
             line-height: 1.7;
             max-width: 600px;
             margin: 0 auto;
@@ -267,17 +157,16 @@
         }
 
         .sec-eyebrow {
-            display: inline-flex;
-            align-items: center;
+            display: inline-block;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .07em;
+            font-weight: 500;
+            letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--pink);
-            background: var(--pink3);
-            border: 1px solid rgba(255,95,162,.2);
-            border-radius: 99px;
-            padding: 5px 14px;
+            background: rgba(255,95,162,.10);
+            border: 1px solid rgba(255,95,162,.22);
+            border-radius: 30px;
+            padding: 4px 14px;
             margin-bottom: 14px;
         }
 
@@ -288,7 +177,6 @@
             line-height: 1.1;
             letter-spacing: -.015em;
             margin-bottom: 14px;
-            color: var(--dark);
         }
 
             .sec-title em {
@@ -300,6 +188,7 @@
             font-size: 16px;
             color: var(--muted);
             line-height: 1.8;
+            font-weight: 300;
         }
 
         @media(max-width:640px) {
@@ -307,13 +196,13 @@
                 padding: 64px 20px;
             }
         }
-        /* Glass (card surface, matches index.html card language) */
+        /* Glass */
         .glass {
-            background: var(--card);
+            background: rgba(255,255,255,.72);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--bord);
-            box-shadow: var(--sh-card);
+            border-top-color: rgba(255,184,0,.22);
         }
         /* Divider */
         .divider {
@@ -343,7 +232,6 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 20px;
-            color: var(--dark);
         }
 
             .story-text h2 em {
@@ -355,6 +243,7 @@
             font-size: 15px;
             color: var(--muted);
             line-height: 1.85;
+            font-weight: 300;
             margin-bottom: 16px;
         }
 
@@ -383,7 +272,7 @@
             font-family: var(--fd);
             font-size: 80px;
             line-height: .8;
-            color: var(--pink3);
+            color: rgba(255,95,162,.2);
             display: block;
             margin-bottom: 10px;
         }
@@ -392,7 +281,7 @@
             font-family: var(--fc);
             font-style: italic;
             font-size: clamp(18px,2.5vw,24px);
-            color: var(--dark);
+            color: var(--text);
             line-height: 1.65;
             margin-bottom: 20px;
         }
@@ -420,12 +309,14 @@
             padding: 32px 28px;
             position: relative;
             overflow: hidden;
-            transition: transform .35s var(--ease),border-color .3s,box-shadow .35s var(--ease);
+            transition: transform .35s var(--ease),border-color .3s;
         }
 
             .pillar-card:hover {
                 transform: translateY(-4px);
-                box-shadow: var(--sh-card-hover);
+            }
+
+            .pillar-card:hover {
                 border-color: rgba(255,95,162,.3) !important;
             }
 
@@ -439,7 +330,7 @@
             font-family: var(--fd);
             font-size: 20px;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text);
             margin-bottom: 10px;
         }
 
@@ -469,7 +360,6 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 18px;
-            color: var(--dark);
         }
 
             .priv-statement em {
@@ -481,6 +371,7 @@
             font-size: 15px;
             color: var(--muted);
             line-height: 1.85;
+            font-weight: 300;
             margin-bottom: 24px;
         }
 
@@ -496,7 +387,7 @@
                 align-items: flex-start;
                 gap: 12px;
                 font-size: 14px;
-                color: var(--text);
+                color: rgba(30,41,59,.65);
                 line-height: 1.6;
             }
 
@@ -525,7 +416,7 @@
             font-family: var(--fd);
             font-size: 22px;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text);
             margin-bottom: 8px;
         }
 
@@ -549,7 +440,6 @@
             border-radius: 10px;
             border: 1px solid var(--bord);
             color: var(--muted);
-            background: var(--pink4);
         }
         /* Difference section */
         .diff-grid {
@@ -582,7 +472,7 @@
             font-family: var(--fd);
             font-size: 17px;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text);
             margin-bottom: 12px;
         }
 
@@ -620,7 +510,7 @@
                 content: '';
                 position: absolute;
                 inset: 0;
-                background: radial-gradient(ellipse at 50% 60%,rgba(255,95,162,.12) 0%,transparent 65%);
+                background: radial-gradient(ellipse at 50% 60%,rgba(255,95,162,.18) 0%,transparent 65%);
                 pointer-events: none;
             }
 
@@ -636,7 +526,6 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 16px;
-            color: var(--dark);
         }
 
             .cta-title em {
@@ -649,33 +538,9 @@
             color: var(--muted);
             margin-bottom: 36px;
             line-height: 1.7;
+            font-weight: 300;
         }
 
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            height: 56px;
-            padding: 0 38px;
-            background: linear-gradient(140deg,#FF6EB0 0%,#FF3380 55%,#E8005E 100%);
-            border: 1px solid rgba(255,255,255,.28);
-            border-top-color: rgba(255,255,255,.45);
-            border-radius: 99px;
-            color: #fff;
-            font-family: var(--fu);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: -.005em;
-            box-shadow: var(--sh-pink),inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.08);
-            transition: transform .28s var(--ease),box-shadow .28s var(--ease);
-        }
-
-            .btn-primary:hover {
-                transform: translateY(-3px) scale(1.015);
-                box-shadow: 0 20px 60px rgba(255,95,162,.55),inset 0 1px 0 rgba(255,255,255,.35);
-            }
         /* Footer */
         .site-footer {
             padding: 48px 40px 36px;
@@ -690,7 +555,6 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 6px;
-            color: var(--dark);
         }
 
         .footer-tag {
@@ -715,12 +579,12 @@
             }
 
                 .footer-links a:hover {
-                    color: var(--pink);
+                    color: var(--text);
                 }
 
         .footer-copy {
             font-size: 11px;
-            color: var(--muted2);
+            color: rgba(30,41,59,.18);
         }
         /* Reveals */
         .rv {
@@ -761,11 +625,11 @@
     <canvas id="cv"></canvas>
     <nav class="nav">
         <a class="nav-brand" href="index.html"><span class="nav-icon">💝</span><span>Viaa</span></a>
-        <div class="nav-right">
+        <div class="nav-r">
             <a class="nav-link" href="index.html" data-i18n="nav.home">Home</a>
             <a class="nav-link" href="index.html#pricing" data-i18n="nav.pricing">Pricing</a>
-            <button class="lang-toggle" id="langBtn" onclick="toggleLang()"><span id="langLabel">عربي</span></button>
-            <button class="nav-cta" onclick="location.href='index.html#create'" data-i18n="nav.cta">Create Your Page</button>
+            <button class="lang-btn" id="langBtn" onclick="toggleLang()"><span id="langLabel">عربي</span></button>
+            <button class="btn btn-primary btn-shine sm" onclick="location.href='index.html#create'" data-i18n="nav.cta">Create Your Page</button>
         </div>
     </nav>
 
@@ -925,7 +789,7 @@
         <div class="cta-inner rv">
             <h2 class="cta-title"><span data-i18n="cta.t1">Your story deserves</span><br><em data-i18n="cta.t2">better.</em></h2>
             <p class="cta-sub" data-i18n="cta.sub">Create a love page that grows with your relationship. Private, premium, and permanent — starting today.</p>
-            <button class="btn-primary" onclick="location.href='index.html#create'" data-i18n="cta.btn">Create Your Page ❤️</button>
+            <button class="btn btn-primary btn-shine" onclick="location.href='index.html#create'" data-i18n="cta.btn">Create Your Page ❤️</button>
         </div>
     </section>
 
@@ -943,7 +807,7 @@
 
     <script>
         'use strict';
-        (function () { const cv = document.getElementById('cv'), ctx = cv.getContext('2d'); function resize() { cv.width = innerWidth; cv.height = innerHeight; } addEventListener('resize', resize); resize(); function rnd(a, b) { return a + Math.random() * (b - a); } const S = ['❤', '♡', '·', '✦'], C = ['#FF5FA2', '#FF3380', '#7C4DFF', '#FFB800']; const ps = Array.from({ length: 35 }, (_, i) => { const s = i < 24; return { x: rnd(0, cv.width), y: s ? rnd(0, cv.height) : cv.height + 10, sz: rnd(7, 17), vy: rnd(.13, .45), vx: rnd(-.17, .17), op: s ? rnd(0, .05) : 0, mx: rnd(.04, .12), sym: S[Math.random() * S.length | 0], col: C[Math.random() * C.length | 0] }; }); (function frame() { ctx.clearRect(0, 0, cv.width, cv.height); ps.forEach(p => { p.y -= p.vy; p.x += p.vx; p.op = Math.min(p.op + .002, p.mx); if (p.y < -16) { p.y = cv.height + 10; p.x = rnd(0, cv.width); p.op = 0; p.sym = S[Math.random() * S.length | 0]; p.col = C[Math.random() * C.length | 0]; } ctx.save(); ctx.globalAlpha = p.op; ctx.fillStyle = p.col; ctx.font = p.sz + 'px serif'; ctx.fillText(p.sym, p.x, p.y); ctx.restore(); }); requestAnimationFrame(frame); })(); }());
+        (function () { const cv = document.getElementById('cv'), ctx = cv.getContext('2d'); function resize() { cv.width = innerWidth; cv.height = innerHeight; } addEventListener('resize', resize); resize(); function rnd(a, b) { return a + Math.random() * (b - a); } const S = ['❤', '♡', '·', '✦'], C = ['#c9869a', '#a85070', '#d4b896', '#8b4a7e']; const ps = Array.from({ length: 35 }, (_, i) => { const s = i < 24; return { x: rnd(0, cv.width), y: s ? rnd(0, cv.height) : cv.height + 10, sz: rnd(7, 17), vy: rnd(.13, .45), vx: rnd(-.17, .17), op: s ? rnd(0, .09) : 0, mx: rnd(.04, .12), sym: S[Math.random() * S.length | 0], col: C[Math.random() * C.length | 0] }; }); (function frame() { ctx.clearRect(0, 0, cv.width, cv.height); ps.forEach(p => { p.y -= p.vy; p.x += p.vx; p.op = Math.min(p.op + .002, p.mx); if (p.y < -16) { p.y = cv.height + 10; p.x = rnd(0, cv.width); p.op = 0; p.sym = S[Math.random() * S.length | 0]; p.col = C[Math.random() * C.length | 0]; } ctx.save(); ctx.globalAlpha = p.op; ctx.fillStyle = p.col; ctx.font = p.sz + 'px serif'; ctx.fillText(p.sym, p.x, p.y); ctx.restore(); }); requestAnimationFrame(frame); })(); }());
 
         const T = {
             en: { 'nav.home': 'Home', 'nav.pricing': 'Pricing', 'nav.cta': 'Create Your Page', 'hero.eyebrow': 'The Belief Behind Viaa', 'hero.h1a': 'Every love story deserves', 'hero.h1b': 'more than a text message.', 'hero.quote': '"We built Viaa because the most important people in your life deserve a space that feels as significant as they are."', 'story.eyebrow': 'Our Story', 'story.title': 'Why <em>Viaa</em> exists.', 'story.p1': 'We looked at how people share the most precious moments of their lives — through group chats, fading Instagram stories, screenshots buried in camera rolls — and thought: this doesn\'t match how those moments actually feel.', 'story.p2': 'The moments that matter deserve permanence. They deserve beauty. They deserve a private space that belongs only to the people in them.', 'story.p3': 'Viaa was built to give relationships a home. Not a post. Not a thread. A real, growing, cinematic space that tells your story the way it deserves to be told.', 'story.quote': 'The best gifts are not things you buy. They are spaces you create for someone to feel seen, loved, and remembered.', 'story.quote.attr': '— The Belief Behind Viaa', 'pillars.eyebrow': 'What We Stand For', 'pillars.title': 'Four pillars.<br><em>One purpose.</em>', 'p1.t': 'Private', 'p1.b': 'Your story is not for the algorithm. Not for the feed. Not for strangers. Viaa pages are sealed by default — visible only to those you choose, protected by secret words, hidden from every search engine.', 'p2.t': 'Premium', 'p2.b': 'Design is not decoration. It is how something feels. We build every theme, every animation, and every detail to feel expensive, emotional, and unforgettable. Because your story deserves nothing less.', 'p3.t': 'Personal', 'p3.b': 'No two Viaa pages are the same. Your names, your photos, your message, your music, your milestones. Every page is handcrafted around a real relationship. A real story. A real moment in time.', 'p4.t': 'Permanent', 'p4.b': 'Memories fade. Social media posts disappear. Phones break. Viaa pages grow. We built Viaa Forever so you can keep adding memories, sealing capsules, and watching your story expand — indefinitely.', 'priv.eyebrow': 'Privacy First', 'priv.title': 'Your story<br>stays <em>yours.</em>', 'priv.body': 'We designed Viaa around a simple principle: what happens between two people should stay between two people. Not on a public server. Not in a social feed. Not for anyone to stumble upon.', 'priv.l1': 'Pages are never indexed by search engines', 'priv.l2': 'Optional secret word adds a second layer of protection', 'priv.l3': 'Photos and videos stored securely, never shared', 'priv.l4': 'Time-locked memories that no one can open early', 'priv.l5': 'Access controlled entirely by you', 'priv.l6': 'Your data is not analyzed, sold, or advertised against', 'priv.card.t': 'Private by Design', 'priv.card.d': 'We do not claim impossible security. We build honest privacy — protection that is real, meaningful, and built into the product from the ground up.', 'pt1': 'Not Indexed', 'pt2': 'Secret Word', 'pt3': 'Date Locks', 'pt4': 'Secure Storage', 'pt5': 'No Ads', 'diff.eyebrow': 'What We Are Not', 'diff.title': 'Viaa is a different<br><em>kind of space.</em>', 'diff.sub': 'Not every product that lets you share photos is for your relationship. Viaa was designed specifically, intentionally, and entirely for love and friendship.', 'vs.sm': 'vs. Social Media', 'vs.sm.t': 'Not for likes. Not for followers.', 'vs.sm.1': 'Not public by default', 'vs.sm.2': 'Not built around engagement metrics', 'vs.sm.3': 'No strangers, no comments, no algorithm', 'vs.sm.4': 'Stories don\'t expire in 24 hours', 'vs.chat': 'vs. Chat Apps', 'vs.chat.t': 'Not lost in a scroll.', 'vs.chat.1': 'Not buried under hundreds of messages', 'vs.chat.2': 'Not a screenshot on a camera roll', 'vs.chat.3': 'Not dependent on both of you being online', 'vs.chat.4': 'Not replaceable by a forwarded voice note', 'vs.gen': 'vs. Generic Tools', 'vs.gen.t': 'Not a template. Not impersonal.', 'vs.gen.1': 'Not a drag-and-drop website builder', 'vs.gen.2': 'Not designed for businesses or portfolios', 'vs.gen.3': 'Not something thousands of couples share', 'vs.gen.4': 'Not built without emotion at the center', 'cta.t1': 'Your story deserves', 'cta.t2': 'better.', 'cta.sub': 'Create a love page that grows with your relationship. Private, premium, and permanent — starting today.', 'cta.btn': 'Create Your Page ❤️', 'footer.tag': 'Every love story deserves its own page.', 'f.home': 'Home', 'f.demo': 'Live Demo', 'f.manage': 'Manage Pages', 'f.copy': '© 2025 Viaa · All rights reserved' },
