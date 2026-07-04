@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1321,6 +1321,50 @@
             background-position: center;
             filter: blur(24px) brightness(.25) saturate(.4);
             transform: scale(1.08);
+        }
+
+        /* ── TRAILER ───────────────────────────────────────────────── */
+        .trailer-frame {
+            position: relative;
+            width: min(360px,92vw);
+            aspect-ratio: 9/16;
+            margin: 0 auto;
+            border-radius: 22px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--a1) 25%, transparent),0 32px 88px rgba(0,0,0,.65);
+        }
+
+        .trailer-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .trailer-placeholder, .trailer-locked {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+            padding: 24px;
+            background: linear-gradient(160deg,var(--bg2),var(--bg));
+        }
+
+        .trailer-placeholder .tp-icon, .trailer-locked .tp-icon {
+            font-size: 40px;
+            filter: drop-shadow(0 0 14px color-mix(in srgb, var(--a1) 60%, transparent));
+        }
+
+        .trailer-placeholder .tp-txt, .trailer-locked .tp-txt {
+            font-size: 13px;
+            color: var(--muted);
+            max-width: 240px;
+            line-height: 1.5;
         }
 
         .slide.active .slide-bg {
@@ -3854,6 +3898,7 @@
             <section id="msgSec" class="sp-sec"><p class="sec-lbl">📖 A Note For You</p><div class="envelope" id="envEl" style="display:none"><span class="env-icon">📨</span><p class="env-hint">Tap to open your note</p></div><p class="m-text" id="mText" style="display:none"></p></section>
             <section id="timelineSec" class="sp-sec"><p class="sec-lbl">📅 Our Journey</p><div class="tl-wrap" id="tlList"></div></section>
             <section id="memSec" class="sp-sec"><p class="sec-lbl">Our Memories</p><div class="slideshow" id="slideshowEl"><div class="s-track" id="sTrack"></div><div class="s-nav" id="sNav"><button class="s-nbtn" id="sprev" type="button">‹</button><button class="s-nbtn" id="snext" type="button">›</button></div></div><div class="s-dots" id="sDots"></div></section>
+            <section id="trailerSec" class="sp-sec" style="display:none"><p class="sec-lbl" id="trailerLbl">Our Trailer</p><div class="trailer-frame" id="trailerFrame"><video id="trailerVideo" class="trailer-video" playsinline controls preload="metadata"></video><div class="trailer-placeholder" id="trailerPlaceholder"><span class="tp-icon">🎬</span><p class="tp-txt" id="trailerPlaceholderTxt">Your trailer is being prepared.</p></div><div class="trailer-locked" id="trailerLocked" style="display:none"><span class="tp-icon">🔒</span><p class="tp-txt">Premium Trailer — payment pending</p></div></div></section>
             <section id="shareSec" class="sp-sec"><p class="sec-lbl">Share Our Story</p><div class="qr-wrap" id="qrWrap"></div><p class="share-url" id="shareUrlTxt"></p><div class="share-btns"><button class="s-btn" id="copyBtn">📋 Copy Link</button><button class="s-btn" id="printQRBtn">🖨️ Print Card</button><button class="s-btn" id="exportCardBtn">💳 Export PNG</button><button class="s-btn primary" id="shareBtn">📤 Share</button></div></section>
             <section id="capsulesSec" class="sp-sec" style="display:none"><p class="sec-lbl">🔮 Memory Capsules</p><p class="forever-sub">Sealed memories, waiting to be revealed.</p><div class="cap-list" id="capList"></div></section>
             <section id="foreverSec" class="sp-sec" style="display:none"><p class="sec-lbl">✨ Our Moments</p><p class="forever-sub">Our story keeps growing.</p><div class="mem-feed" id="memFeed"></div></section>
@@ -4053,6 +4098,7 @@
             }
             const tl = getTL(); if (tl.length === 0) hideEl('timelineSec'); else buildTL(tl);
             if (photos.length === 0) hideEl('memSec'); else buildSlideshow();
+            buildTrailer();
             const url = location.href;
             const sut = document.getElementById('shareUrlTxt'); if (sut) sut.textContent = url.length > 60 ? url.slice(0, 58) + '…' : url;
             const pc = document.getElementById('pmCouple'); if (pc) pc.textContent = `${pageData.boy_name} & ${pageData.girl_name}`;
@@ -4211,6 +4257,37 @@
             if (sl) { const hint = document.createElement('div'); hint.className = 'tap-hint'; hint.textContent = photos.some(p => isVid(p)) ? 'Tap to view · Videos play with sound ▶' : 'Tap to enlarge 🔍'; sl.appendChild(hint); }
             track.addEventListener('click', () => openLb(curSlide));
         }
+
+        function buildTrailer() {
+            const sec = document.getElementById('trailerSec');
+            if (!sec) return;
+            const type = pageData.trailer_type; // 'free' | 'premium' | null
+            if (!type || type === 'none') { hideEl('trailerSec'); return; }
+            sec.style.display = '';
+            const status = pageData.trailer_status || 'none'; // 'pending' | 'unlocked' | 'none'
+            const url = pageData.trailer_url || null;
+            const video = document.getElementById('trailerVideo');
+            const placeholder = document.getElementById('trailerPlaceholder');
+            const placeholderTxt = document.getElementById('trailerPlaceholderTxt');
+            const locked = document.getElementById('trailerLocked');
+            const lbl = document.getElementById('trailerLbl');
+            if (lbl) lbl.textContent = type === 'premium' ? '🎬 Premium Trailer' : '🎬 Our Trailer';
+            if (type === 'premium' && status !== 'unlocked') {
+                if (video) { video.style.display = 'none'; video.removeAttribute('src'); }
+                if (placeholder) placeholder.style.display = 'none';
+                if (locked) locked.style.display = 'flex';
+                return;
+            }
+            if (locked) locked.style.display = 'none';
+            if (url) {
+                if (placeholder) placeholder.style.display = 'none';
+                if (video) { video.style.display = 'block'; video.src = url; }
+            } else {
+                if (video) { video.style.display = 'none'; video.removeAttribute('src'); }
+                if (placeholder) { placeholder.style.display = 'flex'; if (placeholderTxt) placeholderTxt.textContent = type === 'premium' ? 'Your Premium Trailer is being rendered — check back soon.' : 'Your trailer is being prepared.'; }
+            }
+        }
+
         function goSlide(n) {
             const slides = document.querySelectorAll('.slide'), dls = document.querySelectorAll('.s-dot'); if (!slides.length) return;
             if (slides[curSlide]._vid) slides[curSlide]._vid.pause();
@@ -4379,3 +4456,13 @@
 </body>
 </html>
 
+<!DOCTYPE html>
+\n
+<html lang="en">
+\n
+<head>
+    \n
+    <meta charset="UTF-8">\n
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">\n
+    <title>
+        '
