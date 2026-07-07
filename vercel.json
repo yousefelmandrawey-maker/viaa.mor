@@ -1,6 +1,0 @@
-{
-  "functions": {
-    "api/submit-payment.js": { "maxDuration": 30 },
-    "api/approve-payment.js": { "maxDuration": 30 }
-  }
-}
