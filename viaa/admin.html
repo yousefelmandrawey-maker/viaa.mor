@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Payments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #F5F6F8;
+            --card: #FFFFFF;
+            --coral: #FF8A65;
+            --coral-d: #F2703F;
+            --coral3: rgba(255,138,101,.10);
+            --text: #161B22;
+            --muted: #66707D;
+            --muted2: #9AA3AF;
+            --bord: rgba(15,23,42,.08);
+            --bord2: rgba(15,23,42,.14);
+            --sh-sm: 0 1px 2px rgba(15,23,42,.04);
+            --sh-md: 0 6px 20px rgba(15,23,42,.06), 0 1px 4px rgba(15,23,42,.04);
+            --r-sm: 10px;
+            --r-md: 14px;
+            --r-lg: 18px;
+            --fd: 'Playfair Display',Georgia,serif;
+            --fu: 'Inter',system-ui,sans-serif;
+            --ease: cubic-bezier(.16,1,.3,1);
+            --ok: #1A9E5C;
+            --ok3: rgba(26,158,92,.10);
+            --err: #E5484D;
+            --err3: rgba(229,72,77,.10);
+            --pend: #B7791F;
+            --pend3: rgba(183,121,31,.12);
+        }
+
+        html[data-theme="dark"] {
+            --bg: #0F1216;
+            --card: #171B21;
+            --coral: #FF8A65;
+            --coral-d: #F2703F;
+            --coral3: rgba(255,138,101,.14);
+            --text: #EDEFF2;
+            --muted: #9AA6B2;
+            --muted2: #6B7684;
+            --bord: rgba(255,255,255,.08);
+            --bord2: rgba(255,255,255,.14);
+            --sh-sm: 0 1px 2px rgba(0,0,0,.2);
+            --sh-md: 0 6px 20px rgba(0,0,0,.28), 0 1px 4px rgba(0,0,0,.2);
+            --ok: #3FCB86;
+            --ok3: rgba(63,203,134,.14);
+            --err: #FF6B70;
+            --err3: rgba(255,107,112,.14);
+            --pend: #E0A83E;
+            --pend3: rgba(224,168,62,.16);
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--fu);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+            transition: background .25s var(--ease), color .25s var(--ease);
+        }
+
+        /* ── GATE ───────────────────────────────────────────── */
+        .gate {
+            max-width: 380px;
+            margin: 110px auto;
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: var(--r-lg);
+            padding: 34px 28px;
+            text-align: center;
+            box-shadow: var(--sh-md);
+            animation: fadeUp .45s var(--ease);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .gate .gi {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .gate h1 {
+            font-family: var(--fd);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .gate p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .gate input {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--bord);
+            margin-bottom: 12px;
+            font-size: 14.5px;
+            font-family: var(--fu);
+            outline: none;
+            transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+            background: var(--bg);
+            color: var(--text);
+        }
+
+            .gate input:focus {
+                border-color: var(--coral);
+                box-shadow: 0 0 0 3.5px rgba(255,138,101,.12);
+            }
+
+        .gate button {
+            width: 100%;
+            padding: 13px;
+            border-radius: var(--r-sm);
+            border: none;
+            background: linear-gradient(135deg,var(--coral),var(--coral-d));
+            color: #fff;
+            font-weight: 600;
+            font-size: 14.5px;
+            cursor: pointer;
+            box-shadow: 0 8px 22px rgba(255,138,101,.28);
+            transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+        }
+
+            .gate button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 14px 30px rgba(255,138,101,.36);
+            }
+
+            .gate button:active {
+                transform: translateY(0) scale(.98);
+            }
+
+        .gate .gate-err {
+            font-size: 12.5px;
+            color: var(--err);
+            margin-top: -4px;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        /* ── DASHBOARD SHELL ────────────────────────────────── */
+        #dashboard {
+            display: none;
+        }
+
+        .topbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--bord);
+            padding: 18px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background .25s var(--ease), border-color .25s var(--ease);
+        }
+
+        .topbar-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg,var(--coral),var(--coral-d));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(255,138,101,.3);
+            flex-shrink: 0;
+        }
+
+        .brand h1 {
+            font-family: var(--fd);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .brand .brand-sub {
+            font-size: 11.5px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(130px,1fr));
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: var(--r-md);
+            padding: 16px 18px;
+            box-shadow: var(--sh-sm);
+            transition: background .25s var(--ease), border-color .25s var(--ease);
+        }
+
+            .stat-card .sv {
+                font-family: var(--fd);
+                font-size: 26px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .stat-card .sl {
+                font-size: 12px;
+                color: var(--muted);
+                font-weight: 500;
+            }
+
+        /* ── TABS ───────────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 18px;
+            border-bottom: 1.5px solid var(--bord);
+        }
+
+        .tab {
+            padding: 10px 4px;
+            margin-right: 20px;
+            border: none;
+            background: none;
+            font-family: var(--fu);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            position: relative;
+            top: 1.5px;
+            border-bottom: 2.5px solid transparent;
+            transition: color .18s var(--ease), border-color .18s var(--ease);
+        }
+
+            .tab:hover {
+                color: var(--text);
+            }
+
+            .tab.active {
+                color: var(--coral-d);
+                border-color: var(--coral);
+            }
+
+            .tab .tab-count {
+                font-size: 11px;
+                font-weight: 700;
+                background: var(--bord);
+                color: var(--muted);
+                padding: 1px 7px;
+                border-radius: 20px;
+                margin-left: 6px;
+            }
+
+            .tab.active .tab-count {
+                background: var(--coral3);
+                color: var(--coral-d);
+            }
+
+        .panel {
+            display: none;
+        }
+
+            .panel.active {
+                display: block;
+            }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+            .search-wrap .si {
+                position: absolute;
+                left: 13px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                color: var(--muted2);
+                pointer-events: none;
+            }
+
+        .search-input {
+            width: 100%;
+            padding: 11px 14px 11px 36px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--bord);
+            font-family: var(--fu);
+            font-size: 13.5px;
+            background: var(--card);
+            color: var(--text);
+            outline: none;
+            transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+        }
+
+            .search-input:focus {
+                border-color: var(--coral);
+                box-shadow: 0 0 0 3.5px rgba(255,138,101,.10);
+            }
+
+        .filter-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 9px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--bord);
+            background: var(--card);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all .18s var(--ease);
+            white-space: nowrap;
+        }
+
+            .chip:hover {
+                border-color: var(--bord2);
+                color: var(--text);
+            }
+
+            .chip.active {
+                background: var(--text);
+                border-color: var(--text);
+                color: var(--bg);
+            }
+
+        .icon-btn {
+            background: var(--card);
+            border: 1.5px solid var(--bord);
+            border-radius: var(--r-sm);
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text);
+            transition: all .18s var(--ease);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .icon-btn:hover {
+                border-color: var(--bord2);
+            }
+
+            .icon-btn:active {
+                transform: scale(.97);
+            }
+
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .empty {
+            color: var(--muted);
+            text-align: center;
+            padding: 70px 20px;
+            font-size: 14px;
+            background: var(--card);
+            border: 1px dashed var(--bord2);
+            border-radius: var(--r-lg);
+        }
+
+            .empty .ee {
+                font-size: 32px;
+                margin-bottom: 10px;
+                display: block;
+            }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .row {
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: var(--r-md);
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            box-shadow: var(--sh-sm);
+            transition: box-shadow .2s var(--ease), transform .2s var(--ease), opacity .3s, height .3s, background .25s var(--ease), border-color .25s var(--ease);
+            animation: rowIn .35s var(--ease);
+        }
+
+        @keyframes rowIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .row:hover {
+            box-shadow: var(--sh-md);
+        }
+
+        .row.removing {
+            opacity: 0;
+            transform: scale(.97);
+        }
+
+        .row .thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: var(--r-sm);
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 1px solid var(--bord);
+            transition: transform .18s var(--ease);
+            background: var(--bg);
+        }
+
+            .row .thumb:hover {
+                transform: scale(1.04);
+            }
+
+        .row .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .row-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .row .name {
+            font-weight: 700;
+            font-size: 14.5px;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            white-space: nowrap;
+        }
+
+            .badge.method-vodafone_cash {
+                background: rgba(230,0,35,.08);
+                color: #C7002B;
+            }
+
+            .badge.method-instapay {
+                background: rgba(40,80,220,.08);
+                color: #2850DC;
+            }
+
+            .badge.status-pending {
+                background: var(--pend3);
+                color: var(--pend);
+            }
+
+            .badge.status-approved {
+                background: var(--ok3);
+                color: var(--ok);
+            }
+
+            .badge.status-rejected {
+                background: var(--err3);
+                color: var(--err);
+            }
+
+            .badge.status-active {
+                background: var(--ok3);
+                color: var(--ok);
+            }
+
+            .badge.status-inactive {
+                background: var(--bord);
+                color: var(--muted);
+            }
+
+        .row .meta {
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+            .row .meta b {
+                color: var(--text);
+                font-weight: 600;
+            }
+
+        .row .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+            .row .actions button {
+                padding: 9px 16px;
+                border-radius: var(--r-sm);
+                border: none;
+                font-weight: 700;
+                font-size: 12.5px;
+                cursor: pointer;
+                transition: transform .15s var(--ease), box-shadow .15s var(--ease), opacity .2s;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+        .btn-approve {
+            background: linear-gradient(135deg,#25B673,#1A9E5C);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(26,158,92,.28);
+        }
+
+            .btn-approve:hover:not(:disabled) {
+                transform: translateY(-1px);
+                box-shadow: 0 8px 20px rgba(26,158,92,.36);
+            }
+
+        .btn-reject {
+            background: var(--card);
+            color: var(--err);
+            border: 1.5px solid rgba(229,72,77,.3) !important;
+            box-shadow: none;
+        }
+
+            .btn-reject:hover:not(:disabled) {
+                background: var(--err3);
+            }
+
+        .row .actions button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-spin {
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: sp .7s linear infinite;
+        }
+
+        .btn-reject .btn-spin {
+            border: 2px solid rgba(229,72,77,.25);
+            border-top-color: var(--err);
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* skeleton loading */
+        .skel-row {
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: var(--r-md);
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .skel-box {
+            background: linear-gradient(90deg,var(--bord) 25%,var(--bg) 37%,var(--bord) 63%);
+            background-size: 400% 100%;
+            animation: shimmer 1.4s ease infinite;
+            border-radius: var(--r-sm);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        /* ── PAGINATION ─────────────────────────────────────── */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            min-width: 34px;
+            height: 34px;
+            padding: 0 8px;
+            border-radius: 8px;
+            border: 1.5px solid var(--bord);
+            background: var(--card);
+            color: var(--text);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .15s var(--ease);
+        }
+
+            .page-btn:hover:not(:disabled) {
+                border-color: var(--bord2);
+            }
+
+            .page-btn.active {
+                background: var(--coral);
+                border-color: var(--coral);
+                color: #fff;
+            }
+
+            .page-btn:disabled {
+                opacity: .4;
+                cursor: not-allowed;
+            }
+
+        .page-ellipsis {
+            color: var(--muted2);
+            padding: 0 4px;
+            font-size: 12.5px;
+        }
+
+        @media (max-width:560px) {
+            .topbar {
+                padding: 14px 16px;
+            }
+
+            .wrap {
+                padding: 18px 14px 50px;
+            }
+
+            .row {
+                flex-wrap: wrap;
+            }
+
+                .row .thumb {
+                    width: 52px;
+                    height: 52px;
+                }
+
+                .row .actions {
+                    width: 100%;
+                }
+
+                    .row .actions button {
+                        flex: 1;
+                        justify-content: center;
+                    }
+
+            .tabs {
+                overflow-x: auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+                .tabs::-webkit-scrollbar {
+                    display: none;
+                }
+
+            .tab {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gate" id="gate">
+        <div class="gi">🔒</div>
+        <h1>Admin Access</h1>
+        <p>Enter your admin token to view the dashboard.</p>
+        <input type="password" id="tokenInput" placeholder="Admin token">
+        <div class="gate-err" id="gateErr">Incorrect token. Please try again.</div>
+        <button id="gateBtn">Enter Dashboard →</button>
+    </div>
+
+    <div id="dashboard">
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="brand">
+                    <div class="brand-mark">💳</div>
+                    <div>
+                        <h1>Admin</h1>
+                        <div class="brand-sub">Viaa Dashboard</div>
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+                    <button class="icon-btn" id="refreshBtn">↻ Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card"><div class="sv" id="statTotal">–</div><div class="sl">Total Orders</div></div>
+                <div class="stat-card"><div class="sv" id="statPending">–</div><div class="sl">Pending</div></div>
+                <div class="stat-card"><div class="sv" id="statApproved">–</div><div class="sl">Approved</div></div>
+                <div class="stat-card"><div class="sv" id="statRejected">–</div><div class="sl">Rejected</div></div>
+                <div class="stat-card"><div class="sv" id="statVF">–</div><div class="sl">Vodafone Cash</div></div>
+                <div class="stat-card"><div class="sv" id="statIP">–</div><div class="sl">InstaPay</div></div>
+            </div>
+
+            <div class="tabs" id="tabs">
+                <button class="tab active" data-tab="orders">Orders <span class="tab-count" id="tabCountOrders">0</span></button>
+                <button class="tab" data-tab="users">Users <span class="tab-count" id="tabCountUsers">0</span></button>
+            </div>
+
+            <!-- ORDERS PANEL -->
+            <div class="panel active" id="panel-orders">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <span class="si">🔍</span>
+                        <input class="search-input" id="searchInput" placeholder="Search by name, email, or ID…">
+                    </div>
+                    <div class="filter-chips" id="statusChips">
+                        <button class="chip active" data-filter="all">All</button>
+                        <button class="chip" data-filter="pending">Pending</button>
+                        <button class="chip" data-filter="approved">Approved</button>
+                        <button class="chip" data-filter="rejected">Rejected</button>
+                    </div>
+                    <div class="filter-chips" id="methodChips">
+                        <button class="chip active" data-filter="all">Any method</button>
+                        <button class="chip" data-filter="vodafone_cash">Vodafone Cash</button>
+                        <button class="chip" data-filter="instapay">InstaPay</button>
+                    </div>
+                </div>
+                <div id="list"></div>
+                <div class="pagination" id="ordersPagination"></div>
+            </div>
+
+            <!-- USERS PANEL -->
+            <div class="panel" id="panel-users">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <span class="si">🔍</span>
+                        <input class="search-input" id="userSearchInput" placeholder="Search by access code…">
+                    </div>
+                    <div class="filter-chips" id="userChips">
+                        <button class="chip active" data-filter="all">All</button>
+                        <button class="chip" data-filter="active">Active</button>
+                        <button class="chip" data-filter="inactive">Inactive</button>
+                    </div>
+                </div>
+                <div id="userList"></div>
+                <div class="pagination" id="usersPagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            let token = sessionStorage.getItem('viaa_admin_token') || '';
+            let allPayments = [];
+            let allUsers = [];
+            let activeTab = 'orders';
+            let statusFilter = 'all';
+            let methodFilter = 'all';
+            let searchTerm = '';
+            let userFilter = 'all';
+            let userSearchTerm = '';
+            let ordersPage = 1;
+            let usersPage = 1;
+            const PAGE_SIZE = 10;
+
+            // ── THEME ──────────────────────────────────────────
+            function applyTheme(mode) {
+                document.documentElement.setAttribute('data-theme', mode);
+                document.getElementById('themeToggle').textContent = mode === 'dark' ? '☀️' : '🌙';
+                localStorage.setItem('viaa_admin_theme', mode);
+            }
+            applyTheme(localStorage.getItem('viaa_admin_theme') || 'light');
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                applyTheme(current === 'dark' ? 'light' : 'dark');
+            });
+
+            // ── GATE ───────────────────────────────────────────
+            function showDashboard() {
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadOrders();
+                loadUsers();
+            }
+
+            if (token) showDashboard();
+
+            document.getElementById('gateBtn').addEventListener('click', () => {
+                const val = document.getElementById('tokenInput').value.trim();
+                if (!val) return;
+                token = val;
+                document.getElementById('gateErr').style.display = 'none';
+                sessionStorage.setItem('viaa_admin_token', token);
+                showDashboard();
+            });
+            document.getElementById('tokenInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') document.getElementById('gateBtn').click();
+            });
+
+            function handleUnauthorized() {
+                sessionStorage.removeItem('viaa_admin_token');
+                token = '';
+                document.getElementById('gate').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('gateErr').style.display = 'block';
+            }
+
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                loadOrders();
+                loadUsers();
+            });
+
+            // ── TABS ───────────────────────────────────────────
+            document.getElementById('tabs').addEventListener('click', (e) => {
+                const tab = e.target.closest('.tab');
+                if (!tab) return;
+                activeTab = tab.dataset.tab;
+                document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.panel').forEach((p) => p.classList.remove('active'));
+                document.getElementById(`panel-${activeTab}`).classList.add('active');
+            });
+
+            // ── ORDERS: search & filters ───────────────────────
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchTerm = e.target.value.trim().toLowerCase();
+                ordersPage = 1;
+                renderOrders();
+            });
+            document.getElementById('statusChips').addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+                document.querySelectorAll('#statusChips .chip').forEach((c) => c.classList.remove('active'));
+                chip.classList.add('active');
+                statusFilter = chip.dataset.filter;
+                ordersPage = 1;
+                renderOrders();
+            });
+            document.getElementById('methodChips').addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+                document.querySelectorAll('#methodChips .chip').forEach((c) => c.classList.remove('active'));
+                chip.classList.add('active');
+                methodFilter = chip.dataset.filter;
+                ordersPage = 1;
+                renderOrders();
+            });
+
+            // ── USERS: search & filters ────────────────────────
+            document.getElementById('userSearchInput').addEventListener('input', (e) => {
+                userSearchTerm = e.target.value.trim().toLowerCase();
+                usersPage = 1;
+                renderUsers();
+            });
+            document.getElementById('userChips').addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+                document.querySelectorAll('#userChips .chip').forEach((c) => c.classList.remove('active'));
+                chip.classList.add('active');
+                userFilter = chip.dataset.filter;
+                usersPage = 1;
+                renderUsers();
+            });
+
+            // ── SKELETONS ──────────────────────────────────────
+            function skeletons(containerId, n) {
+                const list = document.getElementById(containerId);
+                list.innerHTML = '';
+                for (let i = 0; i < n; i++) {
+                    const row = document.createElement('div');
+                    row.className = 'skel-row';
+                    row.style.marginBottom = '10px';
+                    row.innerHTML = `
+                <div class="skel-box" style="width:60px;height:60px;flex-shrink:0"></div>
+                <div style="flex:1">
+                  <div class="skel-box" style="width:40%;height:14px;margin-bottom:8px"></div>
+                  <div class="skel-box" style="width:70%;height:11px;margin-bottom:6px"></div>
+                  <div class="skel-box" style="width:55%;height:11px"></div>
+                </div>`;
+                    list.appendChild(row);
+                }
+            }
+
+            // ── LOAD DATA ──────────────────────────────────────
+            async function loadOrders() {
+                skeletons('list', 3);
+                try {
+                    const res = await fetch(`/api/submit-payment?admin=1&action=all`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (res.status === 401) return handleUnauthorized();
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to load orders');
+
+                    allPayments = (data.payments || []).sort((a, b) => b.createdAt - a.createdAt);
+                    updateStats();
+                    renderOrders();
+                } catch (err) {
+                    document.getElementById('list').innerHTML = `<div class="empty"><span class="ee">⚠️</span>${escapeHtml(err.message)}</div>`;
+                }
+            }
+
+            async function loadUsers() {
+                skeletons('userList', 3);
+                try {
+                    const res = await fetch(`/api/submit-payment?admin=1&action=users`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (res.status === 401) return handleUnauthorized();
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to load users');
+
+                    allUsers = (data.users || []).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    document.getElementById('tabCountUsers').textContent = allUsers.length;
+                    renderUsers();
+                } catch (err) {
+                    document.getElementById('userList').innerHTML = `<div class="empty"><span class="ee">⚠️</span>${escapeHtml(err.message)}</div>`;
+                }
+            }
+
+            function updateStats() {
+                document.getElementById('statTotal').textContent = allPayments.length;
+                document.getElementById('statPending').textContent = allPayments.filter((p) => p.status === 'pending').length;
+                document.getElementById('statApproved').textContent = allPayments.filter((p) => p.status === 'approved').length;
+                document.getElementById('statRejected').textContent = allPayments.filter((p) => p.status === 'rejected').length;
+                document.getElementById('statVF').textContent = allPayments.filter((p) => p.method === 'vodafone_cash').length;
+                document.getElementById('statIP').textContent = allPayments.filter((p) => p.method === 'instapay').length;
+                document.getElementById('tabCountOrders').textContent = allPayments.length;
+            }
+
+            // ── RENDER: ORDERS ─────────────────────────────────
+            function filteredOrders() {
+                let filtered = allPayments;
+                if (statusFilter !== 'all') filtered = filtered.filter((p) => p.status === statusFilter);
+                if (methodFilter !== 'all') filtered = filtered.filter((p) => p.method === methodFilter);
+                if (searchTerm) {
+                    filtered = filtered.filter((p) =>
+                        (p.name || '').toLowerCase().includes(searchTerm) ||
+                        (p.email || '').toLowerCase().includes(searchTerm) ||
+                        (p.id || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+                return filtered;
+            }
+
+            function renderOrders() {
+                const list = document.getElementById('list');
+                const filtered = filteredOrders();
+
+                if (!allPayments.length) {
+                    list.innerHTML = '<div class="empty"><span class="ee">🎉</span>No orders yet</div>';
+                    document.getElementById('ordersPagination').innerHTML = '';
+                    return;
+                }
+                if (!filtered.length) {
+                    list.innerHTML = '<div class="empty"><span class="ee">🔍</span>No orders match your search</div>';
+                    document.getElementById('ordersPagination').innerHTML = '';
+                    return;
+                }
+
+                const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+                ordersPage = Math.min(ordersPage, totalPages);
+                const pageItems = filtered.slice((ordersPage - 1) * PAGE_SIZE, ordersPage * PAGE_SIZE);
+
+                const wrap = document.createElement('div');
+                wrap.className = 'list';
+                pageItems.forEach((p) => wrap.appendChild(renderOrderRow(p)));
+                list.innerHTML = '';
+                list.appendChild(wrap);
+
+                renderPagination('ordersPagination', ordersPage, totalPages, (n) => { ordersPage = n; renderOrders(); });
+            }
+
+            function renderOrderRow(p) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.dataset.id = p.id;
+                const methodLabel = p.method === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay';
+                const isPending = p.status === 'pending';
+                row.innerHTML = `
+              <img class="thumb" src="${p.screenshotUrl || ''}" alt="screenshot" onclick="${p.screenshotUrl ? `window.open('${p.screenshotUrl}','_blank')` : ''}">
+              <div class="info">
+                <div class="row-head">
+                  <span class="name">${escapeHtml(p.name)}</span>
+                  <div class="badge-group">
+                    <span class="badge status-${p.status}">${p.status}</span>
+                    <span class="badge method-${p.method}">${methodLabel}</span>
+                  </div>
+                </div>
+                <div class="meta">
+                  ${escapeHtml(p.email)} · ${escapeHtml(p.phone)}<br>
+                  <b>${escapeHtml(String(p.amount))} EGP</b> · transaction ${escapeHtml(p.senderNumber)}<br>
+                  ${escapeHtml(p.product)} · ${p.createdAt ? new Date(p.createdAt).toLocaleString() : '—'}
+                  ${p.code ? `<br><b>Code:</b> ${escapeHtml(p.code)}` : ''}
+                </div>
+                ${isPending ? `
+                <div class="actions">
+                  <button class="btn-approve" data-id="${p.id}">✓ Approve</button>
+                  <button class="btn-reject" data-id="${p.id}">✕ Reject</button>
+                </div>` : ''}
+              </div>`;
+                if (isPending) {
+                    row.querySelector('.btn-approve').addEventListener('click', (e) => act(p.id, 'approve', e.target, row));
+                    row.querySelector('.btn-reject').addEventListener('click', (e) => act(p.id, 'reject', e.target, row));
+                }
+                return row;
+            }
+
+            async function act(id, action, btn, row) {
+                const buttons = row.querySelectorAll('button');
+                buttons.forEach((b) => (b.disabled = true));
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<span class="btn-spin"></span> ${action === 'approve' ? 'Approving…' : 'Rejecting…'}`;
+                try {
+                    const res = await fetch('/api/approve-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ adminToken: token, id, action }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Action failed');
+
+                    row.classList.add('removing');
+                    setTimeout(() => {
+                        const rec = allPayments.find((p) => p.id === id);
+                        if (rec) {
+                            rec.status = action === 'approve' ? 'approved' : 'rejected';
+                            if (data.code) rec.code = data.code;
+                        }
+                        updateStats();
+                        renderOrders();
+                        loadUsers(); // a new user row may have been created on approval
+                    }, 280);
+                } catch (err) {
+                    alert(err.message);
+                    buttons.forEach((b) => (b.disabled = false));
+                    btn.innerHTML = originalHtml;
+                }
+            }
+
+            // ── RENDER: USERS ──────────────────────────────────
+            function filteredUsers() {
+                let filtered = allUsers;
+                if (userFilter === 'active') filtered = filtered.filter((u) => u.active);
+                if (userFilter === 'inactive') filtered = filtered.filter((u) => !u.active);
+                if (userSearchTerm) {
+                    filtered = filtered.filter((u) => (u.accessCode || '').toLowerCase().includes(userSearchTerm));
+                }
+                return filtered;
+            }
+
+            function renderUsers() {
+                const list = document.getElementById('userList');
+                const filtered = filteredUsers();
+
+                if (!allUsers.length) {
+                    list.innerHTML = '<div class="empty"><span class="ee">👤</span>No users yet</div>';
+                    document.getElementById('usersPagination').innerHTML = '';
+                    return;
+                }
+                if (!filtered.length) {
+                    list.innerHTML = '<div class="empty"><span class="ee">🔍</span>No users match your search</div>';
+                    document.getElementById('usersPagination').innerHTML = '';
+                    return;
+                }
+
+                const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+                usersPage = Math.min(usersPage, totalPages);
+                const pageItems = filtered.slice((usersPage - 1) * PAGE_SIZE, usersPage * PAGE_SIZE);
+
+                const wrap = document.createElement('div');
+                wrap.className = 'list';
+                pageItems.forEach((u) => wrap.appendChild(renderUserRow(u)));
+                list.innerHTML = '';
+                list.appendChild(wrap);
+
+                renderPagination('usersPagination', usersPage, totalPages, (n) => { usersPage = n; renderUsers(); });
+            }
+
+            function renderUserRow(u) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+              <div class="info">
+                <div class="row-head">
+                  <span class="name">${escapeHtml(u.accessCode || '—')}</span>
+                  <div class="badge-group">
+                    <span class="badge status-${u.active ? 'active' : 'inactive'}">${u.active ? 'active' : 'inactive'}</span>
+                  </div>
+                </div>
+                <div class="meta">
+                  <b>${u.remainingGenerations ?? '—'}</b> generations remaining
+                  ${u.createdAt ? `· issued ${new Date(u.createdAt).toLocaleString()}` : ''}
+                </div>
+              </div>`;
+                return row;
+            }
+
+            // ── SHARED: PAGINATION ─────────────────────────────
+            function renderPagination(containerId, current, total, onPage) {
+                const el = document.getElementById(containerId);
+                el.innerHTML = '';
+                if (total <= 1) return;
+
+                const mkBtn = (label, page, opts = {}) => {
+                    const b = document.createElement('button');
+                    b.className = 'page-btn' + (opts.active ? ' active' : '');
+                    b.textContent = label;
+                    b.disabled = !!opts.disabled;
+                    if (!opts.disabled && !opts.active) b.addEventListener('click', () => onPage(page));
+                    return b;
+                };
+
+                el.appendChild(mkBtn('‹', current - 1, { disabled: current === 1 }));
+
+                const pages = [];
+                for (let i = 1; i <= total; i++) {
+                    if (i === 1 || i === total || Math.abs(i - current) <= 1) pages.push(i);
+                }
+                let prev = 0;
+                pages.forEach((p) => {
+                    if (prev && p - prev > 1) {
+                        const dots = document.createElement('span');
+                        dots.className = 'page-ellipsis';
+                        dots.textContent = '…';
+                        el.appendChild(dots);
+                    }
+                    el.appendChild(mkBtn(String(p), p, { active: p === current }));
+                    prev = p;
+                });
+
+                el.appendChild(mkBtn('›', current + 1, { disabled: current === total }));
+            }
+
+            function escapeHtml(str) {
+                return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+                }[c]));
+            }
+        })();
+    </script>
+</body>
+</html>
