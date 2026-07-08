@@ -1,4 +1,10 @@
-
+{
+  "crons": [
+    {
+      "path": "/api/trailer/poll",
+      "schedule": "*/2 * * * *"
+    }
+  ],
   "functions": {
     "api/submit-payment.js": { "maxDuration": 30 },
     "api/approve-payment.js": { "maxDuration": 30 },
@@ -10,58 +16,34 @@
     {
       "source": "/admin.html",
       "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer"
-        }
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
       ]
     },
     {
-      "source": "/(.*)\\.(css|js)",
+      "source": "/(.*).(css|js)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, must-revalidate"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
       ]
     },
     {
-      "source": "/(.*)\\.(png|jpg|jpeg|webp|gif|svg|ico)",
+      "source": "/(.*).(png|jpg|jpeg|webp|gif|svg|ico)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800, must-revalidate"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=604800, must-revalidate" }
       ]
     },
     {
-      "source": "/(.*)\\.(woff|woff2|ttf|otf)",
+      "source": "/(.*).(woff|woff2|ttf|otf)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
   ]
