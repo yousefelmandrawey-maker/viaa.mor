@@ -1,0 +1,4415 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <script>
+        // Theme bootstrap: must run before CSS/paint to avoid a light-mode
+        // flash for users who prefer dark. Kept tiny and inline on purpose.
+        (function () {
+            try {
+                var s = localStorage.getItem('viaa_color_scheme');
+                if (!s) s = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                if (s === 'dark') document.documentElement.setAttribute('data-color-scheme', 'dark');
+            } catch (_) { /* storage unavailable — default to light */ }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <title>Viaa — Give Your Love a Home It Will Never Forget</title>
+    <meta name="description" content="Create a private, cinematic love page for someone unforgettable. Viaa turns your relationship into a living digital memory.">
+    <meta name="keywords" content="love page, digital love letter, anniversary gift, relationship timeline, online love page, romantic website, friendship page, couple website, digital memory, personalized gift for partner, viaa">
+    <meta name="author" content="Viaa">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://viaa.app/">
+    <meta name="theme-color" content="#FF5FA2">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Viaa">
+    <meta property="og:url" content="https://viaa.app/">
+    <meta property="og:title" content="Viaa — Give Your Love a Home It Will Never Forget">
+    <meta property="og:description" content="Create a private, cinematic love page for someone unforgettable. Viaa turns your relationship into a living digital memory.">
+    <meta property="og:image" content="https://viaa.app/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Viaa — private, cinematic love pages">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Viaa — Give Your Love a Home It Will Never Forget">
+    <meta name="twitter:description" content="Create a private, cinematic love page for someone unforgettable. Viaa turns your relationship into a living digital memory.">
+    <meta name="twitter:image" content="https://viaa.app/assets/og-image.png">
+    <meta name="twitter:image:alt" content="Viaa — private, cinematic love pages">
+
+    <!-- Favicons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💝</text></svg>">
+
+    <!-- Web App Manifest -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="dark-theme.css">
+    <style>
+        /* VARIABLES */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --pink: #FF5FA2;
+            --pink2: #FF3380;
+            --pink3: rgba(255,95,162,.12);
+            --pink4: rgba(255,95,162,.06);
+            --purple: #7C4DFF;
+            --purple2: #5C2EE8;
+            --purple3: rgba(124,77,255,.12);
+            --cyan: #00D4FF;
+            --cyan3: rgba(0,212,255,.12);
+            --gold: #FFB800;
+            --gold3: rgba(255,184,0,.12);
+            --coral: #FF8A65;
+            --coral3: rgba(255,138,101,.12);
+            --dark: #111827;
+            --text: #1E293B;
+            --muted: #64748B;
+            --muted2: #94A3B8;
+            --bord: rgba(0,0,0,.07);
+            --bord2: rgba(0,0,0,.11);
+            --sh-sm: 0 1px 4px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+            --sh-md: 0 4px 20px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.05);
+            --sh-lg: 0 14px 50px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.07);
+            --sh-pink: 0 10px 40px rgba(255,95,162,.40);
+            --sh-purple: 0 10px 40px rgba(124,77,255,.34);
+            --fd: 'Playfair Display',Georgia,serif;
+            --fu: 'Inter',system-ui,sans-serif;
+            --ease: cubic-bezier(.16,1,.3,1);
+            --spring: cubic-bezier(.34,1.56,.64,1);
+            --sh-xl: 0 30px 90px rgba(17,24,39,.16),0 10px 30px rgba(17,24,39,.08);
+            --sh-card: 0 2px 8px rgba(17,24,39,.04),0 1px 2px rgba(17,24,39,.03);
+            --sh-card-hover: 0 24px 60px rgba(17,24,39,.14),0 6px 18px rgba(17,24,39,.07);
+        }
+
+        ::selection {
+            background: var(--pink3);
+            color: var(--pink2);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--pink);
+            outline-offset: 3px;
+        }
+
+        html {
+            background: var(--bg);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--fu);
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: pageFadeIn .6s var(--ease) both;
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body {
+                animation: none;
+            }
+        }
+
+        /* SHIMMER (shared skeleton loading effect) */
+        @keyframes shimmerSweep {
+            to {
+                background-position: -135% 0;
+            }
+        }
+
+        .skel-shimmer {
+            background-image: linear-gradient(100deg, rgba(0,0,0,.05) 18%, rgba(0,0,0,.10) 33%, rgba(0,0,0,.05) 48%);
+            background-size: 250% 100%;
+            background-position: 0 0;
+            animation: shimmerSweep 1.5s ease-in-out infinite;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: var(--fu);
+            border: none;
+            outline: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        /* DESIGN SYSTEM — BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform .28s var(--ease),box-shadow .28s var(--ease);
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+            .btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                background: linear-gradient(180deg,rgba(255,255,255,.24),transparent);
+                border-radius: inherit;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -65%;
+            width: 38%;
+            height: 200%;
+            background: linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+            transform: skewX(-22deg);
+            transition: left .7s var(--ease);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .btn-shine:hover::after {
+            left: 130%;
+        }
+
+        .btn:active {
+            transform: scale(.973) translateY(1px) !important;
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+            .btn:disabled:hover {
+                transform: none;
+            }
+
+        .btn-primary {
+            background: linear-gradient(140deg,#FF6EB0 0%,#FF3380 55%,#E8005E 100%);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,.28);
+            border-top-color: rgba(255,255,255,.45);
+            box-shadow: var(--sh-pink),inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.08);
+            padding: 0 38px;
+            height: 56px;
+            font-size: 16px;
+            letter-spacing: -.005em;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-3px) scale(1.015);
+                box-shadow: 0 20px 60px rgba(255,95,162,.55),inset 0 1px 0 rgba(255,255,255,.35);
+            }
+
+            .btn-primary.sm {
+                height: 46px;
+                padding: 0 24px;
+                font-size: 14px;
+            }
+
+            .btn-primary.full {
+                width: 100%;
+            }
+
+        .btn-ghost {
+            background: rgba(255,255,255,.6);
+            color: var(--muted);
+            border: 1.5px solid var(--bord);
+            box-shadow: none;
+            padding: 0 30px;
+            height: 54px;
+            font-size: 15px;
+            backdrop-filter: blur(12px);
+        }
+
+            .btn-ghost:hover {
+                box-shadow: var(--sh-sm);
+                background: #fff;
+                color: var(--dark);
+                border-color: var(--bord2);
+                transform: translateY(-2px);
+            }
+
+            .btn-ghost.full {
+                width: 100%;
+            }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--pink);
+            border: 2px solid var(--pink);
+            padding: 0 26px;
+            height: 48px;
+            font-size: 14px;
+        }
+
+            .btn-outline:hover {
+                background: var(--pink4);
+                transform: translateY(-1px);
+            }
+
+        /* DESIGN SYSTEM — PILLS */
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+        }
+
+        .pill-pink {
+            background: var(--pink3);
+            color: var(--pink);
+            border: 1px solid rgba(255,95,162,.2);
+        }
+
+        .pill-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: dotP 2s ease-in-out infinite;
+        }
+
+        @keyframes dotP {
+            50% {
+                transform: scale(1.8);
+                opacity: .4;
+            }
+        }
+
+        /* NAV */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 300;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            transition: all .4s var(--ease);
+        }
+
+            .nav.scrolled {
+                background: rgba(248,250,252,.85);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border-bottom: 1px solid var(--bord);
+                box-shadow: 0 1px 20px rgba(0,0,0,.05);
+            }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: var(--fd);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            filter: drop-shadow(0 0 10px rgba(255,95,162,.6));
+            animation: iconGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes iconGlow {
+            50% {
+                filter: drop-shadow(0 0 18px rgba(255,95,162,.9));
+                transform: scale(1.06);
+            }
+        }
+
+        .nav-r {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 99px;
+            background: rgba(255,255,255,.8);
+            border: 1px solid var(--bord2);
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all .2s;
+        }
+
+            .lang-btn:hover {
+                border-color: var(--pink);
+                color: var(--pink);
+            }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 96px 22px 56px;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        /* Blobs */
+        .blob-wrap {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(72px);
+            opacity: .5;
+            animation: blobD ease-in-out infinite;
+        }
+
+        .b1 {
+            width: min(540px,120vw);
+            height: min(540px,120vw);
+            top: -20%;
+            left: -18%;
+            background: radial-gradient(circle,#FF89C0,#FF5FA2);
+            animation-duration: 14s;
+        }
+
+        .b2 {
+            width: min(480px,110vw);
+            height: min(480px,110vw);
+            bottom: -18%;
+            right: -14%;
+            background: radial-gradient(circle,#A78BFA,#7C4DFF);
+            animation-duration: 17s;
+            animation-delay: -5s;
+        }
+
+        .b3 {
+            width: min(360px,90vw);
+            height: min(360px,90vw);
+            top: 42%;
+            left: 38%;
+            background: radial-gradient(circle,#67E8F9,#00D4FF);
+            animation-duration: 20s;
+            animation-delay: -9s;
+            opacity: .32;
+        }
+
+        .b4 {
+            width: min(300px,80vw);
+            height: min(300px,80vw);
+            top: 12%;
+            right: 8%;
+            background: radial-gradient(circle,#FDE68A,#FFB800);
+            animation-duration: 16s;
+            animation-delay: -7s;
+            opacity: .4;
+        }
+
+        @keyframes blobD {
+            0%,100% {
+                transform: translate(0,0) scale(1);
+            }
+
+            25% {
+                transform: translate(22px,-16px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-16px,22px) scale(.96);
+            }
+
+            75% {
+                transform: translate(18px,10px) scale(1.03);
+            }
+        }
+        /* Noise */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* PHONE SCENE */
+        .phone-scene {
+            position: relative;
+            width: 260px;
+            margin: 0 auto 26px;
+            flex-shrink: 0;
+            animation: fadeUp .9s .1s var(--ease) both;
+        }
+
+        .ph-aura {
+            position: absolute;
+            inset: -55px;
+            background: radial-gradient(ellipse at 50% 58%,rgba(255,95,162,.42),rgba(124,77,255,.26) 42%,transparent 70%);
+            border-radius: 50%;
+            filter: blur(28px);
+            animation: auraBrth 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes auraBrth {
+            0%,100% {
+                opacity: .7;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.09);
+            }
+        }
+
+        .ph-ring {
+            position: absolute;
+            inset: -5px;
+            border-radius: 52px;
+            background: conic-gradient(from 0deg,rgba(255,95,162,.85),rgba(124,77,255,.65),rgba(0,212,255,.55),rgba(255,184,0,.55),rgba(255,95,162,.85));
+            filter: blur(12px);
+            opacity: .62;
+            animation: ringR 7s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes ringR {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ph-wrap {
+            position: relative;
+            z-index: 1;
+            animation: phFlt 5.5s ease-in-out infinite;
+        }
+
+        @keyframes phFlt {
+            0%,100% {
+                transform: translateY(0) rotateY(-5deg) rotateX(2deg);
+            }
+
+            50% {
+                transform: translateY(-22px) rotateY(-2.5deg) rotateX(1deg);
+            }
+        }
+
+        .ph-frame {
+            width: 260px;
+            height: 520px;
+            border-radius: 48px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,.7);
+            box-shadow: 0 0 0 1px rgba(0,0,0,.08),0 60px 140px rgba(0,0,0,.5),0 20px 50px rgba(124,77,255,.22),inset 0 1px 0 rgba(255,255,255,.9);
+        }
+
+        .ph-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 66px;
+            height: 5px;
+            background: rgba(0,0,0,.8);
+            border-radius: 3px;
+            z-index: 10;
+        }
+
+        .ph-screen {
+            position: absolute;
+            inset: 0;
+            background: #0a0614;
+            overflow: hidden;
+        }
+
+        .ph-photos {
+            position: absolute;
+            inset: 0;
+        }
+
+        .ph-photo {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+            .ph-photo.on {
+                opacity: 1;
+            }
+
+        .php1 {
+            background: linear-gradient(160deg,#1a0530,#0d0225,#05010f);
+        }
+
+        .php2 {
+            background: linear-gradient(160deg,#001a30,#002540,#000d1a);
+        }
+
+        .php3 {
+            background: linear-gradient(160deg,#1a0010,#250028,#080010);
+        }
+
+        .php4 {
+            background: linear-gradient(160deg,#0d0a00,#1a1500,#050400);
+        }
+
+        .ph-ov {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,rgba(0,0,0,.1),transparent 35%,rgba(0,0,0,.5) 70%,rgba(0,0,0,.85));
+            z-index: 1;
+        }
+
+        .ph-pt {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+            .ph-pt span {
+                position: absolute;
+                animation: ptR linear infinite;
+            }
+
+        @keyframes ptR {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: .8;
+            }
+
+            90% {
+                opacity: .1;
+            }
+
+            100% {
+                transform: translateY(-110%);
+                opacity: 0;
+            }
+        }
+
+        .ph-inner {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+
+        .ph-heart {
+            font-size: 28px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 14px rgba(255,100,150,1));
+            animation: hb 1.8s ease-in-out infinite;
+        }
+
+        @keyframes hb {
+            0%,100% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.25);
+            }
+
+            42% {
+                transform: scale(1.15);
+            }
+        }
+
+        .ph-nms {
+            font-family: var(--fd);
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,.5);
+        }
+
+        .ph-tmr {
+            font-size: 9px;
+            color: rgba(255,255,255,.5);
+            letter-spacing: .04em;
+            margin-bottom: 14px;
+        }
+
+        .ph-rule {
+            width: 44px;
+            height: 1px;
+            background: linear-gradient(90deg,transparent,rgba(255,120,160,.6),transparent);
+            margin: 0 auto 12px;
+        }
+
+        .ph-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .ph-cell {
+            aspect-ratio: 4/3;
+        }
+
+        .ph-music {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 7px 10px;
+            background: rgba(255,255,255,.08);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.1);
+            backdrop-filter: blur(8px);
+            margin-bottom: 8px;
+        }
+
+        .ph-music-ico {
+            font-size: 14px;
+        }
+
+        .ph-music-inf {
+            flex: 1;
+        }
+
+        .ph-music-t {
+            font-size: 9px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1px;
+        }
+
+        .ph-music-a {
+            font-size: 8px;
+            color: rgba(255,255,255,.45);
+        }
+
+        .ph-bars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .ph-bar {
+            width: 3px;
+            border-radius: 2px;
+            background: rgba(255,95,162,.8);
+            animation: barD ease-in-out infinite;
+        }
+
+        @keyframes barD {
+            0%,100% {
+                height: 4px;
+            }
+
+            50% {
+                height: 14px;
+            }
+        }
+
+        .ph-q {
+            font-family: var(--fd);
+            font-style: italic;
+            font-size: 9.5px;
+            color: rgba(255,255,255,.5);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .ph-glass {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 42%;
+            background: linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 60%,transparent);
+            border-radius: 48px 48px 0 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .ph-spec {
+            position: absolute;
+            top: 15%;
+            left: 1px;
+            width: 1.5px;
+            height: 28%;
+            background: linear-gradient(180deg,transparent,rgba(255,255,255,.25),transparent);
+            z-index: 5;
+        }
+
+        .ph-hrt-wrap {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+            overflow: visible;
+        }
+
+        .fhrt {
+            position: absolute;
+            animation: fhrtR ease-out forwards;
+        }
+
+        @keyframes fhrtR {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0;
+            }
+
+            8% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-200px) translateX(var(--dx,30px)) scale(.2);
+                opacity: 0;
+            }
+        }
+
+        /* HERO TEXT */
+        .hero-badge {
+            margin-bottom: 20px;
+            animation: fadeUp .8s var(--ease) both;
+        }
+
+        .hero-text {
+            text-align: center;
+            animation: fadeUp .9s .25s var(--ease) both;
+        }
+
+        .hero-h1 {
+            font-family: var(--fd);
+            font-size: clamp(36px,9.5vw,58px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            color: var(--dark);
+            margin-bottom: 18px;
+        }
+
+            .hero-h1 em {
+                font-style: italic;
+                background: linear-gradient(100deg,var(--pink) 10%,var(--pink2) 50%,var(--purple) 110%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+        .hero-desc {
+            font-size: clamp(15.5px,4vw,18px);
+            color: var(--muted);
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 32px;
+            max-width: 330px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-bottom: 36px;
+            animation: fadeUp .9s .35s var(--ease) both;
+        }
+
+        @media(min-width:440px) {
+            .hero-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+                .hero-actions .full {
+                    width: auto;
+                }
+        }
+
+        .hero-stats {
+            display: flex;
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(255,255,255,.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-md);
+            animation: fadeUp .9s .45s var(--ease) both;
+        }
+
+        .hst {
+            padding: 15px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+            .hst + .hst::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 18%;
+                bottom: 18%;
+                width: 1px;
+                background: var(--bord);
+            }
+
+        .hst-n {
+            display: block;
+            font-family: var(--fd);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .hst-l {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* DESKTOP HERO */
+        @media(min-width:768px) {
+            .hero {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 80px;
+                padding: 100px 48px 64px;
+            }
+
+            .hero-content {
+                align-items: flex-start;
+                max-width: 480px;
+                flex: none;
+            }
+
+            .hero-text {
+                text-align: start;
+            }
+
+            .hero-desc {
+                margin-left: 0;
+                margin-right: 0;
+                max-width: 420px;
+            }
+
+            .phone-scene {
+                order: 2;
+                width: 300px;
+                margin: 0;
+            }
+
+            .ph-frame {
+                width: 300px;
+                height: 600px;
+            }
+
+            .ph-ring {
+                border-radius: 60px;
+            }
+
+            .hero-badge {
+                align-self: flex-start;
+            }
+
+            /* RTL: flex-direction:row already honors dir automatically (first
+               DOM child — the text — lands on the visual right, matching
+               reading direction), so only alignment needs mirroring here. */
+            [dir="rtl"] .hero-content {
+                align-items: flex-end;
+            }
+
+            [dir="rtl"] .hero-badge {
+                align-self: flex-end;
+            }
+        }
+
+        @media(min-width:1100px) {
+            .phone-scene {
+                width: 320px;
+            }
+
+            .ph-frame {
+                width: 320px;
+                height: 640px;
+            }
+        }
+
+        /* LAYOUT */
+        .sec {
+            padding: 88px 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sec-in {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @media(min-width:768px) {
+            .sec {
+                padding: 128px 40px;
+            }
+
+            .sec-in {
+                max-width: 920px;
+            }
+        }
+
+        @media(min-width:1100px) {
+            .sec-in {
+                max-width: 1100px;
+            }
+        }
+
+        .sec-hd {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        @media(min-width:768px) {
+            .sec-hd {
+                margin-bottom: 72px;
+            }
+        }
+
+        .sec-eye {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .sec-title {
+            font-family: var(--fd);
+            font-size: clamp(28px,6vw,52px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -.02em;
+            color: var(--dark);
+            margin-bottom: 14px;
+        }
+
+            .sec-title em {
+                font-style: italic;
+                background: linear-gradient(100deg,var(--pink) 10%,var(--pink2) 60%,var(--purple) 120%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+        .sec-sub {
+            font-size: clamp(14px,3vw,17px);
+            color: var(--muted);
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .div {
+            height: 1px;
+            background: linear-gradient(90deg,transparent,var(--bord),transparent);
+        }
+
+        /* THEMES — DARK SECTION */
+        .themes-sec {
+            background: var(--dark);
+            position: relative;
+        }
+
+            /* Soft blend into the light sections above/below — same --dark
+           fill, just eased in/out over ~120px instead of cutting instantly,
+           so the transition reads as one continuous surface rather than a
+           hard light/dark seam. No new colors: this fades the section's
+           own edges using its own background color at 0 opacity. */
+            .themes-sec::before,
+            .themes-sec::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 120px;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .themes-sec::before {
+                top: 0;
+                background: linear-gradient(180deg, var(--bg), transparent);
+            }
+
+            .themes-sec::after {
+                bottom: 0;
+                background: linear-gradient(0deg, var(--bg), transparent);
+            }
+
+            .themes-sec .sec-title {
+                color: #fff;
+            }
+
+                .themes-sec .sec-title em {
+                    color: #FF89C0;
+                }
+
+            .themes-sec .sec-sub {
+                color: rgba(255,255,255,.5);
+            }
+
+            .themes-sec .sec-eye {
+                color: #FF89C0;
+            }
+
+        .tgrid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 10px;
+        }
+
+        @media(min-width:600px) {
+            .tgrid {
+                grid-template-columns: repeat(3,1fr);
+                gap: 14px;
+            }
+        }
+
+        .tc {
+            border-radius: 22px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,.07);
+            transition: transform .45s var(--ease),box-shadow .45s var(--ease);
+        }
+
+            .tc:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 36px 80px rgba(0,0,0,.55),0 10px 24px rgba(255,95,162,.18);
+            }
+
+            .tc:active {
+                transform: translateY(-4px) scale(1.01);
+            }
+
+        .tc-bg {
+            aspect-ratio: 2/3;
+            max-height: 300px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 13px;
+        }
+
+        .tc-ov {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,transparent 25%,rgba(0,0,0,.92));
+        }
+
+        .tc-hrt {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 26px;
+            filter: drop-shadow(0 0 12px rgba(255,255,255,.5));
+            animation: hb 2.5s ease-in-out infinite;
+        }
+
+        .tc-in {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .tc-nm {
+            font-family: var(--fd);
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .tc-sc {
+            font-size: 9px;
+            color: rgba(255,255,255,.4);
+            margin-bottom: 8px;
+        }
+
+        .tc-acts {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tc-btn {
+            flex: 1;
+            padding: 7px 0;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            transition: all .2s;
+        }
+
+        .tc-demo {
+            background: rgba(255,255,255,.11);
+            color: rgba(255,255,255,.85);
+            border: none;
+            backdrop-filter: blur(8px);
+        }
+
+            .tc-demo:hover {
+                background: rgba(255,255,255,.22);
+            }
+
+        .tc-use {
+            background: linear-gradient(135deg,var(--pink),var(--pink2));
+            color: #fff;
+            border: none;
+        }
+
+        .tc-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            font-size: 8px;
+            padding: 3px 9px;
+            border-radius: 8px;
+            background: rgba(0,0,0,.55);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.7);
+            font-weight: 600;
+        }
+
+        /* THEME CARD — MINI INTERACTIVE PREVIEW */
+        .tc-bg {
+            background-size: 165% 165% !important;
+            background-position: 28% 18%;
+            transition: background-position 1.4s var(--ease);
+        }
+
+        .tc:hover .tc-bg {
+            background-position: 72% 82%;
+        }
+
+        .tc-prev {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 32px 10px 0;
+            pointer-events: none;
+            transform: scale(1);
+            transition: transform .6s var(--ease);
+        }
+
+        .tc:hover .tc-prev {
+            transform: scale(1.07);
+        }
+
+        .tc-prev-photo {
+            width: 62%;
+            aspect-ratio: 3/4;
+            border-radius: 13px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 26px rgba(0,0,0,.4);
+            border: 1px solid rgba(255,255,255,.2);
+        }
+
+        .tc-prev-ico {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,.4));
+        }
+
+        .tc-prev-timer {
+            display: flex;
+            gap: 4px;
+            margin-top: 9px;
+        }
+
+        .tc-prev-tbox {
+            min-width: 20px;
+            padding: 3px 4px;
+            border-radius: 5px;
+            background: rgba(255,255,255,.1);
+            backdrop-filter: blur(6px);
+            font-family: var(--fu);
+            font-size: 8px;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,.16);
+        }
+
+        .tc-prev-msg {
+            width: 76%;
+            margin-top: 9px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .tc-prev-line {
+            height: 3px;
+            border-radius: 2px;
+            background: rgba(255,255,255,.32);
+        }
+
+            .tc-prev-line.l1 {
+                width: 92%;
+            }
+
+            .tc-prev-line.l2 {
+                width: 60%;
+            }
+
+        .tc-prev-deco {
+            position: absolute;
+            font-size: 12px;
+            opacity: .5;
+            animation: tcfloat 4.2s ease-in-out infinite;
+            transition: opacity .4s,transform .4s;
+        }
+
+        .tc:hover .tc-prev-deco {
+            opacity: .9;
+        }
+
+        .tc-prev-deco.d1 {
+            top: 16%;
+            left: 9%;
+            animation-delay: 0s;
+        }
+
+        .tc-prev-deco.d2 {
+            top: 52%;
+            right: 7%;
+            font-size: 9px;
+            animation-delay: 1.1s;
+        }
+
+        .tc-prev-deco.d3 {
+            bottom: 27%;
+            left: 12%;
+            font-size: 10px;
+            animation-delay: 2.1s;
+        }
+
+        @keyframes tcfloat {
+
+            0%,100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(8deg);
+            }
+        }
+
+        @media(max-width:599px) {
+            .tc-prev {
+                padding-top: 26px;
+            }
+
+            .tc-prev-tbox {
+                font-size: 7px;
+                min-width: 16px;
+                padding: 2px 3px;
+            }
+        }
+
+        /* THEME CARD — PER-THEME PERSONALITY (CSS-only; order follows THEMES array: 1 classic, 2 red_roses, 3 midnight, 4 sakura, 5 golden, 6 soft_princess, 7 lavender, 8 luxury, 9 birthday) */
+
+        /* 1 — Classic Love: soft romantic glow, centered hero */
+        #themeGrid .tc:nth-child(1) .tc-prev::before {
+            content: '';
+            position: absolute;
+            top: 4%;
+            left: 50%;
+            width: 72%;
+            height: 48%;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center,rgba(232,115,156,.38),transparent 70%);
+            filter: blur(7px);
+            pointer-events: none;
+        }
+
+        #themeGrid .tc:nth-child(1) .tc-prev-photo {
+            box-shadow: 0 14px 30px rgba(232,115,156,.35),0 0 0 1px rgba(255,255,255,.18) inset;
+        }
+
+        /* 2 — Red Roses: tilted bouquet photo, beaded ribbon timer */
+        #themeGrid .tc:nth-child(2) {
+            border-radius: 16px;
+        }
+
+            #themeGrid .tc:nth-child(2) .tc-prev-photo {
+                transform: rotate(-4deg);
+                border-radius: 10px;
+                border-color: rgba(255,80,110,.45);
+            }
+
+            #themeGrid .tc:nth-child(2) .tc-prev-timer {
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                gap: 3px;
+                width: 48%;
+                margin-top: 11px;
+            }
+
+            #themeGrid .tc:nth-child(2) .tc-prev-tbox {
+                border-radius: 20px;
+            }
+
+            #themeGrid .tc:nth-child(2) .tc-prev-msg {
+                font-style: italic;
+            }
+
+        /* 3 — Midnight Promise: starfield sky, timer settled at the bottom */
+        #themeGrid .tc:nth-child(3) {
+            border-radius: 28px;
+        }
+
+            #themeGrid .tc:nth-child(3) .tc-prev {
+                justify-content: flex-end;
+                padding-bottom: 64px;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev-photo {
+                order: 1;
+                width: 52%;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev-msg {
+                order: 2;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev-timer {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(1.4px 1.4px at 18% 22%,rgba(255,255,255,.85) 99%,transparent),radial-gradient(1.4px 1.4px at 68% 14%,rgba(255,255,255,.65) 99%,transparent),radial-gradient(1px 1px at 48% 36%,rgba(255,255,255,.7) 99%,transparent),radial-gradient(1.4px 1.4px at 84% 50%,rgba(255,255,255,.5) 99%,transparent),radial-gradient(1px 1px at 28% 60%,rgba(255,255,255,.6) 99%,transparent),radial-gradient(1.2px 1.2px at 60% 68%,rgba(255,255,255,.55) 99%,transparent);
+                pointer-events: none;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev-deco.d2 {
+                font-size: 0;
+            }
+
+                #themeGrid .tc:nth-child(3) .tc-prev-deco.d2::before {
+                    content: '⭐';
+                    font-size: 9px;
+                }
+
+        /* 4 — Sakura Dreams: polaroid tilt, falling petal, organic frame */
+        #themeGrid .tc:nth-child(4) {
+            border-radius: 30px 10px 30px 10px;
+        }
+
+            #themeGrid .tc:nth-child(4) .tc-prev-photo {
+                transform: rotate(3deg);
+                border-radius: 6px;
+                border: 4px solid rgba(255,255,255,.85);
+            }
+
+            #themeGrid .tc:nth-child(4) .tc-prev::after {
+                content: '❀';
+                position: absolute;
+                top: 9%;
+                right: 16%;
+                font-size: 9px;
+                color: #ffb7c5;
+                opacity: .75;
+                animation: tcfloat 5s ease-in-out infinite;
+                animation-delay: .6s;
+            }
+
+        /* 5 — Golden Sunset: sunbeams, centered circular photo, glowing timer */
+        #themeGrid .tc:nth-child(5) .tc-prev {
+            align-items: center;
+        }
+
+        #themeGrid .tc:nth-child(5) .tc-prev-photo {
+            border-radius: 50%;
+            width: 56%;
+        }
+
+        #themeGrid .tc:nth-child(5) .tc-prev-tbox {
+            box-shadow: 0 0 10px rgba(245,200,66,.5);
+        }
+
+        #themeGrid .tc:nth-child(5) .tc-prev::before {
+            content: '';
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            width: 130%;
+            height: 130%;
+            transform: translateX(-50%);
+            background: conic-gradient(from 0deg,transparent 0deg 10deg,rgba(255,200,80,.2) 10deg 14deg,transparent 14deg 40deg,rgba(255,200,80,.2) 40deg 44deg,transparent 44deg 70deg,rgba(255,200,80,.2) 70deg 74deg,transparent 74deg 100deg,rgba(255,200,80,.2) 100deg 104deg,transparent 104deg 360deg);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sunspin 16s linear infinite;
+        }
+
+        @keyframes sunspin {
+            to {
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
+
+        /* 6 — Soft Princess: scalloped photo, jewel-dot timer */
+        #themeGrid .tc:nth-child(6) {
+            border-radius: 26px 26px 26px 6px;
+        }
+
+            #themeGrid .tc:nth-child(6) .tc-prev-photo {
+                border-radius: 50% 50% 50% 8%;
+            }
+
+            #themeGrid .tc:nth-child(6) .tc-prev-timer .tc-prev-tbox {
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                min-width: 20px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #themeGrid .tc:nth-child(6) .tc-prev-msg {
+                font-style: italic;
+            }
+
+        /* 7 — Lavender Sky: dreamy halo, message drifting right, slow butterflies */
+        #themeGrid .tc:nth-child(7) {
+            border-radius: 34px;
+        }
+
+            #themeGrid .tc:nth-child(7) .tc-prev-photo {
+                box-shadow: 0 0 38px rgba(192,132,252,.5);
+            }
+
+            #themeGrid .tc:nth-child(7) .tc-prev-msg {
+                align-items: flex-end;
+                width: 68%;
+                margin-right: 6%;
+            }
+
+            #themeGrid .tc:nth-child(7) .tc-prev-deco {
+                animation-duration: 6s;
+            }
+
+        /* 8 — Luxury Romance: sharp gold-lined HUD timer, uppercase ledger message */
+        #themeGrid .tc:nth-child(8) {
+            border-radius: 6px;
+        }
+
+            #themeGrid .tc:nth-child(8) .tc-prev-photo {
+                border-radius: 4px;
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev-timer .tc-prev-tbox {
+                border-radius: 2px;
+                font-family: var(--fu);
+                letter-spacing: .08em;
+                border-color: rgba(212,175,55,.55);
+                box-shadow: 0 0 8px rgba(212,175,55,.35);
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev-msg {
+                align-items: flex-start;
+                width: 70%;
+                margin-left: 11%;
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev-line {
+                background: rgba(212,175,55,.4);
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev::before {
+                content: '◆';
+                position: absolute;
+                top: 9%;
+                left: 11%;
+                font-size: 8px;
+                color: #d4af37;
+                opacity: .75;
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev::after {
+                content: '◆';
+                position: absolute;
+                top: 13%;
+                right: 13%;
+                font-size: 6px;
+                color: #d4af37;
+                opacity: .5;
+            }
+
+        /* 9 — Birthday: confetti shower, candle accent, bouncy pill timer */
+        #themeGrid .tc:nth-child(9) {
+            border-radius: 24px;
+        }
+
+            #themeGrid .tc:nth-child(9) .tc-prev {
+                align-items: center;
+            }
+
+            #themeGrid .tc:nth-child(9) .tc-prev-photo {
+                margin-top: 8px;
+                position: relative;
+            }
+
+                #themeGrid .tc:nth-child(9) .tc-prev-photo::before {
+                    content: '🕯️';
+                    position: absolute;
+                    top: -15px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 13px;
+                    z-index: 1;
+                }
+
+            #themeGrid .tc:nth-child(9) .tc-prev-timer {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            #themeGrid .tc:nth-child(9) .tc-prev-tbox {
+                border-radius: 50px;
+            }
+
+            #themeGrid .tc:nth-child(9) .tc-prev::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(2px 2px at 15% 18%,#ff9de2 99%,transparent),radial-gradient(2px 2px at 80% 28%,#ffd166 99%,transparent),radial-gradient(2px 2px at 30% 72%,#7bd9ff 99%,transparent),radial-gradient(2px 2px at 65% 82%,#c084fc 99%,transparent),radial-gradient(2px 2px at 45% 12%,#ff9de2 99%,transparent);
+                pointer-events: none;
+            }
+
+        @media(max-width:599px) {
+            #themeGrid .tc:nth-child(2) .tc-prev-photo, #themeGrid .tc:nth-child(4) .tc-prev-photo {
+                transform: rotate(2deg);
+            }
+
+            #themeGrid .tc:nth-child(8) .tc-prev-msg {
+                letter-spacing: .06em;
+            }
+
+            #themeGrid .tc:nth-child(3) .tc-prev {
+                padding-bottom: 50px;
+            }
+        }
+
+        /* HOW IT WORKS */
+        .hw-wrap {
+            position: relative;
+        }
+
+        .hw-line {
+            display: none;
+            position: absolute;
+            top: 56px;
+            left: calc(33.33% + 28px);
+            right: calc(33.33% + 28px);
+            height: 2px;
+            background: linear-gradient(90deg,var(--pink),var(--purple));
+            border-radius: 2px;
+        }
+
+            .hw-line::before, .hw-line::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                transform: translateY(-50%);
+            }
+
+            .hw-line::before {
+                left: 0;
+                background: var(--pink);
+            }
+
+            .hw-line::after {
+                right: 0;
+                background: var(--purple);
+            }
+
+        @media(min-width:700px) {
+            .hw-line {
+                display: block;
+            }
+        }
+
+        .hw-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+
+        @media(min-width:700px) {
+            .hw-grid {
+                grid-template-columns: repeat(3,1fr);
+            }
+        }
+
+        .hw-step {
+            padding: 36px 24px;
+            text-align: center;
+            border-radius: 22px;
+            background: var(--card);
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-card);
+            transition: transform .4s var(--ease),box-shadow .4s var(--ease);
+        }
+
+            .hw-step:hover {
+                transform: translateY(-6px);
+                box-shadow: var(--sh-card-hover);
+            }
+
+        .hw-n {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--fd);
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .hw-n1 {
+            background: linear-gradient(135deg,#FFE4F0,#FFC6E0);
+            color: var(--pink);
+            box-shadow: 0 6px 20px rgba(255,95,162,.22);
+        }
+
+        .hw-n2 {
+            background: linear-gradient(135deg,#EDE9FF,#D4C8FF);
+            color: var(--purple);
+            box-shadow: 0 6px 20px rgba(124,77,255,.2);
+        }
+
+        .hw-n3 {
+            background: linear-gradient(135deg,#FFFBEB,#FFF3C4);
+            color: #A07000;
+            box-shadow: 0 6px 20px rgba(255,184,0,.2);
+        }
+
+        .hw-t {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 7px;
+        }
+
+        .hw-b {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* SHOWCASE — Explore VIAA */
+        .showcase-sec {
+            background: linear-gradient(155deg,#FFF0F7,#F3F0FF,#F0F8FF);
+            overflow: hidden;
+            position: relative;
+        }
+
+            /* Same blend approach as .themes-sec: fade the section's own edges
+           into the page's base background so the boundary reads as one
+           continuous surface. */
+            .showcase-sec::before,
+            .showcase-sec::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 100px;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .showcase-sec::before {
+                top: 0;
+                background: linear-gradient(180deg, var(--bg), transparent);
+            }
+
+            .showcase-sec::after {
+                bottom: 0;
+                background: linear-gradient(0deg, var(--bg), transparent);
+            }
+
+        .showcase-q {
+            font-family: var(--fd);
+            font-size: clamp(24px,5.5vw,42px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -.015em;
+            color: var(--dark);
+        }
+
+            .showcase-q em {
+                font-style: italic;
+                color: var(--pink);
+            }
+
+        .showcase-sub {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.7;
+            margin: 14px 0 24px;
+        }
+
+        .ex-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin-top: 56px;
+        }
+
+        @media(min-width:900px) {
+            .ex-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 36px;
+                align-items: stretch;
+            }
+        }
+
+        .ex-card {
+            position: relative;
+            border-radius: 32px;
+            padding: 40px 28px 36px;
+            background: rgba(255,255,255,.55);
+            border: 1px solid rgba(255,255,255,.6);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: var(--sh-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            isolation: isolate;
+            transition: transform .6s var(--ease), box-shadow .6s var(--ease);
+        }
+
+            .ex-card:hover {
+                transform: translateY(-8px);
+                box-shadow: var(--sh-xl);
+            }
+
+        /* floating gradient blobs */
+        .ex-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(46px);
+            opacity: .55;
+            z-index: -2;
+            transition: transform 1s var(--ease), opacity .6s var(--ease);
+            pointer-events: none;
+        }
+
+            .ex-blob.b1 {
+                width: 280px;
+                height: 280px;
+                top: -90px;
+                left: -80px;
+            }
+
+            .ex-blob.b2 {
+                width: 240px;
+                height: 240px;
+                bottom: -100px;
+                right: -70px;
+            }
+
+        .ex-card.love .ex-blob.b1 {
+            background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
+        }
+
+        .ex-card.love .ex-blob.b2 {
+            background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+        }
+
+        .ex-card.fr .ex-blob.b1 {
+            background: radial-gradient(circle, var(--coral) 0%, transparent 70%);
+        }
+
+        .ex-card.fr .ex-blob.b2 {
+            background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+        }
+
+        .ex-card:hover .ex-blob.b1 {
+            transform: translate(18px,14px) scale(1.12);
+            opacity: .75;
+        }
+
+        .ex-card:hover .ex-blob.b2 {
+            transform: translate(-14px,-12px) scale(1.12);
+            opacity: .75;
+        }
+
+        /* animated ambient glow ring around whole card */
+        .ex-card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: -3;
+            border-radius: 34px;
+            opacity: 0;
+            transition: opacity .6s var(--ease);
+            filter: blur(10px);
+        }
+
+        .ex-card.love::before {
+            background: linear-gradient(120deg, var(--pink), var(--purple), var(--pink));
+            background-size: 200% 200%;
+            animation: exGlowMove 6s linear infinite;
+        }
+
+        .ex-card.fr::before {
+            background: linear-gradient(120deg, var(--coral), var(--gold), var(--coral));
+            background-size: 200% 200%;
+            animation: exGlowMove 6s linear infinite;
+        }
+
+        .ex-card:hover::before {
+            opacity: .5;
+        }
+
+        @keyframes exGlowMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
+        .ex-badge {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .01em;
+            padding: 7px 16px;
+            border-radius: 99px;
+            margin-bottom: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ex-card.love .ex-badge {
+            background: var(--pink3);
+            color: var(--pink2);
+        }
+
+        .ex-card.fr .ex-badge {
+            background: var(--coral3);
+            color: var(--coral);
+        }
+
+        .ex-title {
+            font-family: var(--fd);
+            font-size: clamp(22px,3.6vw,28px);
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .ex-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.65;
+            max-width: 320px;
+            margin-bottom: 28px;
+        }
+
+        /* phone frame + live iframe */
+        .ex-phone-wrap {
+            position: relative;
+            width: 230px;
+            height: 470px;
+            margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ex-phone {
+            position: relative;
+            width: 220px;
+            height: 460px;
+            border-radius: 38px;
+            background: #0b0b10;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(17,24,39,.22), 0 6px 18px rgba(17,24,39,.14), 0 0 0 1px rgba(255,255,255,.06) inset;
+            transition: transform .6s var(--spring), box-shadow .6s var(--ease);
+            transform: translateY(0) rotate(0deg);
+        }
+
+        .ex-card:hover .ex-phone {
+            transform: translateY(-10px) rotate(-1.2deg);
+            box-shadow: 0 36px 70px rgba(17,24,39,.30), 0 14px 28px rgba(17,24,39,.18), 0 0 0 1px rgba(255,255,255,.08) inset;
+        }
+
+        .ex-phone::after {
+            content: "";
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 18px;
+            background: #0b0b10;
+            border-radius: 14px;
+            z-index: 3;
+        }
+
+        .ex-phone-screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .ex-skel {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-color: #eef1f5;
+            background-image: linear-gradient(100deg, rgba(0,0,0,0) 18%, rgba(0,0,0,.06) 33%, rgba(0,0,0,0) 48%);
+            background-size: 250% 100%;
+            background-position: 0 0;
+            animation: shimmerSweep 1.5s ease-in-out infinite;
+            opacity: 1;
+            transition: opacity .45s var(--ease);
+            pointer-events: none;
+        }
+
+            .ex-skel.gone {
+                opacity: 0;
+            }
+
+        .ex-phone-screen iframe {
+            opacity: 0;
+            transition: opacity .5s var(--ease);
+            width: 375px;
+            height: 812px;
+            border: 0;
+            transform: scale(.533);
+            transform-origin: top left;
+            pointer-events: none;
+        }
+
+            .ex-phone-screen iframe.loaded {
+                opacity: 1;
+            }
+
+        .ex-feats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .ex-feat {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            background: rgba(255,255,255,.7);
+            border: 1px solid var(--bord);
+            padding: 7px 13px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+        }
+
+        .ex-card:hover .ex-feat {
+            box-shadow: var(--sh-sm);
+        }
+
+        .ex-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #fff;
+            padding: 14px 30px;
+            border-radius: 99px;
+            text-decoration: none;
+            overflow: hidden;
+            isolation: isolate;
+            transition: transform .35s var(--spring), box-shadow .35s var(--ease);
+        }
+
+        .ex-card.love .ex-btn {
+            background: linear-gradient(120deg, var(--pink), var(--pink2));
+            box-shadow: var(--sh-pink);
+        }
+
+        .ex-card.fr .ex-btn {
+            background: linear-gradient(120deg, var(--coral), #FF6F3D);
+            box-shadow: 0 10px 40px rgba(255,138,101,.40);
+        }
+
+        .ex-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255,255,255,.35), transparent 60%);
+            transform: translateX(-120%);
+            transition: transform .6s var(--ease);
+        }
+
+        .ex-card:hover .ex-btn::before {
+            transform: translateX(120%);
+        }
+
+        .ex-card:hover .ex-btn {
+            transform: translateY(-3px) scale(1.03);
+        }
+
+        .ex-btn span.arr {
+            transition: transform .35s var(--spring);
+        }
+
+        .ex-card:hover .ex-btn span.arr {
+            transform: translateX(4px);
+        }
+
+        /* RTL: the arrow should still read as "forward" — flip the glyph and
+           reverse the hover slide direction to match. */
+        [dir="rtl"] .ex-btn span.arr {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        [dir="rtl"] .ex-card:hover .ex-btn span.arr {
+            transform: scaleX(-1) translateX(4px);
+        }
+
+        @media(max-width:520px) {
+            .ex-card {
+                padding: 32px 20px 30px;
+            }
+
+            .ex-phone-wrap {
+                width: 200px;
+                height: 410px;
+            }
+
+            .ex-phone {
+                width: 190px;
+                height: 400px;
+            }
+        }
+
+        .sh-card {
+            background: #fff;
+            border-radius: 24px;
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-xl);
+            overflow: hidden;
+            transition: transform .4s var(--ease),box-shadow .4s var(--ease);
+        }
+
+            .sh-card:hover {
+                transform: translateY(-6px);
+            }
+
+        .sh-hdr {
+            background: linear-gradient(135deg,#14082a,#07020f);
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sh-av {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#FF89C0,#FF3380);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .sh-info p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .sh-info span {
+            font-size: 10px;
+            color: rgba(255,255,255,.45);
+        }
+
+        .sh-hrt {
+            margin-left: auto;
+            font-size: 22px;
+            animation: hb 2s ease-in-out infinite;
+        }
+
+        .sh-tmr {
+            padding: 12px 17px;
+            background: rgba(255,95,162,.06);
+            border-bottom: 1px solid var(--bord);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sh-days {
+            font-family: var(--fd);
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .sh-days-l {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-top: 1px;
+        }
+
+        .sh-since {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .sh-body {
+            padding: 13px 17px;
+        }
+
+        .sh-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sh-photo {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+        }
+
+        .sh-msg {
+            font-family: var(--fd);
+            font-style: italic;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+            padding: 10px 12px;
+            background: rgba(124,77,255,.05);
+            border-radius: 10px;
+            border-left: 2px solid var(--purple);
+        }
+
+        .sh-feats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 11px 17px 13px;
+            border-top: 1px solid var(--bord);
+        }
+
+        .sh-feat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--pink3);
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--pink);
+        }
+
+        /* FEATURES */
+        .feat-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 11px;
+        }
+
+        @media(min-width:580px) {
+            .feat-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+
+        @media(min-width:900px) {
+            .feat-grid {
+                grid-template-columns: repeat(3,1fr);
+            }
+        }
+
+        .fi {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid var(--bord);
+            padding: 26px 22px;
+            box-shadow: var(--sh-card);
+            transition: transform .4s var(--ease),box-shadow .4s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .fi::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                border-radius: 0;
+                opacity: 0;
+                transition: opacity .28s;
+            }
+
+            .fi:hover {
+                transform: translateY(-6px);
+                box-shadow: var(--sh-card-hover);
+            }
+
+                .fi:hover::before {
+                    opacity: 1;
+                }
+
+        .fi-p::before {
+            background: linear-gradient(90deg,var(--pink),var(--pink2));
+        }
+
+        .fi-v::before {
+            background: linear-gradient(90deg,var(--purple),var(--purple2));
+        }
+
+        .fi-c::before {
+            background: linear-gradient(90deg,var(--cyan),#00A8CC);
+        }
+
+        .fi-g::before {
+            background: linear-gradient(90deg,var(--gold),#E09000);
+        }
+
+        .fi-co::before {
+            background: linear-gradient(90deg,var(--coral),#E05520);
+        }
+
+        .fi-t::before {
+            background: linear-gradient(90deg,#14B8A6,#0D9488);
+        }
+
+        .fi-ico {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .fi-ico-p {
+            background: var(--pink3);
+        }
+
+        .fi-ico-v {
+            background: var(--purple3);
+        }
+
+        .fi-ico-c {
+            background: var(--cyan3);
+        }
+
+        .fi-ico-g {
+            background: var(--gold3);
+        }
+
+        .fi-ico-co {
+            background: var(--coral3);
+        }
+
+        .fi-ico-t {
+            background: rgba(20,184,166,.12);
+        }
+
+        .fi-tt {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .fi-dd {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .fi-new {
+            position: absolute;
+            top: 13px;
+            right: 13px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: linear-gradient(135deg,var(--pink),var(--pink2));
+            color: #fff;
+            letter-spacing: .04em;
+        }
+
+        .fi-premium {
+            background: linear-gradient(135deg,var(--gold),#E09000);
+        }
+
+        /* PRIVACY */
+        .priv-sec {
+            background: linear-gradient(180deg,#F0F4FF,var(--bg));
+            position: relative;
+        }
+
+            /* Only the top edge needs a blend — the section's own gradient
+           already resolves to var(--bg) at the bottom, matching the
+           section that follows it. */
+            .priv-sec::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 100px;
+                pointer-events: none;
+                z-index: -1;
+                background: linear-gradient(180deg, var(--bg), transparent);
+            }
+
+        .priv-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 36px;
+            align-items: start;
+        }
+
+        @media(min-width:800px) {
+            .priv-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .priv-pts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pp {
+            display: flex;
+            gap: 13px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-sm);
+            transition: transform .25s,box-shadow .25s;
+        }
+
+            .pp:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--sh-md);
+            }
+
+        .pp-ico {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: var(--pink3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .pp-t {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+
+        .pp-b {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .priv-badge {
+            background: linear-gradient(135deg,#0F0A20,#1A1035);
+            border-radius: 20px;
+            padding: 26px 22px;
+            color: #fff;
+        }
+
+        .pb-ico {
+            font-size: 44px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .pb-t {
+            font-family: var(--fd);
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .pb-d {
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .pb-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .ptag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.08);
+            color: rgba(255,255,255,.7);
+            border: 1px solid rgba(255,255,255,.12);
+        }
+
+        /* FRIENDSHIP */
+        .fr-sec {
+            background: linear-gradient(158deg,#FFF5F0,#FFFBF0,#FFF9F0);
+            position: relative;
+        }
+
+            .fr-sec::before,
+            .fr-sec::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 100px;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .fr-sec::before {
+                top: 0;
+                background: linear-gradient(180deg, var(--bg), transparent);
+            }
+
+            .fr-sec::after {
+                bottom: 0;
+                background: linear-gradient(0deg, var(--bg), transparent);
+            }
+
+            .fr-sec .sec-eye {
+                color: var(--coral);
+            }
+
+            .fr-sec .sec-title em {
+                color: var(--coral);
+            }
+
+        .fr-cats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .fr-cat {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            background: #fff;
+            border: 1.5px solid rgba(255,138,101,.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .22s;
+            box-shadow: var(--sh-sm);
+        }
+
+            .fr-cat:hover {
+                border-color: var(--coral);
+                background: #FFF5F0;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255,138,101,.18);
+            }
+
+        .fr-cat-i {
+            font-size: 17px;
+        }
+
+        .fr-cat-n {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .fr-card {
+            background: #fff;
+            border-radius: 22px;
+            border: 1px solid rgba(255,138,101,.15);
+            box-shadow: var(--sh-lg);
+            overflow: hidden;
+            margin-top: 28px;
+        }
+
+        .fr-h {
+            background: linear-gradient(135deg,#1c1200,#0d0900);
+            padding: 15px 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fr-hn {
+            font-family: var(--fd);
+            font-size: 14px;
+            font-weight: 700;
+            color: #FFF3CC;
+        }
+
+        .fr-hs {
+            font-size: 10px;
+            color: rgba(255,243,204,.4);
+        }
+
+        .fr-b {
+            padding: 14px 17px;
+            background: #fff;
+        }
+
+        .fr-row {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .fr-p {
+            flex: 1;
+            aspect-ratio: 4/3;
+            border-radius: 9px;
+        }
+
+        .fr-txt {
+            font-family: var(--fd);
+            font-style: italic;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 9px;
+        }
+
+        .fr-pill {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            background: #FFF5F0;
+            border: 1px solid rgba(255,138,101,.15);
+            border-radius: 9px;
+            font-size: 11px;
+            color: var(--coral);
+            font-weight: 500;
+        }
+
+        /* PRICING */
+        .price-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        .price-card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 44px 34px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid var(--bord);
+            box-shadow: 0 24px 90px rgba(255,95,162,.16),var(--sh-xl);
+            position: relative;
+            overflow: hidden;
+            transition: transform .4s var(--ease),box-shadow .4s var(--ease);
+        }
+
+            .price-card:hover {
+                transform: translateY(-6px);
+            }
+
+            .price-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));
+            }
+
+            .price-card::after {
+                content: '';
+                position: absolute;
+                top: 4px;
+                left: 15%;
+                right: 15%;
+                height: 1px;
+                background: linear-gradient(90deg,transparent,rgba(255,95,162,.3),transparent);
+            }
+
+        .pc-rib {
+            position: absolute;
+            top: 15px;
+            right: -8px;
+            background: linear-gradient(135deg,var(--gold),#E09000);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 18px 4px 12px;
+            border-radius: 3px 0 0 3px;
+            letter-spacing: .06em;
+            box-shadow: 0 2px 8px rgba(255,184,0,.4);
+        }
+
+            .pc-rib::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 0;
+                border-style: solid;
+                border-width: 0 0 27px 8px;
+                border-color: transparent transparent #B37F00 transparent;
+            }
+
+        .pc-ey {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--pink);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .pc-nm {
+            font-family: var(--fd);
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .pc-pr {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .pc-amt {
+            font-family: var(--fd);
+            font-size: 62px;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .pc-cur {
+            font-size: 19px;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        .pc-per {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+
+        .pc-div {
+            height: 1px;
+            background: var(--bord);
+            margin: 0 0 20px;
+        }
+
+        .pc-feats {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            text-align: left;
+            margin-bottom: 26px;
+        }
+
+            .pc-feats li {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                font-size: 13px;
+                color: var(--text);
+            }
+
+                .pc-feats li::before {
+                    content: '';
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg,var(--pink),var(--pink2));
+                    flex-shrink: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 9l3 3 5-5' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+
+        .pc-note {
+            font-size: 11px;
+            color: var(--muted2);
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .upsell-bar {
+            max-width: 440px;
+            margin: 14px auto 0;
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            border: 1px solid rgba(255,184,0,.25);
+            box-shadow: 0 4px 20px rgba(255,184,0,.1);
+        }
+
+        .ub-ico {
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+
+        .ub-info {
+            flex: 1;
+        }
+
+        .ub-t {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+
+        .ub-d {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .ub-pr {
+            font-family: var(--fd);
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--dark);
+            flex-shrink: 0;
+        }
+
+        /* FAQ */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid var(--bord);
+            overflow: hidden;
+            transition: box-shadow .25s;
+        }
+
+            .faq-item:hover {
+                box-shadow: var(--sh-sm);
+            }
+
+            .faq-item.open {
+                box-shadow: 0 4px 20px rgba(255,95,162,.12);
+                border-color: rgba(255,95,162,.2);
+            }
+
+        .faq-q {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 17px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            background: none;
+            text-align: left;
+            gap: 12px;
+        }
+
+        .faq-ico {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: var(--pink3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--pink);
+            flex-shrink: 0;
+            transition: transform .3s var(--ease);
+        }
+
+        .faq-item.open .faq-ico {
+            transform: rotate(45deg);
+            background: var(--pink);
+            color: #fff;
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s var(--ease);
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 300px;
+        }
+
+        .faq-a-in {
+            padding: 0 17px 14px;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        /* TESTIMONIALS */
+        .testi-g {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        @media(min-width:768px) {
+            .testi-g {
+                flex-direction: row;
+            }
+        }
+
+        .tc2 {
+            flex: 1;
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px 17px;
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-sm);
+        }
+
+        .tc2-q {
+            font-family: var(--fd);
+            font-style: italic;
+            font-size: 14px;
+            color: var(--dark);
+            line-height: 1.7;
+            margin-bottom: 13px;
+        }
+
+        .tc2-a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tc2-av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            background: linear-gradient(135deg,var(--pink3),rgba(255,95,162,.2));
+        }
+
+        .tc2-n {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .tc2-m {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* PREMIUM TESTIMONIALS SLIDER */
+        .pt-wrap {
+            position: relative;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .pt-slider {
+            overflow: hidden;
+            border-radius: 24px;
+        }
+
+        .pt-track {
+            display: flex;
+            transition: transform .6s var(--ease);
+        }
+
+        .pt-slide {
+            flex: 0 0 100%;
+            min-width: 0;
+            padding: 4px;
+        }
+
+        .pt-card {
+            position: relative;
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: 22px;
+            padding: 36px 28px 28px;
+            box-shadow: var(--sh-card);
+            text-align: center;
+            overflow: hidden;
+            transition: box-shadow .4s var(--ease), transform .4s var(--ease);
+        }
+
+            .pt-card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, var(--pink4), transparent 55%);
+                pointer-events: none;
+            }
+
+            .pt-card:hover {
+                box-shadow: var(--sh-card-hover);
+                transform: translateY(-2px);
+            }
+
+        .pt-quote-ico {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--fd);
+            font-size: 26px;
+            font-style: italic;
+            color: #fff;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            box-shadow: var(--sh-pink);
+        }
+
+        .pt-stars {
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 14px;
+        }
+
+        .pt-text {
+            position: relative;
+            font-family: var(--fd);
+            font-style: italic;
+            font-size: 16.5px;
+            line-height: 1.75;
+            color: var(--dark);
+            margin-bottom: 22px;
+        }
+
+        .pt-foot {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .pt-av {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--pink3), var(--purple3));
+            border: 2px solid #fff;
+            box-shadow: var(--sh-sm);
+        }
+
+        .pt-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            text-align: start;
+        }
+
+        .pt-meta {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: start;
+        }
+
+        .pt-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .pt-arrow {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--bord2);
+            color: var(--text);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .25s var(--ease), color .25s var(--ease), transform .25s var(--spring);
+            flex-shrink: 0;
+        }
+
+            .pt-arrow:hover {
+                background: var(--pink);
+                border-color: var(--pink);
+                color: #fff;
+                transform: scale(1.08);
+            }
+
+        .pt-dots {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pt-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--bord2);
+            transition: background .3s var(--ease), width .3s var(--ease), transform .3s var(--spring);
+        }
+
+            .pt-dot.on {
+                width: 22px;
+                border-radius: 5px;
+                background: linear-gradient(90deg, var(--pink), var(--purple));
+            }
+
+        @media(min-width:768px) {
+            .pt-card {
+                padding: 44px 56px 36px;
+            }
+
+            .pt-text {
+                font-size: 18px;
+            }
+        }
+
+        @media(max-width:599px) {
+            .pt-card {
+                padding: 28px 20px 24px;
+                border-radius: 18px;
+            }
+
+            .pt-text {
+                font-size: 15px;
+            }
+
+            .pt-arrow {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 48px 22px 36px;
+            border-top: 1px solid var(--bord);
+            text-align: center;
+            background: var(--bg);
+        }
+
+        .footer-brand {
+            font-family: var(--fd);
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .footer-tag {
+            font-size: 13px;
+            color: var(--muted);
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+            .footer-links a {
+                font-size: 13px;
+                color: var(--muted);
+                transition: color .2s;
+            }
+
+                .footer-links a:hover {
+                    color: var(--pink);
+                }
+
+        .footer-copy {
+            font-size: 11px;
+            color: var(--muted2);
+        }
+
+        /* MODAL */
+        .modal-wrap {
+            position: fixed;
+            inset: 0;
+            z-index: 600;
+            background: rgba(0,0,0,.5);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+
+        @media(min-width:600px) {
+            .modal-wrap {
+                align-items: center;
+            }
+        }
+
+        .modal-wrap.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 460px;
+            background: #fff;
+            border-radius: 28px 28px 0 0;
+            padding: 26px 22px 46px;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform .45s var(--ease);
+            box-shadow: 0 -8px 40px rgba(0,0,0,.12);
+        }
+
+        @media(min-width:600px) {
+            .modal-box {
+                border-radius: 28px;
+                transform: translateY(16px);
+            }
+        }
+
+        .modal-wrap.open .modal-box {
+            transform: none;
+        }
+
+        .modal-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg,var(--pink),var(--purple));
+        }
+
+        .drag-pill {
+            width: 36px;
+            height: 4px;
+            background: var(--bord2);
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+
+        @media(min-width:600px) {
+            .drag-pill {
+                display: none;
+            }
+        }
+
+        .m-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--bord);
+            color: var(--muted);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+        }
+
+            .m-close:hover {
+                background: var(--bord);
+            }
+
+        .m-title {
+            font-family: var(--fd);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .m-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 18px;
+            line-height: 1.55;
+        }
+
+        .m-tabs {
+            display: flex;
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 17px;
+            background: var(--bg);
+        }
+
+        .m-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            background: none;
+            border: none;
+            min-height: 44px;
+            transition: all .2s;
+            border-radius: 10px;
+            margin: 3px;
+        }
+
+            .m-tab.on {
+                background: #fff;
+                color: var(--pink);
+                box-shadow: var(--sh-sm);
+            }
+
+        .m-pane {
+            display: none;
+        }
+
+            .m-pane.on {
+                display: block;
+            }
+
+        .m-step {
+            display: none;
+        }
+
+            .m-step.on {
+                display: block;
+            }
+
+        .m-field {
+            margin-bottom: 10px;
+        }
+
+        .m-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .m-inp {
+            display: block;
+            width: 100%;
+            padding: 13px 16px;
+            min-height: 50px;
+            background: var(--bg);
+            border: 1.5px solid var(--bord2);
+            border-radius: 12px;
+            color: var(--dark);
+            font-family: var(--fu);
+            font-size: 15px;
+            outline: none;
+            transition: border .2s,box-shadow .2s;
+        }
+
+            .m-inp:focus {
+                border-color: var(--pink);
+                box-shadow: 0 0 0 3px rgba(255,95,162,.12);
+            }
+
+            .m-inp.err {
+                border-color: #EF4444 !important;
+            }
+
+            .m-inp.code {
+                letter-spacing: 6px;
+                text-align: center;
+                font-size: 20px;
+                font-weight: 700;
+            }
+
+                .m-inp.code::placeholder {
+                    letter-spacing: 2px;
+                    font-size: 15px;
+                    font-weight: 400;
+                    color: var(--muted2);
+                }
+
+        .m-btn {
+            display: block;
+            width: 100%;
+            min-height: 52px;
+            padding: 0 24px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all .28s var(--ease);
+        }
+
+            .m-btn.pri {
+                background: linear-gradient(135deg,var(--pink),var(--pink2));
+                color: #fff;
+                box-shadow: var(--sh-pink);
+                border: 1px solid rgba(255,255,255,.2);
+            }
+
+                .m-btn.pri:hover {
+                    box-shadow: 0 14px 40px rgba(255,95,162,.5);
+                    transform: translateY(-2px);
+                }
+
+            .m-btn:disabled {
+                opacity: .5;
+                cursor: not-allowed;
+                transform: none !important;
+            }
+
+        .m-note {
+            padding: 11px 13px;
+            background: rgba(255,95,162,.06);
+            border: 1px solid rgba(255,95,162,.15);
+            border-radius: 10px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+            line-height: 1.55;
+        }
+
+            .m-note strong {
+                color: var(--dark);
+            }
+
+        .m-status {
+            min-height: 16px;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .m-status.e {
+                color: #EF4444;
+            }
+
+            .m-status.s {
+                color: #10B981;
+            }
+
+        .success-box {
+            background: linear-gradient(135deg,#FFF0F7,#F3F0FF);
+            border: 1px solid rgba(255,95,162,.2);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            margin: 13px 0;
+        }
+
+        .success-code {
+            font-family: var(--fd);
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 5px;
+            color: var(--dark);
+        }
+
+        .success-note {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .spin {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255,95,162,.25);
+            border-top-color: var(--pink);
+            border-radius: 50%;
+            animation: sp .65s linear infinite;
+            vertical-align: middle;
+            margin-right: 7px;
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* REVEALS */
+        .rv {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s var(--ease),transform .8s var(--ease);
+            will-change: transform,opacity;
+        }
+
+            .rv.in {
+                opacity: 1;
+                transform: none;
+            }
+
+        .rvl {
+            opacity: 0;
+            transform: translateX(-28px);
+            transition: opacity .8s var(--ease),transform .8s var(--ease);
+        }
+
+            .rvl.in {
+                opacity: 1;
+                transform: none;
+            }
+
+        .rvr {
+            opacity: 0;
+            transform: translateX(28px);
+            transition: opacity .8s var(--ease),transform .8s var(--ease);
+        }
+
+            .rvr.in {
+                opacity: 1;
+                transform: none;
+            }
+
+        @media(max-width:420px) {
+            .ph-frame {
+                width: 230px;
+                height: 460px;
+                border-radius: 42px;
+            }
+
+            .phone-scene {
+                width: 230px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="launch-banner">
+        <span id="offerBarText">
+            🚀 Launch Offer • 40% OFF • Limited Time • Create your page today • 🚀 Launch Offer • 40% OFF •
+        </span>
+    </div>
+    <!-- NAV -->
+    <nav class="nav" id="siteNav">
+
+        <div class="nav-brand"><span class="nav-icon">💝</span><span>Viaa</span></div>
+        <div class="nav-r">
+            <button class="lang-btn" id="langBtn"><span id="langLabel">عربي</span></button>
+            <button class="btn btn-primary btn-shine sm" id="navCta">Create Page</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+        <div class="blob-wrap"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="pill pill-pink"><span class="pill-dot"></span><span id="h_badge">Private Love Pages · 9 Themes · Forever</span></span></div>
+            <div class="phone-scene">
+                <div class="ph-aura"></div><div class="ph-ring"></div>
+                <div class="ph-wrap">
+                    <div class="ph-frame">
+                        <div class="ph-notch"></div>
+                        <div class="ph-screen">
+                            <div class="ph-photos" id="phPh"><div class="ph-photo on php1"></div><div class="ph-photo php2"></div><div class="ph-photo php3"></div><div class="ph-photo php4"></div></div>
+                            <div class="ph-ov"></div>
+                            <div class="ph-pt" id="phPt"></div>
+                            <div class="ph-inner">
+                                <span class="ph-heart">💝</span>
+                                <p class="ph-nms" id="phNames">Youssef &amp; Salma</p>
+                                <p class="ph-tmr" id="phTimer">Together · loading…</p>
+                                <div class="ph-rule"></div>
+                                <div class="ph-grid">
+                                    <div class="ph-cell" style="background:linear-gradient(135deg,#3a1040,#1a0820);"></div>
+                                    <div class="ph-cell" style="background:linear-gradient(135deg,#1a082a,#2a1040);"></div>
+                                    <div class="ph-cell" style="background:linear-gradient(160deg,#0a1832,#1a0428);"></div>
+                                    <div class="ph-cell" style="background:linear-gradient(135deg,#200530,#0d0120);"></div>
+                                </div>
+                                <div class="ph-music">
+                                    <span class="ph-music-ico">🎵</span>
+                                    <div class="ph-music-inf"><p class="ph-music-t" id="phSong">Perfect — Ed Sheeran</p><p class="ph-music-a">Our Song</p></div>
+                                    <div class="ph-bars"><div class="ph-bar" style="animation-delay:0s;animation-duration:.6s;height:6px;"></div><div class="ph-bar" style="animation-delay:.1s;animation-duration:.8s;height:10px;"></div><div class="ph-bar" style="animation-delay:.2s;animation-duration:.5s;height:7px;"></div><div class="ph-bar" style="animation-delay:.15s;animation-duration:.9s;height:12px;"></div><div class="ph-bar" style="animation-delay:.05s;animation-duration:.7s;height:5px;"></div></div>
+                                </div>
+                                <p class="ph-q" id="phQ">"You are my home — the place where I am most myself."</p>
+                            </div>
+                            <div class="ph-glass"></div><div class="ph-spec"></div>
+                        </div>
+                    </div>
+                    <div class="ph-hrt-wrap" id="phHrts"></div>
+                </div>
+            </div>
+            <div class="hero-text">
+                <h1 class="hero-h1" id="h_h1">The most beautiful gift<br><em id="h_h1b">isn't wrapped in a box.</em></h1>
+                <p class="hero-desc" id="h_desc">Viaa creates private, cinematic love pages — living memories that grow with every chapter of your story.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-shine full" id="heroCta1">Create Your Page ❤️</button>
+                    <button class="btn btn-ghost full" id="heroCta2">See Live Examples</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="hst"><span class="hst-n">500+</span><span class="hst-l" id="h_s1">Pages Made</span></div>
+                    <div class="hst"><span class="hst-n">9</span><span class="hst-l" id="h_s2">Themes</span></div>
+                    <div class="hst"><span class="hst-n">∞</span><span class="hst-l" id="h_s3">Memories</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST INDICATORS -->
+    <section class="sec" style="padding-top:28px;padding-bottom:28px;">
+        <div class="sec-in">
+            <div class="hero-stats rv" id="trustStats" style="margin:0 auto;max-width:560px;animation:none;">
+                <div class="hst"><span class="hst-n">🔒</span><span class="hst-l" id="tr_s1">Private by Design</span></div>
+                <div class="hst"><span class="hst-n">⚡</span><span class="hst-l" id="tr_s2">Instant Access Code</span></div>
+                <div class="hst"><span class="hst-n">💳</span><span class="hst-l" id="tr_s3">Secure Payment</span></div>
+                <div class="hst"><span class="hst-n">♾️</span><span class="hst-l" id="tr_s4">Grows Forever</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THEMES -->
+    <section class="sec themes-sec" id="themes">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="tg_ey">Live Theme Demos</span></div>
+                <h2 class="sec-title" id="tg_t">9 different worlds.<br><em>One perfect love story.</em></h2>
+                <p class="sec-sub" id="tg_d" style="color:rgba(255,255,255,.5)">Every theme is a completely different visual world. Tap Demo to experience the real page.</p>
+            </div>
+            <div class="tgrid rv" id="themeGrid"></div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="sec" id="how">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="hw_ey">How It Works</span></div>
+                <h2 class="sec-title" id="hw_t">From idea to <em>forever</em><br>in minutes.</h2>
+            </div>
+            <div class="hw-wrap"><div class="hw-line"></div><div class="hw-grid" id="hwGrid"></div></div>
+        </div>
+    </section>
+
+    <!-- SHOWCASE -->
+    <section class="sec showcase-sec" id="showcase">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="sh_ey">Explore VIAA</span></div>
+                <h2 class="sec-title" id="sh_t">Choose your <em>edition.</em></h2>
+                <p class="showcase-sub" id="sh_d" style="max-width:480px;margin-left:auto;margin-right:auto;">Two living worlds, each built for a different bond. Tap into a real, working page — no screenshots.</p>
+            </div>
+
+            <div class="ex-grid">
+                <!-- LOVE CARD -->
+                <div class="ex-card love rv">
+                    <div class="ex-blob b1"></div>
+                    <div class="ex-blob b2"></div>
+                    <span class="ex-badge">❤️ Love Edition</span>
+                    <h3 class="ex-title">A home for your story</h3>
+                    <p class="ex-desc">Timers, timelines, music and private wishes — the cinematic page built for two.</p>
+                    <div class="ex-phone-wrap">
+                        <div class="ex-phone">
+                            <div class="ex-phone-screen">
+                                <div class="ex-skel" data-skel-for="loveFrame"></div>
+                                <iframe id="loveFrame" src="https://viaa-mor-hiw7-f7t3qi6wv-yousefelmandrawey-1595s-projects.vercel.app/demo.html?theme=classic" title="Love Edition live preview" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-feats">
+                        <span class="ex-feat">💝 Memories</span>
+                        <span class="ex-feat">⏳ Timeline</span>
+                        <span class="ex-feat">🎵 Music</span>
+                        <span class="ex-feat">📖 Guestbook</span>
+                    </div>
+                    <a href="demo.html?theme=classic" target="_blank" rel="noopener" class="ex-btn">Open Demo <span class="arr">→</span></a>
+                </div>
+
+                <!-- FRIENDSHIP CARD -->
+                <div class="ex-card fr rv">
+                    <div class="ex-blob b1"></div>
+                    <div class="ex-blob b2"></div>
+                    <span class="ex-badge">🫂 Friendship Edition</span>
+                    <h3 class="ex-title">A page for your people</h3>
+                    <p class="ex-desc">Warm, joyful and alive — built for the friendships worth telling a story about.</p>
+                    <div class="ex-phone-wrap">
+                        <div class="ex-phone">
+                            <div class="ex-phone-screen">
+                                <div class="ex-skel" data-skel-for="frFrame"></div>
+                                <iframe id="frFrame" src="https://viaa-mor-hiw7-f7t3qi6wv-yousefelmandrawey-1595s-projects.vercel.app/demo.html?friendship=golden_days" title="Friendship Edition live preview" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-feats">
+                        <span class="ex-feat">💝 Memories</span>
+                        <span class="ex-feat">⏳ Timeline</span>
+                        <span class="ex-feat">🎵 Music</span>
+                        <span class="ex-feat">📖 Guestbook</span>
+                    </div>
+                    <a href="demo.html?friendship=memories" target="_blank" rel="noopener" class="ex-btn">Open Demo <span class="arr">→</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- EXAMPLES -->
+    <section class="sec" id="examples">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="eg_ey">Real Pages</span></div>
+                <h2 class="sec-title" id="eg_t">Not mockups.<br><em>Real stories, live.</em></h2>
+                <p class="sec-sub" id="eg_d">A closer look at two pages people actually made — same builder, same 9 themes, their real words.</p>
+            </div>
+            <div class="fr-card rv" style="margin-bottom:16px;">
+                <div class="fr-h"><div><p class="fr-hn" id="eg1_n">Kareem &amp; Luna</p><p class="fr-hs" id="eg1_s">Midnight Promise Theme · Long Distance</p></div><span style="font-size:22px;">🌙</span></div>
+                <div class="fr-b">
+                    <div class="fr-row"><div class="fr-p" style="background:linear-gradient(135deg,#0B1B33,#142B52);"></div><div class="fr-p" style="background:linear-gradient(135deg,#101F3D,#1C3560);"></div><div class="fr-p" style="background:linear-gradient(135deg,#0D1A30,#18294C);"></div></div>
+                    <p class="fr-txt" id="eg1_q">"Long distance for 2 years. Having a page that holds all our memories makes the distance feel small. It's our place."</p>
+                    <div class="fr-pill"><span>⏳</span><span id="eg1_tag">Live Timeline · Free Trailer included</span></div>
+                </div>
+            </div>
+            <div class="fr-card rv" style="transition-delay:80ms;">
+                <div class="fr-h"><div><p class="fr-hn" id="eg2_n">Yuki &amp; Hana</p><p class="fr-hs" id="eg2_s">Sakura Dreams Theme · Anniversary Gift</p></div><span style="font-size:22px;">🌸</span></div>
+                <div class="fr-b">
+                    <div class="fr-row"><div class="fr-p" style="background:linear-gradient(135deg,#3A1420,#5C1F33);"></div><div class="fr-p" style="background:linear-gradient(135deg,#341018,#4E1A2A);"></div><div class="fr-p" style="background:linear-gradient(135deg,#2E0E15,#451725);"></div></div>
+                    <p class="fr-txt" id="eg2_q">"I made this for our anniversary and she cried for 10 minutes. She opens it every morning."</p>
+                    <div class="fr-pill"><span>⭐</span><span id="eg2_tag">Upgraded to Premium Trailer</span></div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:26px;"><button class="btn btn-outline" onclick="location.href='demo.html?theme=classic'" id="eg_cta">See More Live Demos →</button></div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="sec" id="features">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="ft_ey">Everything Included</span></div>
+                <h2 class="sec-title" id="ft_t">Every feature your<br>story <em>deserves.</em></h2>
+            </div>
+            <div class="feat-grid" id="featGrid"></div>
+        </div>
+    </section>
+
+    <!-- TRAILER (Free vs Premium) -->
+    <section class="sec" id="trailer" style="padding-top:0;">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="tr_ey">Your Story, In Motion</span></div>
+                <h2 class="sec-title" id="tr_t">Every page comes<br>with a <em>trailer.</em></h2>
+                <p class="sec-sub" id="tr_d">A short cinematic trailer is included automatically. Want it longer and built from your real photos? Upgrade any time.</p>
+            </div>
+            <div class="feat-grid" style="grid-template-columns:1fr;gap:14px;max-width:640px;margin:0 auto;" id="trailerGrid2col">
+                <div class="fi fi-c rv">
+                    <div class="fi-ico fi-ico-c">🎬</div>
+                    <p class="fi-tt" id="tr_free_t">Free Love Trailer</p>
+                    <p class="fi-dd" id="tr_free_d">Every page gets a short animated trailer, auto-built from your theme, names, and message — included at no extra cost.</p>
+                </div>
+                <div class="fi fi-g rv" style="transition-delay:80ms;">
+                    <span class="fi-new fi-premium" id="tr_prem_badge">PREMIUM</span>
+                    <div class="fi-ico fi-ico-g">⭐</div>
+                    <p class="fi-tt" id="tr_prem_t">Premium Trailer</p>
+                    <p class="fi-dd" id="tr_prem_d">A 60-second cinematic vertical trailer, AI-generated from your real photos and story — ready to post on Reels &amp; TikTok. 100 EGP upgrade, added after your page is created.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="sec priv-sec" id="privacy">
+        <div class="sec-in">
+            <div class="priv-grid">
+                <div class="rvl">
+                    <div class="sec-eye">✦ <span id="pv_ey">Your Privacy</span></div>
+                    <h2 class="sec-title" id="pv_t" style="text-align:start;">Your story<br>stays <em>yours.</em></h2>
+                    <p class="sec-sub" style="margin:0 0 22px;text-align:start;" id="pv_d">What happens between two people should stay between two people.</p>
+                    <div class="priv-pts" id="privPts"></div>
+                </div>
+                <div class="rvr">
+                    <div class="priv-badge"><span class="pb-ico">🔒</span><p class="pb-t" id="pb_t">Private by Design</p><p class="pb-d" id="pb_d">Your memories are protected. Your pages are yours. Built for love, not for an algorithm.</p><div class="pb-tags" id="pbTags"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FRIENDSHIP -->
+    <section class="sec fr-sec" id="friendship">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye" style="color:var(--coral);justify-content:center;">✦ <span id="fr_ey">Friendship Edition</span></div>
+                <h2 class="sec-title" id="fr_t">Some friendships are<br><em class="coral" style="color:var(--coral)">worth a page.</em></h2>
+                <p class="sec-sub" id="fr_d">Friendship pages have their own energy — warm, joyful, alive. Not a recolored love page.</p>
+            </div>
+            <div class="fr-cats" id="frCats"></div>
+            <div class="fr-card">
+                <div class="fr-h"><div><p class="fr-hn" id="fr_dn">Reem &amp; Dina</p><p class="fr-hs" id="fr_ds">Best friends since 2015</p></div><span style="font-size:22px;">💛</span></div>
+                <div class="fr-b">
+                    <div class="fr-row"><div class="fr-p" style="background:linear-gradient(135deg,#FFF3E0,#FFE0B2);"></div><div class="fr-p" style="background:linear-gradient(135deg,#FFF8E1,#FFECB3);"></div><div class="fr-p" style="background:linear-gradient(135deg,#FBE9E7,#FFCCBC);"></div></div>
+                    <p class="fr-txt" id="fr_dm">"You've been my constant in every chapter. The kind of friend that makes life feel like a story worth telling."</p>
+                    <div class="fr-pill"><span>🔮</span><span id="fr_dc">Memory Capsule — Unlocks on her 30th birthday</span></div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:26px;"><button class="btn btn-outline" onclick="location.href='demo.html?friendship=golden_days'" id="fr_cta">View Friendship Demo →</button></div>
+        </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="sec" style="padding-top:0;">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="cm_ey">Why Viaa</span></div>
+                <h2 class="sec-title" id="cm_t">Compared to<br>the usual way.</h2>
+            </div>
+            <div class="feat-grid" style="grid-template-columns:1fr;gap:14px;max-width:640px;margin:0 auto;">
+                <div class="fi rv" style="opacity:.85;">
+                    <p class="fi-tt" id="cm_a_t">A photo album, a caption, a story that disappears</p>
+                    <ul class="pc-feats" style="margin-bottom:0;">
+                        <li style="color:var(--muted);" id="cm_a_1">Buried in a camera roll or a feed algorithm decides who sees it</li>
+                        <li style="color:var(--muted);" id="cm_a_2">No privacy — public by default, or gone in 24 hours</li>
+                        <li style="color:var(--muted);" id="cm_a_3">Can't be added to later — it's a single post, not a place</li>
+                    </ul>
+                </div>
+                <div class="fi fi-p rv" style="transition-delay:80ms;border-color:rgba(255,95,162,.28);">
+                    <p class="fi-tt" id="cm_b_t">A Viaa page — private, permanent, yours</p>
+                    <ul class="pc-feats" style="margin-bottom:0;" id="cm_b_list">
+                        <li id="cm_b_1">One private link, never indexed, optional secret word</li>
+                        <li id="cm_b_2">Grows forever — add memories, photos, and capsules anytime</li>
+                        <li id="cm_b_3">Comes with a free cinematic trailer, ready to upgrade to Premium</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="sec" id="pricing">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="pr_ey">Simple Pricing</span></div>
+                <h2 class="sec-title" id="pr_t">One decision.<br><em>Everything included.</em></h2>
+                <p class="sec-sub" id="pr_d">No tiers. No confusion. 99 EGP — every feature, every theme, forever.</p>
+            </div>
+            <div class="price-wrap rv">
+                <div class="price-card">
+                    <span class="pc-rib" id="pc_rib">Best Value</span>
+                    <p class="pc-ey" id="pc_ey">Viaa Love Page</p>
+                    <p class="pc-nm" id="pc_nm">The Complete Experience</p>
+                    <div class="pc-pr"><span class="pc-cur" id="pc_cur">EGP</span><span class="pc-amt">99</span></div>
+                    <p class="pc-per" id="pc_per">One-time · Lifetime · Everything</p>
+                    <div class="pc-div"></div>
+                    <ul class="pc-feats" id="pcFeats"></ul>
+                    <button class="btn btn-primary btn-shine full" id="priceCta" style="height:56px;font-size:16px;">Create Your Page — 99 EGP ❤️</button>
+                    <p class="pc-note" id="pc_note">Access code generated instantly after payment · No waiting</p>
+                    <div class="pb-tags" style="justify-content:center;margin-top:14px;" id="pcBadges">
+                        <span class="ptag" style="background:var(--pink3);color:var(--pink);border-color:rgba(255,95,162,.2);" id="pcb_1">🔒 Private Page</span>
+                        <span class="ptag" style="background:var(--purple3);color:var(--purple);border-color:rgba(124,77,255,.2);" id="pcb_2">🎬 Free Trailer Included</span>
+                        <span class="ptag" style="background:var(--gold3);color:#B37F00;border-color:rgba(255,184,0,.25);" id="pcb_3">💳 Secure Payment</span>
+                    </div>
+                </div>
+            </div>
+            <div class="upsell-bar rv"><span class="ub-ico">⭐</span><div class="ub-info"><p class="ub-t" id="ub_t">Premium Trailer Upgrade</p><p class="ub-d" id="ub_d">Your page already includes a Free Trailer. Upgrade for a 60-second AI-cinematic version, ready for Reels & TikTok.</p></div><span class="ub-pr" id="ub_pr">100 EGP</span></div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="sec" style="padding-top:0" id="testimonials">
+        <div class="sec-in">
+            <div class="sec-hd rv">
+                <div class="sec-eye">✦ <span id="pt_ey">Real Stories</span></div>
+                <h2 class="sec-title" id="pt_t">Loved by couples<br><em>and friends alike.</em></h2>
+                <p class="sec-sub" id="pt_d">Real reactions from real people who turned their story into a page.</p>
+            </div>
+            <div class="pt-wrap rv">
+                <div class="pt-slider" id="ptSlider">
+                    <div class="pt-track" id="ptTrack"></div>
+                </div>
+                <div class="pt-controls">
+                    <button class="pt-arrow" id="ptPrev" aria-label="Previous testimonial">‹</button>
+                    <div class="pt-dots" id="ptDots"></div>
+                    <button class="pt-arrow" id="ptNext" aria-label="Next testimonial">›</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="sec" style="padding-top:52px">
+        <div class="sec-in">
+            <div class="sec-hd rv"><div class="sec-eye">✦ <span id="fq_ey">FAQ</span></div><h2 class="sec-title" id="fq_t">Questions &amp; <em>answers.</em></h2></div>
+            <div class="faq-list rv" id="faqList"></div>
+        </div>
+    </section>
+
+    <!-- CUSTOM -->
+    <section class="sec" style="padding-top:0;padding-bottom:52px">
+        <div class="sec-in">
+            <div class="rv" style="background:linear-gradient(135deg,#FFF0F7,#F3F0FF);border-radius:22px;padding:38px 26px;text-align:center;border:1px solid rgba(255,95,162,.15);">
+                <h3 style="font-family:var(--fd);font-size:clamp(20px,5vw,30px);font-weight:800;color:var(--dark);margin-bottom:9px;" id="cu_t">Something extraordinary in mind?</h3>
+                <p style="font-size:14px;color:var(--muted);max-width:340px;margin:0 auto 22px;line-height:1.7;" id="cu_d">Custom themes, proposal pages, anniversary experiences — we build what doesn't exist yet.</p>
+                <a class="btn btn-ghost" href="https://instagram.com/viaa.mor" target="_blank" rel="noopener"><span>📸</span><span id="cu_btn">Contact for Custom Design</span></a>
+                <p style="font-size:11px;color:var(--muted2);margin-top:10px;" id="cu_note">Instagram for custom requests only. Standard pages are created automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p class="footer-brand">💝 Viaa</p>
+        <p class="footer-tag" id="fo_tag">Give your love a home it will never forget.</p>
+        <div class="footer-links"><a href="about.html" id="fo_ab">About</a><a href="demo.html?theme=classic" id="fo_dm">Live Demo</a><a href="update.html" id="fo_mg">Manage Pages</a><a href="https://instagram.com/viaa.mor" target="_blank" rel="noopener">@viaa.mor</a></div>
+        <p class="footer-copy" id="fo_cp">© 2025 Viaa · All rights reserved</p>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-wrap" id="modal">
+        <div class="modal-box">
+            <div class="drag-pill"></div>
+            <button class="m-close" onclick="closeModal()">✕</button>
+            <div class="m-step on" id="ms1">
+                <h3 class="m-title" id="m_ti">Create Your Page</h3>
+                <p class="m-sub" id="m_su">Access code generated instantly after payment.</p>
+                <div class="m-tabs"><button class="m-tab on" data-pane="new" id="mtab_n">New Page</button><button class="m-tab" data-pane="code" id="mtab_c">I Have a Code</button></div>
+                <div class="m-pane on" id="mp_new">
+                    <div class="m-note" id="m_no"><strong>Secure Payment</strong><br>Fill in your details to continue to our payment page.</div>
+                    <div class="m-field"><label class="m-label" id="m_ln">Full Name</label><input type="text" class="m-inp" id="fName" autocomplete="name" placeholder="Youssef Ahmed"></div>
+                    <div class="m-field"><label class="m-label" id="m_le">Email Address</label><input type="email" class="m-inp" id="fEmail" autocomplete="email" placeholder="you@example.com"></div>
+                    <div class="m-field"><label class="m-label" id="m_lp">Phone Number</label><input type="tel" class="m-inp" id="fPhone" autocomplete="tel" placeholder="+20 10 0000 0000"></div>
+                    <button class="btn m-btn pri" id="payBtn">Continue to Payment — 99 EGP</button>
+                    <p class="m-status" id="payStatus"></p>
+                </div>
+                <div class="m-pane" id="mp_code">
+                    <input type="text" class="m-inp code" id="codeInp" placeholder="•  •  •  •  •  •" maxlength="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+                    <button class="btn m-btn pri" id="loginBtn">Enter Builder →</button>
+                    <p class="m-status" id="loginStatus"></p>
+                </div>
+            </div>
+            <div class="m-step" id="ms2">
+                <h3 class="m-title" id="m2_ti">Processing…</h3>
+                <p class="m-sub" id="m2_su">Redirecting to secure payment.</p>
+                <div style="text-align:center;padding:30px 0"><span style="font-size:46px;display:block;margin-bottom:12px;animation:hb 1.4s ease-in-out infinite">💝</span><p style="color:var(--muted);font-size:13px"><span class="spin"></span><span id="m2_w">Setting up your order…</span></p></div>
+            </div>
+            <div class="m-step" id="ms3">
+                <h3 class="m-title" id="m3_ti">Your Page is Ready ❤️</h3>
+                <p class="m-sub" id="m3_su">Save your access code before continuing.</p>
+                <div class="success-box"><p class="success-code" id="successCode">—</p><p class="success-note" id="m3_no">Screenshot this — it won't appear again</p></div>
+                <button class="btn m-btn pri" id="goBuilderBtn">Open Page Builder →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+        const SURL = 'https://ufxixlqznhzyfrartjgp.supabase.co';
+        const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmeGl4bHF6bmh6eWZyYXJ0amdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMTg4NjYsImV4cCI6MjA5NjU5NDg2Nn0.3S5dVhTBtSCCTNs0W6rQrpGNmlDXChF9DzGrT4gY80w';
+        const db = window.supabase.createClient(SURL, SKEY);
+
+        /* PAYMOB PLACEHOLDERS */
+        const PAYMOB = { API_KEY: '', INTEGRATION_ID: '', IFRAME_ID: '', BASE: 'https://accept.paymob.com/api', get configured() { return !!(this.API_KEY && this.INTEGRATION_ID && this.IFRAME_ID); } };
+        class PaymentService {
+            static async getToken() { const r = await fetch(`${PAYMOB.BASE}/auth/tokens`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ api_key: PAYMOB.API_KEY }) }); if (!r.ok) throw new Error('Auth failed'); return (await r.json()).token; }
+            static async createOrder(t, a) { const r = await fetch(`${PAYMOB.BASE}/ecommerce/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ auth_token: t, delivery_needed: false, amount_cents: a * 100, currency: 'EGP', items: [] }) }); if (!r.ok) throw new Error('Order failed'); return r.json(); }
+            static async getKey(t, oid, a, bd) { const r = await fetch(`${PAYMOB.BASE}/acceptance/payment_keys`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ auth_token: t, amount_cents: a * 100, expiration: 3600, order_id: oid, billing_data: bd, currency: 'EGP', integration_id: PAYMOB.INTEGRATION_ID }) }); if (!r.ok) throw new Error('Key failed'); return (await r.json()).token; }
+            static iframeURL(k) { return `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB.IFRAME_ID}?payment_token=${k}`; }
+        }
+        class CodeGenerationService {
+            static generate() { const c = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; return 'V' + Array.from({ length: 10 }, () => c[Math.floor(Math.random() * c.length)]).join(''); }
+            static async save(code) { const { data, error } = await db.from('users').insert({ access_code: code, remaining_generations: 1, active: true }).select('id,access_code').single(); if (error) throw error; return data; }
+        }
+        class OrderService {
+            static async process(bd) {
+                if (!PAYMOB.configured) return { status: 'unconfigured' };
+                const t = await PaymentService.getToken(); const o = await PaymentService.createOrder(t, 99); const k = await PaymentService.getKey(t, o.id, 99, bd);
+                return { status: 'redirect', url: PaymentService.iframeURL(k) };
+            }
+        }
+        class WebhookService { static async onSuccess(orderId) { const code = CodeGenerationService.generate(); const user = await CodeGenerationService.save(code); return { code: user.access_code }; } }
+
+        /* I18N SYSTEM */
+        const i18n = {
+            cur: 'en',
+            en: { langLabel: 'عربي', offerBarText: '🚀 Launch Offer • 40% OFF • Limited Time • Create your page today • 🚀 Launch Offer • 40% OFF •', navCta: 'Create Page', h_badge: 'Private Love Pages · 9 Themes · Forever', h_h1: 'The most beautiful gift', h_h1b: "isn't wrapped in a box.", h_desc: 'Viaa creates private, cinematic love pages — living memories that grow with every chapter of your story.', heroCta1: 'Create Your Page ❤️', heroCta2: 'See Live Examples', h_s1: 'Pages Made', h_s2: 'Themes', h_s3: 'Memories', phNames: 'Youssef &amp; Salma', phSong: 'Perfect — Ed Sheeran', phQ: '"You are my home — the place where I am most myself."', tg_ey: 'Live Theme Demos', tg_t: '9 different worlds.<br><em>One perfect love story.</em>', tg_d: 'Every theme is a completely different visual world. Tap Demo to experience the real page.', hw_ey: 'How It Works', hw_t: 'From idea to <em>forever</em><br>in minutes.', sh_ey: 'Explore VIAA', sh_t: 'Choose your <em>edition.</em>', sh_d: 'Two living worlds, each built for a different bond. Tap into a real, working page — no screenshots.', sh_cta: 'View Their Page →', sc_nm: 'Youssef &amp; Salma', sc_sc: 'Together since September 20, 2022', sc_dl: 'Days Together', sc_t1: '📍 Cairo, Egypt', sc_t2: '🎵 Our Song is playing', sc_msg: '"From the moment I met you, everything changed. You are my home — the place where I am most myself, most alive, most at peace."', ft_ey: 'Everything Included', ft_t: 'Every feature your<br>story <em>deserves.</em>', pt_ey: 'Real Stories', pt_t: 'Loved by couples<br><em>and friends alike.</em>', pt_d: 'Real reactions from real people who turned their story into a page.', pv_ey: 'Your Privacy', pv_t: 'Your story<br>stays <em>yours.</em>', pv_d: 'What happens between two people should stay between two people. Built with privacy as a first principle.', pb_t: 'Private by Design', pb_d: 'Your memories are protected. Your pages are yours. Built for love, not for a public feed.', fr_ey: 'Friendship Edition', fr_t: 'Some friendships are<br><em class="coral" style="color:var(--coral)">worth a page.</em>', fr_d: "Friendship pages have their own energy — warm, joyful, alive. Not a recolored love page.", fr_dn: 'Reem &amp; Dina', fr_ds: 'Best friends since 2015', fr_dm: '"You\'ve been my constant in every chapter. The kind of friend that makes life feel like a story worth telling."', fr_dc: 'Memory Capsule — Unlocks on her 30th birthday', fr_cta: 'View Friendship Demo →', pr_ey: 'Simple Pricing', pr_t: 'One decision.<br><em>Everything included.</em>', pr_d: 'No tiers. No confusion. 99 EGP — every feature, every theme, forever.', pc_rib: 'Best Value', pc_ey: 'Viaa Love Page', pc_nm: 'The Complete Experience', pc_cur: 'EGP', pc_per: 'One-time · Lifetime · Everything', priceCta: 'Create Your Page — 99 EGP ❤️', pc_note: 'Access code generated instantly after payment · No waiting', ub_t: 'Premium Trailer Upgrade', ub_d: 'Your page already includes a Free Trailer. Upgrade for a 60-second AI-cinematic version, ready for Reels & TikTok.', ub_pr: '100 EGP', fq_ey: 'FAQ', fq_t: 'Questions &amp; <em>answers.</em>', cu_t: 'Something extraordinary in mind?', cu_d: "Custom themes, proposal pages, anniversary experiences — we build what doesn't exist yet.", cu_btn: 'Contact for Custom Design', cu_note: 'Instagram for custom requests only. Standard pages are created automatically.', fo_tag: 'Give your love a home it will never forget.', fo_ab: 'About', fo_dm: 'Live Demo', fo_mg: 'Manage Pages', fo_cp: '© 2025 Viaa · All rights reserved', m_ti: 'Create Your Page', m_su: 'Access code generated instantly after payment.', mtab_n: 'New Page', mtab_c: 'I Have a Code', m_no: '<strong>Secure Payment</strong><br>Fill in your details to continue to our payment page.', m_ln: 'Full Name', m_le: 'Email Address', m_lp: 'Phone Number', payBtn: 'Continue to Payment — 99 EGP', loginBtn: 'Enter Builder →', m2_ti: 'Processing…', m2_su: 'Redirecting to secure payment.', m2_w: 'Setting up your order…', m3_ti: 'Your Page is Ready ❤️', m3_su: 'Save your access code before continuing.', m3_no: "Screenshot this — it won't appear again", goBuilderBtn: 'Open Page Builder →', tr_s1: 'Private by Design', tr_s2: 'Instant Access Code', tr_s3: 'Secure Payment', tr_s4: 'Grows Forever', tr_ey: 'Your Story, In Motion', tr_t: 'Every page comes<br>with a <em>trailer.</em>', tr_d: 'A short cinematic trailer is included automatically. Want it longer and built from your real photos? Upgrade any time.', tr_free_t: 'Free Love Trailer', tr_free_d: 'Every page gets a short animated trailer, auto-built from your theme, names, and message — included at no extra cost.', tr_prem_badge: 'PREMIUM', tr_prem_t: 'Premium Trailer', tr_prem_d: 'A 60-second cinematic vertical trailer, AI-generated from your real photos and story — ready to post on Reels &amp; TikTok. 100 EGP upgrade, added after your page is created.', eg_ey: 'Real Pages', eg_t: 'Not mockups.<br><em>Real stories, live.</em>', eg_d: 'A closer look at two pages people actually made — same builder, same 9 themes, their real words.', eg1_n: 'Kareem &amp; Luna', eg1_s: 'Midnight Promise Theme · Long Distance', eg1_q: '"Long distance for 2 years. Having a page that holds all our memories makes the distance feel small. It\'s our place."', eg1_tag: 'Live Timeline · Free Trailer included', eg2_n: 'Yuki &amp; Hana', eg2_s: 'Sakura Dreams Theme · Anniversary Gift', eg2_q: '"I made this for our anniversary and she cried for 10 minutes. She opens it every morning."', eg2_tag: 'Upgraded to Premium Trailer', eg_cta: 'See More Live Demos →', cm_ey: 'Why Viaa', cm_t: 'Compared to<br>the usual way.', cm_a_t: 'A photo album, a caption, a story that disappears', cm_a_1: 'Buried in a camera roll or a feed algorithm decides who sees it', cm_a_2: 'No privacy — public by default, or gone in 24 hours', cm_a_3: "Can't be added to later — it's a single post, not a place", cm_b_t: 'A Viaa page — private, permanent, yours', cm_b_1: 'One private link, never indexed, optional secret word', cm_b_2: 'Grows forever — add memories, photos, and capsules anytime', cm_b_3: 'Comes with a free cinematic trailer, ready to upgrade to Premium', pcb_1: '🔒 Private Page', pcb_2: '🎬 Free Trailer Included', pcb_3: '💳 Secure Payment' },
+            ar: { langLabel: 'English', offerBarText: '🚀 عرض الإطلاق • خصم ٤٠٪ • لفترة محدودة • أنشئ صفحتك اليوم • 🚀 عرض الإطلاق • خصم ٤٠٪ •', navCta: 'أنشئ صفحتك', h_badge: 'صفحات حب متميزة · ٩ تصاميم · إلى الأبد', h_h1: 'أجمل هدية', h_h1b: 'ليست في علبة.', h_desc: 'Viaa تُنشئ صفحات حب خاصة وسينمائية — ذكريات حية تنمو مع كل فصل من قصتك.', heroCta1: 'أنشئ صفحتك ❤️', heroCta2: 'شاهد الأمثلة الحية', h_s1: 'صفحة مُنشأة', h_s2: 'تصميم', h_s3: 'ذكريات', phNames: 'يوسف و سلمى', phSong: 'Perfect — Ed Sheeran', phQ: '"أنتِ بيتي — المكان الذي أكون فيه نفسي أكثر."', tg_ey: 'نماذج حية للتصاميم', tg_t: '٩ عوالم مختلفة.<br><em>قصة حب واحدة مثالية.</em>', tg_d: 'كل تصميم عالم بصري مختلف تماماً. اضغط نموذج لتجربة الصفحة الحقيقية.', hw_ey: 'كيف يعمل', hw_t: 'من الفكرة إلى <em>الأبد</em><br>في دقائق.', sh_ey: 'استكشف Viaa', sh_t: 'اختر <em>إصدارك.</em>', sh_d: 'عالمان حيّان، كل واحد مبني لرابطة مختلفة. جرّب صفحة حقيقية وفعّالة — بلا لقطات شاشة.', sh_cta: 'شاهد صفحتهم ←', sc_nm: 'يوسف و سلمى', sc_sc: 'معاً منذ ٢٠ سبتمبر ٢٠٢٢', sc_dl: 'يوم معاً', sc_t1: '📍 القاهرة، مصر', sc_t2: '🎵 أغنيتنا تعزف', sc_msg: '"منذ اللحظة التي التقيت فيها بك، تغير كل شيء. أنتِ بيتي — المكان الذي أكون فيه نفسي أكثر، أحيا أكثر، أسترخي أكثر."', ft_ey: 'كل شيء مدرج', ft_t: 'كل ميزة تستحقها<br><em>قصتك.</em>', pt_ey: 'قصص حقيقية', pt_t: 'محبوبة من الأزواج<br><em>والأصدقاء أيضاً.</em>', pt_d: 'ردود فعل حقيقية من أشخاص حقيقيين حوّلوا قصتهم إلى صفحة.', pv_ey: 'خصوصيتك', pv_t: 'قصتك<br>تبقى <em>لك.</em>', pv_d: 'ما يحدث بين شخصين يجب أن يبقى بين شخصين. مبنية على الخصوصية كمبدأ أساسي.', pb_t: 'الخصوصية بالتصميم', pb_d: 'ذكرياتك محمية. صفحاتك ملكك. مبنية للحب، ليس لخلاصة أخبار عامة.', fr_ey: 'إصدار الصداقة', fr_t: 'بعض الصداقات<br><em class="coral" style="color:var(--coral)">تستحق صفحة.</em>', fr_d: 'صفحات الصداقة لها طاقتها الخاصة — دافئة، مبهجة، حية.', fr_dn: 'ريم و دينا', fr_ds: 'صحاب منذ ٢٠١٥', fr_dm: '"كنتِ ثابتتي في كل فصل. النوع من الصديقة الذي يجعل الحياة تشعر وكأنها قصة تستحق الرواية."', fr_dc: 'كبسولة ذاكرة — تُفتح في عيد ميلادها الثلاثين', fr_cta: 'شاهد نموذج الصداقة ←', pr_ey: 'أسعار بسيطة', pr_t: 'قرار واحد.<br><em>كل شيء مدرج.</em>', pr_d: 'لا درجات. لا تشويش. ٩٩ جنيه — كل ميزة، كل تصميم، إلى الأبد.', pc_rib: 'أفضل قيمة', pc_ey: 'صفحة حب Viaa', pc_nm: 'التجربة الكاملة', pc_cur: 'جنيه', pc_per: 'دفعة واحدة · مدى الحياة · كل شيء', priceCta: 'أنشئ صفحتك — ٩٩ جنيه ❤️', pc_note: 'كود الوصول يُولَّد فوراً بعد الدفع · لا انتظار', ub_t: 'ترقية المقطورة المتميزة', ub_d: 'صفحتك تحتوي بالفعل على مقطورة مجانية. رقّها إلى نسخة سينمائية بالذكاء الاصطناعي لمدة ٦٠ ثانية، جاهزة للريلز وتيك توك.', ub_pr: '١٠٠ جنيه', fq_ey: 'الأسئلة الشائعة', fq_t: 'أسئلة <em>وأجوبة.</em>', cu_t: 'شيء استثنائي في ذهنك؟', cu_d: 'تصاميم مخصصة، صفحات خطوبة، تجارب ذكرى سنوية — نبني ما لا يوجد بعد.', cu_btn: 'تواصل لتصميم مخصص', cu_note: 'إنستاجرام للطلبات المخصصة فقط. الصفحات العادية تُنشأ تلقائياً.', fo_tag: 'أعطِ حبك بيتاً لن ينساه أبداً.', fo_ab: 'عن Viaa', fo_dm: 'نموذج حي', fo_mg: 'إدارة الصفحات', fo_cp: '© 2025 Viaa · جميع الحقوق محفوظة', m_ti: 'أنشئ صفحتك', m_su: 'كود الوصول يُولَّد فوراً بعد الدفع.', mtab_n: 'صفحة جديدة', mtab_c: 'لديّ كود', m_no: '<strong>دفع آمن</strong><br>أكمل البيانات للمتابعة إلى صفحة الدفع.', m_ln: 'الاسم الكامل', m_le: 'البريد الإلكتروني', m_lp: 'رقم الهاتف', payBtn: 'المتابعة للدفع — ٩٩ جنيه', loginBtn: 'ادخل أداة البناء ←', m2_ti: 'جاري المعالجة…', m2_su: 'جاري التحويل للدفع الآمن.', m2_w: 'جاري إعداد طلبك…', m3_ti: 'صفحتك جاهزة ❤️', m3_su: 'احفظ كود الوصول قبل المتابعة.', m3_no: 'التقط لقطة شاشة — لن يظهر مرة أخرى', goBuilderBtn: 'افتح أداة البناء ←', tr_s1: 'خصوصية بالتصميم', tr_s2: 'كود وصول فوري', tr_s3: 'دفع آمن', tr_s4: 'تنمو للأبد', tr_ey: 'قصتك، في حركة', tr_t: 'كل صفحة تأتي<br>مع <em>مقطورة.</em>', tr_d: 'مقطورة سينمائية قصيرة مُضمّنة تلقائياً. تريدها أطول ومبنية من صورك الحقيقية؟ رقّها في أي وقت.', tr_free_t: 'مقطورة حب مجانية', tr_free_d: 'كل صفحة تحصل على مقطورة متحركة قصيرة، مبنية تلقائياً من تصميمك وأسمائك ورسالتك — مُضمّنة بدون أي تكلفة إضافية.', tr_prem_badge: 'مدفوعة', tr_prem_t: 'مقطورة متميزة', tr_prem_d: 'مقطورة سينمائية عمودية لمدة ٦٠ ثانية، مُولَّدة بالذكاء الاصطناعي من صورك وقصتك الحقيقية — جاهزة للريلز وتيك توك. ترقية بـ١٠٠ جنيه، تُضاف بعد إنشاء صفحتك.', eg_ey: 'صفحات حقيقية', eg_t: 'ليست نماذج.<br><em>قصص حقيقية، حية.</em>', eg_d: 'نظرة أقرب على صفحتين حقيقيتين — نفس أداة البناء، نفس الـ٩ تصاميم، كلماتهم الحقيقية.', eg1_n: 'كريم و لونا', eg1_s: 'تصميم وعد منتصف الليل · مسافة بعيدة', eg1_q: '"علاقة بُعد لسنتين. وجود صفحة تحمل كل ذكرياتنا يجعل المسافة تبدو صغيرة. إنه مكاننا."', eg1_tag: 'خط زمني حي · مقطورة مجانية مُضمّنة', eg2_n: 'يوكي و هانا', eg2_s: 'تصميم أحلام الكرز · هدية ذكرى سنوية', eg2_q: '"صنعت هذه لذكرانا السنوية وبكت ١٠ دقائق. تفتحها كل صباح."', eg2_tag: 'تمت الترقية إلى مقطورة متميزة', eg_cta: 'شاهد المزيد من النماذج الحية ←', cm_ey: 'لماذا Viaa', cm_t: 'مقارنة<br>بالطريقة المعتادة.', cm_a_t: 'ألبوم صور، تعليق، قصة تختفي', cm_a_1: 'مدفونة في الكاميرا أو خوارزمية تقرر من يراها', cm_a_2: 'لا خصوصية — عامة افتراضياً، أو تختفي خلال ٢٤ ساعة', cm_a_3: 'لا يمكن الإضافة إليها لاحقاً — منشور واحد، وليست مكاناً', cm_b_t: 'صفحة Viaa — خاصة، دائمة، ملكك', cm_b_1: 'رابط خاص واحد، لا يُفهرَس أبداً، كلمة سرية اختيارية', cm_b_2: 'تنمو للأبد — أضف ذكريات وصوراً وكبسولات في أي وقت', cm_b_3: 'تأتي مع مقطورة سينمائية مجانية، جاهزة للترقية للمتميزة', pcb_1: '🔒 صفحة خاصة', pcb_2: '🎬 مقطورة مجانية مُضمّنة', pcb_3: '💳 دفع آمن' },
+            t(k) { return this[this.cur]?.[k] ?? this.en[k] ?? k; },
+            aId(id) { const el = document.getElementById(id); if (el) { const v = this.t(id); if (v !== undefined) el.innerHTML = v; } },
+            apply() {
+                document.documentElement.lang = this.cur; document.documentElement.dir = this.cur === 'ar' ? 'rtl' : 'ltr';
+                ['langLabel', 'offerBarText', 'navCta', 'h_badge', 'h_h1', 'h_h1b', 'h_desc', 'heroCta1', 'heroCta2', 'h_s1', 'h_s2', 'h_s3', 'phNames', 'phSong', 'phQ',
+                    'tg_ey', 'tg_t', 'tg_d', 'hw_ey', 'hw_t', 'sh_ey', 'sh_t', 'sh_d', 'sh_cta', 'sc_nm', 'sc_sc', 'sc_dl', 'sc_t1', 'sc_t2', 'sc_msg',
+                    'ft_ey', 'ft_t', 'pt_ey', 'pt_t', 'pt_d', 'pv_ey', 'pv_t', 'pv_d', 'pb_t', 'pb_d', 'fr_ey', 'fr_t', 'fr_d', 'fr_dn', 'fr_ds', 'fr_dm', 'fr_dc', 'fr_cta',
+                    'pr_ey', 'pr_t', 'pr_d', 'pc_rib', 'pc_ey', 'pc_nm', 'pc_cur', 'pc_per', 'priceCta', 'pc_note', 'ub_t', 'ub_d', 'ub_pr', 'fq_ey', 'fq_t',
+                    'cu_t', 'cu_d', 'cu_btn', 'cu_note', 'fo_tag', 'fo_ab', 'fo_dm', 'fo_mg', 'fo_cp',
+                    'tr_s1', 'tr_s2', 'tr_s3', 'tr_s4', 'tr_ey', 'tr_t', 'tr_d', 'tr_free_t', 'tr_free_d', 'tr_prem_badge', 'tr_prem_t', 'tr_prem_d',
+                    'eg_ey', 'eg_t', 'eg_d', 'eg1_n', 'eg1_s', 'eg1_q', 'eg1_tag', 'eg2_n', 'eg2_s', 'eg2_q', 'eg2_tag', 'eg_cta',
+                    'cm_ey', 'cm_t', 'cm_a_t', 'cm_a_1', 'cm_a_2', 'cm_a_3', 'cm_b_t', 'cm_b_1', 'cm_b_2', 'cm_b_3', 'pcb_1', 'pcb_2', 'pcb_3',
+                    'm_ti', 'm_su', 'mtab_n', 'mtab_c', 'm_no', 'm_ln', 'm_le', 'm_lp', 'payBtn', 'loginBtn', 'm2_ti', 'm2_su', 'm2_w', 'm3_ti', 'm3_su', 'm3_no', 'goBuilderBtn'
+                ].forEach(k => this.aId(k));
+                buildAll();
+            },
+            toggle() { this.cur = this.cur === 'en' ? 'ar' : 'en'; try { localStorage.setItem('vl', this.cur); } catch (_) { } this.apply(); },
+            init() { try { const s = localStorage.getItem('vl'); if (s === 'en' || s === 'ar') this.cur = s; } catch (_) { } this.apply(); }
+        };
+
+        /* DATA */
+        const THEMES = [
+            { id: 'classic', en: { nm: 'Classic Love', ns: 'Youssef & Salma', sc: 'Sept 2022', hrt: '💝' }, ar: { nm: 'الحب الكلاسيكي', ns: 'يوسف و سلمى', sc: 'سبتمبر ٢٠٢٢', hrt: '💝' }, bg: 'linear-gradient(160deg,#14082a,#07020f)', a1: '#e8739c' },
+            { id: 'red_roses', en: { nm: 'Red Roses', ns: 'Ahmed & Sara', sc: '3 Years Together', hrt: '🌹' }, ar: { nm: 'الورود الحمراء', ns: 'أحمد و سارة', sc: '٣ سنوات', hrt: '🌹' }, bg: 'linear-gradient(160deg,#1a0008,#0d0003)', a1: '#ff3355' },
+            { id: 'midnight', en: { nm: 'Midnight Promise', ns: 'Kareem & Luna', sc: 'Cairo ↔ London', hrt: '🌙' }, ar: { nm: 'وعد منتصف الليل', ns: 'كريم و لونا', sc: 'القاهرة ↔ لندن', hrt: '🌙' }, bg: 'linear-gradient(160deg,#051428,#010818)', a1: '#7b9cff' },
+            { id: 'sakura', en: { nm: 'Sakura Dreams', ns: 'Yuki & Hana', sc: 'Our Sakura Spring', hrt: '🌸' }, ar: { nm: 'أحلام الكرز', ns: 'يوكي و هانا', sc: 'ربيعنا الوردي', hrt: '🌸' }, bg: 'linear-gradient(160deg,#200c2a,#110618)', a1: '#ffb7c5' },
+            { id: 'golden', en: { nm: 'Golden Sunset', ns: 'Khalid & Nour', sc: 'Golden Moments', hrt: '✨' }, ar: { nm: 'الغروب الذهبي', ns: 'خالد و نور', sc: 'لحظات ذهبية', hrt: '✨' }, bg: 'linear-gradient(160deg,#1c1000,#0e0800)', a1: '#f5c842' },
+            { id: 'soft_princess', en: { nm: 'Soft Princess', ns: 'Ali & Farah', sc: 'My Princess', hrt: '🎀' }, ar: { nm: 'الأميرة الناعمة', ns: 'علي و فرح', sc: 'أميرتي', hrt: '🎀' }, bg: 'linear-gradient(160deg,#220010,#120008)', a1: '#f9a8d4' },
+            { id: 'lavender', en: { nm: 'Lavender Sky', ns: 'Tarek & Lina', sc: 'Lavender Dreams', hrt: '🦋' }, ar: { nm: 'سماء الخزامى', ns: 'طارق و لينا', sc: 'أحلام الخزامى', hrt: '🦋' }, bg: 'linear-gradient(160deg,#180530,#0d0318)', a1: '#c084fc' },
+            { id: 'luxury', en: { nm: 'Luxury Romance', ns: 'Youssef & Mariam', sc: 'Five Years', hrt: '💎' }, ar: { nm: 'الرومانسية الفاخرة', ns: 'يوسف و مريم', sc: 'خمس سنوات', hrt: '💎' }, bg: 'linear-gradient(160deg,#0d0d0d,#000)', a1: '#d4af37' },
+            { id: 'birthday', en: { nm: 'Birthday', ns: 'Happy Birthday Salma', sc: 'From Youssef ❤', hrt: '🎂' }, ar: { nm: 'عيد الميلاد', ns: 'سعيد عيد ميلادك سلمى', sc: 'من يوسف ❤', hrt: '🎂' }, bg: 'linear-gradient(160deg,#2a0050,#1a0030)', a1: '#ff9de2' },
+        ];
+        const FR_CATS = [{ en: 'Best Friends', ar: 'أصحاب مدى الحياة', i: '💛' }, { en: 'Girls Squad', ar: 'فريق البنات', i: '👯' }, { en: 'Bro Code', ar: 'أصدقاء الرجال', i: '🤝' }, { en: 'School Memories', ar: 'ذكريات المدرسة', i: '🎓' }, { en: 'Travel Friends', ar: 'رفقاء السفر', i: '✈️' }, { en: 'Gaming Friends', ar: 'أصدقاء الألعاب', i: '🎮' }];
+        const FEATS = [
+            { ico: '💝', c: 'p', en: { t: 'Viaa Forever', d: 'Add memories anytime. Your page grows as your relationship does.' }, ar: { t: 'Viaa للأبد', d: 'أضف ذكريات في أي وقت. صفحتك تنمو مع علاقتك.' } },
+            { ico: '🔮', c: 'v', en: { t: 'Memory Capsules', d: 'Seal a memory until a future date. A gift through time.' }, ar: { t: 'كبسولات الذاكرة', d: 'اقفل ذاكرة حتى تاريخ مستقبلي. هدية عبر الزمن.' }, isNew: true },
+            { ico: '🎁', c: 'p', en: { t: 'Gift Mode 2.0', d: 'Luxury cinematic unboxing. Ribbon. Glow. Confetti.' }, ar: { t: 'وضع الهدية ٢.٠', d: 'فتح هدية فاخر. شريط. توهج. قصاصات ملونة.' } },
+            { ico: '✨', c: 'v', en: { t: 'Surprise Mode 2.0', d: 'Each section reveals cinematically with its own animation.' }, ar: { t: 'وضع المفاجأة ٢.٠', d: 'كل قسم يكشف نفسه سينمائياً بحركته الفريدة.' } },
+            { ico: '🎬', c: 'c', en: { t: 'Free Love Trailer', d: 'Every page gets a short animated trailer, auto-built from your theme, names, and message — included at no extra cost.' }, ar: { t: 'مقطورة حب مجانية', d: 'كل صفحة تحصل على مقطورة متحركة قصيرة، مبنية تلقائياً من تصميمك وأسمائك ورسالتك — مُضمّنة بدون أي تكلفة إضافية.' } },
+            { ico: '⭐', c: 'g', en: { t: 'Premium Trailer', d: 'A 60-second cinematic vertical trailer, AI-generated from your real photos and story — ready to post on Reels & TikTok. 100 EGP upgrade.' }, ar: { t: 'مقطورة متميزة', d: 'مقطورة سينمائية عمودية لمدة ٦٠ ثانية، مُولَّدة بالذكاء الاصطناعي من صورك وقصتك الحقيقية — جاهزة للريلز وتيك توك. ترقية بـ١٠٠ جنيه.' }, isPremium: true },
+            { ico: '🔐', c: 't', en: { t: 'Secret Protection', d: 'Custom secret word + date-locked access. Full privacy control.' }, ar: { t: 'الحماية السرية', d: 'كلمة سرية مخصصة + وصول مقفول بالتاريخ.' } },
+            { ico: '💫', c: 'v', en: { t: 'Private Wishes', d: 'A private space for dreams and promises — only between the two of you.' }, ar: { t: 'الأمنيات الخاصة', d: 'مساحة خاصة للأحلام والعهود — لكما وحدكما فقط.' } },
+            { ico: '☀️', c: 'co', en: { t: 'Memory Weather', d: 'Set the emotional atmosphere for every memory. Rainy. Sunset. Night.' }, ar: { t: 'طقس الذاكرة', d: 'حدد أجواء كل ذاكرة. ممطر. غروب. ليل.' } },
+        ];
+        const PRIV_EN = [['🔒', 'Private by Default', 'Never indexed. Only someone with your link — and optional secret word — can view your page.'], ['🔑', 'Secret Word', 'A custom word only the two of you know. Without it the page stays locked.'], ['🛡️', 'Secure Storage', 'Photos, videos, voice memories stored privately. Not shared. Not used for ads.'], ['📅', 'Time Locks', 'Capsule memories that no one can open before the unlock date.']];
+        const PRIV_AR = [['🔒', 'خاصة بالافتراضي', 'لا تُفهرَس أبداً. فقط من يملك رابطك يمكنه الوصول.'], ['🔑', 'الكلمة السرية', 'كلمة مخصصة لا يعرفها إلا أنتما. بدونها الصفحة مقفلة.'], ['🛡️', 'تخزين آمن', 'الصور والفيديوهات محفوظة بأمان. لا تُشارَك. لا إعلانات.'], ['📅', 'أقفال بالوقت', 'ذكريات لا يمكن لأحد فتحها قبل التاريخ المحدد.']];
+        const PRIV_TAGS_EN = ['Not Indexed', 'Secret Word', 'Date Locks', 'Secure Media', 'No Ads'];
+        const PRIV_TAGS_AR = ['لا فهرسة', 'كلمة سرية', 'أقفال تاريخ', 'وسائط آمنة', 'لا إعلانات'];
+        const PC_EN = ['1 Love Page — yours forever', 'All 9 premium themes', 'Unlimited photos & videos', 'Viaa Forever — add memories anytime', 'Memory Capsules', 'Gift Mode 2.0 + Surprise Mode 2.0', 'Free Love Trailer', 'Secret word + date lock', 'Private Wishes', 'QR Gift Card Export'];
+        const PC_AR = ['صفحة حب واحدة — ملكك للأبد', 'جميع التصاميم الـ٩', 'صور وفيديوهات غير محدودة', 'Viaa للأبد — أضف ذكريات', 'كبسولات الذاكرة', 'وضع الهدية ٢.٠ + المفاجأة ٢.٠', 'مقطورة حب مجانية', 'حماية بكلمة سرية + قفل', 'الأمنيات الخاصة', 'تصدير بطاقة QR'];
+        const TESTI_EN = [{ q: '"I made this for Salma on our anniversary and she cried for 10 minutes. She opens it every morning. The live timer makes every second feel like it matters."', n: 'Youssef K.', m: 'Classic Theme · Cairo', av: '💙' }, { q: '"أعطيت رابط الصفحة لأمي يوم عيد الأم. بكت وقالت أنها أجمل هدية في حياتها."', n: 'Sara M.', m: 'Sakura Theme · Alexandria', av: '🌸' }, { q: '"Long distance for 2 years. Having a page that holds all our memories makes the distance feel small. It\'s our place."', n: 'Kareem & Luna', m: 'Midnight Theme', av: '🌙' }];
+        const TESTI_AR = [{ q: '"صنعت هذه الصفحة لسلمى في ذكرانا وبكت ١٠ دقائق. تفتحها كل صباح."', n: 'يوسف ك.', m: 'التصميم الكلاسيكي · القاهرة', av: '💙' }, { q: '"أعطيت رابط الصفحة لأمي يوم عيد الأم. بكت وقالت أنها أجمل هدية في حياتها."', n: 'سارة م.', m: 'تصميم أزهار الكرز · الإسكندرية', av: '🌸' }, { q: '"علاقة بُعد لسنتين. وجود صفحة تحمل كل ذكرياتنا يجعل المسافة تبدو صغيرة."', n: 'كريم و لونا', m: 'تصميم منتصف الليل', av: '🌙' }];
+        const HW_EN = [{ n: '01', cls: 'hw-n1', t: 'Choose Your World', b: 'Browse 9 premium themes — each a different mood, atmosphere, and visual world.' }, { n: '02', cls: 'hw-n2', t: 'Build Your Story', b: 'Add photos, music, your message, timeline, memory capsules. Make it completely yours.' }, { n: '03', cls: 'hw-n3', t: 'Share One Link', b: 'One private, permanent link. Your page lives forever and grows with every new memory.' }];
+        const HW_AR = [{ n: '٠١', cls: 'hw-n1', t: 'اختر عالمك', b: 'تصفّح ٩ تصاميم متميزة — كل منها مزاج وأجواء وعالم بصري مختلف.' }, { n: '٠٢', cls: 'hw-n2', t: 'ابنِ قصتك', b: 'أضف صوراً وموسيقى ورسالتك وخطاً زمنياً وكبسولات ذاكرة.' }, { n: '٠٣', cls: 'hw-n3', t: 'شارك رابطاً واحداً', b: 'رابط خاص ودائم واحد. صفحتك تعيش للأبد وتنمو مع كل ذاكرة جديدة.' }];
+        const FAQ_EN = [['What exactly is Viaa?', "Viaa is a platform to create private, cinematic digital love pages. Each page is a living, growing space for your relationship — with photos, music, memories, and more. It's not social media. It's a home for your relationship."], ['Is my page private?', 'Completely. Pages are never indexed by search engines. Only someone with your direct link — and optional secret word — can view your page. Your photos are stored securely and never shared.'], ['Can I add more memories later?', 'Yes. With Viaa Forever, your page grows indefinitely. Add photos, voice notes, and memory capsules at any time. Your page is designed to grow with your relationship.'], ['How long does it take?', 'Most people complete their page in 10–20 minutes. You can save a draft and continue later. Once published, your link is live instantly.'], ['What is the Premium Trailer?', 'A 60-second vertical video of your love story — ready for Instagram Reels and TikTok. Available for 100 EGP after page creation.'], ["What's the difference between the Free and Premium Trailer?", "Every page automatically includes a Free Trailer — a short animated preview built from your theme, names, and message, at no extra cost. The Premium Trailer is a separate, longer upgrade: a 60-second AI-generated cinematic video built from your actual photos and story, ready to post on Reels and TikTok."]];
+        const FAQ_AR = [['ما هي Viaa بالضبط؟', 'Viaa هي منصة لإنشاء صفحات حب رقمية خاصة وسينمائية. كل صفحة هي مساحة حية ومتنامية لعلاقتك. ليست سوشيال ميديا. إنها بيت لعلاقتك.'], ['هل صفحتي خاصة؟', 'خاصة تماماً. الصفحات لا تُفهرَس أبداً. فقط من يملك رابطك المباشر يمكنه الوصول.'], ['هل يمكنني إضافة ذكريات لاحقاً؟', 'نعم. مع Viaa للأبد، صفحتك تنمو إلى الأبد. أضف صوراً وملاحظات صوتية وكبسولات في أي وقت.'], ['كم يستغرق إنشاء صفحة؟', 'معظم الناس يكملون صفحتهم في ١٠–٢٠ دقيقة. يمكنك حفظ مسودة والمتابعة لاحقاً.'], ['ما هي المقطورة المتميزة؟', 'مقطورة فيديو عمودية لمدة ٦٠ ثانية جاهزة لريلز إنستاجرام وتيك توك. متاحة بـ١٠٠ جنيه.'], ['ما الفرق بين المقطورة المجانية والمتميزة؟', 'كل صفحة تحصل تلقائياً على مقطورة مجانية — معاينة متحركة قصيرة مبنية من تصميمك وأسمائك ورسالتك، بدون أي تكلفة. المقطورة المتميزة ترقية منفصلة وأطول: فيديو سينمائي لمدة ٦٠ ثانية مُولَّد بالذكاء الاصطناعي من صورك وقصتك الحقيقية، جاهز للريلز وتيك توك.']];
+
+        /* BUILD FUNCTIONS */
+        function buildAll() { buildThemes(); buildFrCats(); buildHW(); buildFeats(); buildPriv(); buildPcFeats(); buildTestis(); buildFAQ(); updateScDays(); }
+        function buildThemes() {
+            const g = document.getElementById('themeGrid'); if (!g) return; const lg = i18n.cur; g.innerHTML = '';
+            const dl = lg === 'ar' ? 'نموذج ←' : 'Demo →', ul = lg === 'ar' ? 'استخدم' : 'Use This';
+            THEMES.forEach((t, idx) => {
+                const d = t[lg] || t.en; const c = document.createElement('div'); c.className = 'tc';
+                const days = String(120 + idx * 41).padStart(3, '0');
+                c.innerHTML = `<div class="tc-bg" style="background:${t.bg}">
+                                                                                <span class="tc-badge">${d.nm}</span>
+                                                                                <span class="tc-hrt">${d.hrt}</span>
+                                                                                <div class="tc-prev" aria-hidden="true">
+                                                                                    <div class="tc-prev-photo" style="background:linear-gradient(135deg,${t.a1}66,${t.a1}1f)"><span class="tc-prev-ico">${d.hrt}</span></div>
+                                                                                    <div class="tc-prev-timer">
+                                                                                        <div class="tc-prev-tbox" style="color:${t.a1}">${days}</div>
+                                                                                        <div class="tc-prev-tbox" style="color:${t.a1}">12</div>
+                                                                                        <div class="tc-prev-tbox" style="color:${t.a1}">45</div>
+                                                                                        <div class="tc-prev-tbox" style="color:${t.a1}">09</div>
+                                                                                    </div>
+                                                                                    <div class="tc-prev-msg">
+                                                                                        <div class="tc-prev-line l1"></div>
+                                                                                        <div class="tc-prev-line l2"></div>
+                                                                                    </div>
+                                                                                    <span class="tc-prev-deco d1">${d.hrt}</span>
+                                                                                    <span class="tc-prev-deco d2">✨</span>
+                                                                                    <span class="tc-prev-deco d3">${d.hrt}</span>
+                                                                                </div>
+                                                                                <div class="tc-ov"></div>
+                                                                                <div class="tc-in">
+                                                                                    <p class="tc-nm" style="color:${t.a1}">${d.ns}</p>
+                                                                                    <p class="tc-sc">${d.sc}</p>
+                                                                                    <div class="tc-acts">
+                                                                                        <a class="tc-btn tc-demo" href="demo.html?theme=${t.id}&lang=${lg}">${dl}</a>
+                                                                                        <button class="tc-btn tc-use" onclick="openModal()">${ul}</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>`;
+                g.appendChild(c); rvObs.observe(c);
+            });
+        }
+        function buildFrCats() { const g = document.getElementById('frCats'); if (!g) return; const lg = i18n.cur; g.innerHTML = ''; FR_CATS.forEach(c => { const el = document.createElement('div'); el.className = 'fr-cat'; el.innerHTML = `<span class="fr-cat-i">${c.i}</span><span class="fr-cat-n">${lg === 'ar' ? c.ar : c.en}</span>`; g.appendChild(el); }); }
+        function buildHW() {
+            const g = document.getElementById('hwGrid'); if (!g) return; const steps = i18n.cur === 'ar' ? HW_AR : HW_EN; g.innerHTML = '';
+            steps.forEach((s, i) => { const el = document.createElement('div'); el.className = 'hw-step rv'; el.style.transitionDelay = `${i * 80}ms`; el.innerHTML = `<div class="hw-n ${s.cls}">${s.n}</div><p class="hw-t">${s.t}</p><p class="hw-b">${s.b}</p>`; g.appendChild(el); rvObs.observe(el); });
+        }
+        function buildFeats() {
+            const g = document.getElementById('featGrid'); if (!g) return; const lg = i18n.cur; g.innerHTML = '';
+            FEATS.forEach((f, i) => { const d = f[lg] || f.en; const el = document.createElement('div'); el.className = `fi fi-${f.c}`; el.style.transitionDelay = `${i * 45}ms`; const badge = f.isPremium ? `<span class="fi-new fi-premium">${lg === 'ar' ? 'مدفوعة' : 'PREMIUM'}</span>` : f.isNew ? '<span class="fi-new">NEW</span>' : ''; el.innerHTML = `${badge}<div class="fi-ico fi-ico-${f.c}">${f.ico}</div><p class="fi-tt">${d.t}</p><p class="fi-dd">${d.d}</p>`; g.appendChild(el); rvObs.observe(el); });
+        }
+        function buildPriv() {
+            const pts = document.getElementById('privPts'), tags = document.getElementById('pbTags'); if (!pts || !tags) return;
+            const lg = i18n.cur, pp = lg === 'ar' ? PRIV_AR : PRIV_EN, pt = lg === 'ar' ? PRIV_TAGS_AR : PRIV_TAGS_EN;
+            pts.innerHTML = ''; pp.forEach(([ico, t, d]) => { const el = document.createElement('div'); el.className = 'pp'; el.innerHTML = `<div class="pp-ico">${ico}</div><div><p class="pp-t">${t}</p><p class="pp-b">${d}</p></div>`; pts.appendChild(el); rvObs.observe(el); });
+            tags.innerHTML = ''; pt.forEach(t => { const el = document.createElement('span'); el.className = 'ptag'; el.textContent = t; tags.appendChild(el); });
+        }
+        function buildPcFeats() { const ul = document.getElementById('pcFeats'); if (!ul) return; (i18n.cur === 'ar' ? PC_AR : PC_EN).forEach(f => { const li = document.createElement('li'); li.textContent = f; ul.appendChild(li); }); }
+        function buildTestis() {
+            const track = document.getElementById('ptTrack'), dotsWrap = document.getElementById('ptDots');
+            if (!track || !dotsWrap) return;
+            const ts = i18n.cur === 'ar' ? TESTI_AR : TESTI_EN;
+            track.innerHTML = ''; dotsWrap.innerHTML = '';
+            ts.forEach((t, i) => {
+                const sl = document.createElement('div');
+                sl.className = 'pt-slide';
+                sl.innerHTML = `<div class="pt-card"><div class="pt-quote-ico">"</div><div class="pt-stars">★★★★★</div><p class="pt-text">${t.q}</p><div class="pt-foot"><div class="pt-av">${t.av}</div><div><p class="pt-name">${t.n}</p><p class="pt-meta">${t.m}</p></div></div></div>`;
+                track.appendChild(sl);
+                const dot = document.createElement('button');
+                dot.className = 'pt-dot' + (i === 0 ? ' on' : '');
+                dot.setAttribute('aria-label', `Testimonial ${i + 1}`);
+                dot.addEventListener('click', () => ptGoTo(i, true));
+                dotsWrap.appendChild(dot);
+            });
+            ptCount = ts.length; ptIdx = 0; ptGoTo(0);
+        }
+
+        /* PREMIUM TESTIMONIALS SLIDER LOGIC */
+        let ptIdx = 0, ptCount = 0, ptTimer = null;
+        function ptGoTo(i, manual) {
+            const track = document.getElementById('ptTrack'); if (!track || !ptCount) return;
+            ptIdx = (i + ptCount) % ptCount;
+            const dir = i18n.cur === 'ar' ? 1 : -1;
+            track.style.transform = `translateX(${dir * ptIdx * 100}%)`;
+            document.querySelectorAll('.pt-dot').forEach((d, di) => d.classList.toggle('on', di === ptIdx));
+            if (manual) ptRestart();
+        }
+        function ptNextSlide() { ptGoTo(ptIdx + 1); }
+        function ptPrevSlide() { ptGoTo(ptIdx - 1); }
+        function ptRestart() { clearInterval(ptTimer); ptTimer = setInterval(ptNextSlide, 5000); }
+        document.getElementById('ptNext')?.addEventListener('click', () => { ptNextSlide(); ptRestart(); });
+        document.getElementById('ptPrev')?.addEventListener('click', () => { ptPrevSlide(); ptRestart(); });
+        (function () {
+            const slider = document.getElementById('ptSlider'); if (!slider) return;
+            let sx = 0, dx = 0, dragging = false;
+            slider.addEventListener('touchstart', e => { sx = e.touches[0].clientX; dragging = true; clearInterval(ptTimer); }, { passive: true });
+            slider.addEventListener('touchmove', e => { if (dragging) dx = e.touches[0].clientX - sx; }, { passive: true });
+            slider.addEventListener('touchend', () => {
+                if (Math.abs(dx) > 40) { (dx < 0) === (i18n.cur !== 'ar') ? ptNextSlide() : ptPrevSlide(); }
+                dragging = false; dx = 0; ptRestart();
+            });
+            slider.addEventListener('mouseenter', () => clearInterval(ptTimer));
+            slider.addEventListener('mouseleave', ptRestart);
+        })();
+        addEventListener('resize', () => ptGoTo(ptIdx));
+        function buildFAQ() {
+            const g = document.getElementById('faqList'); if (!g) return; const faq = i18n.cur === 'ar' ? FAQ_AR : FAQ_EN; g.innerHTML = '';
+            faq.forEach(([q, a]) => { const el = document.createElement('div'); el.className = 'faq-item'; el.innerHTML = `<button class="faq-q">${q}<div class="faq-ico">+</div></button><div class="faq-a"><div class="faq-a-in">${a}</div></div>`; el.querySelector('.faq-q').addEventListener('click', () => { const o = el.classList.contains('open'); document.querySelectorAll('.faq-item.open').forEach(x => x.classList.remove('open')); if (!o) el.classList.add('open'); }); g.appendChild(el); });
+        }
+        function updateScDays() { const el = document.getElementById('scDays'); if (!el) return; const d = Math.floor((Date.now() - new Date('2022-09-20')) / 86400000); el.textContent = i18n.cur === 'ar' ? d.toLocaleString('ar-EG') : d.toLocaleString(); }
+
+        /* PHONE ANIMATIONS */
+        (function () { const photos = document.querySelectorAll('.ph-photo'); let cur = 0; if (photos.length < 2) return; setInterval(() => { photos[cur].classList.remove('on'); cur = (cur + 1) % photos.length; photos[cur].classList.add('on'); }, 3200); })();
+        (function () { const c = document.getElementById('phPt'); if (!c) return; for (let i = 0; i < 10; i++) { const el = document.createElement('span'); el.textContent = ['❤', '♡', '·', '✦'][i % 4]; el.style.cssText = `left:${5 + Math.random() * 90}%;font-size:${6 + Math.random() * 6}px;color:rgba(255,140,180,.5);animation-duration:${3 + Math.random() * 4}s;animation-delay:${Math.random() * 5}s;`; c.appendChild(el); } })();
+        (function () { const c = document.getElementById('phHrts'); if (!c) return; const emojis = ['💕', '❤', '✨', '💗', '🌸']; function spawn() { const el = document.createElement('div'); el.className = 'fhrt'; el.style.cssText = `bottom:${15 + Math.random() * 20}%;left:${25 + Math.random() * 50}%;font-size:${8 + Math.random() * 8}px;--dx:${(Math.random() - .5) * 80}px;animation-duration:${2.2 + Math.random() * 2}s;`; el.textContent = emojis[Math.floor(Math.random() * emojis.length)]; c.appendChild(el); setTimeout(() => el.remove(), 4500); } setInterval(spawn, 900); })();
+        function updatePhTimer() { const d = Math.floor((Date.now() - new Date('2022-09-20')) / 86400000); const el = document.getElementById('phTimer'); if (el) el.textContent = i18n.cur === 'ar' ? `معاً · ${d.toLocaleString('ar-EG')} يوم` : `Together · ${d.toLocaleString()} Days`; }
+        updatePhTimer(); setInterval(updatePhTimer, 60000);
+
+        /* 3D TILT */
+        if (window.matchMedia('(hover:hover)').matches) {
+            document.addEventListener('mouseover', e => { const tc = e.target.closest('.tc,.fi,.hw-step,.sh-card'); if (!tc) return; function tilt(ev) { const r = tc.getBoundingClientRect(); const x = (ev.clientX - r.left) / r.width - .5; const y = (ev.clientY - r.top) / r.height - .5; tc.style.transform = `perspective(700px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) scale(1.02) translateY(-4px)`; tc.style.boxShadow = '0 20px 50px rgba(0,0,0,.15)'; } function reset() { tc.style.transform = ''; tc.style.boxShadow = ''; } tc.addEventListener('mousemove', tilt); tc.addEventListener('mouseleave', reset, { once: true }); });
+        }
+
+        /* NAV SCROLL */
+        const siteNav = document.getElementById('siteNav');
+        addEventListener('scroll', () => siteNav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+        /* SCROLL REVEALS */
+        const rvObs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rvObs.unobserve(e.target); } }); }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => rvObs.observe(el));
+
+        // Showcase iframe previews: reveal shimmer skeleton, fade preview in once loaded
+        document.querySelectorAll('.ex-phone-screen iframe').forEach(frame => {
+            const skel = frame.previousElementSibling;
+            const reveal = () => { frame.classList.add('loaded'); skel?.classList.add('gone'); };
+            frame.addEventListener('load', reveal, { once: true });
+            // Fallback in case the load event is missed (cached/about:blank edge cases)
+            setTimeout(reveal, 4000);
+        });
+
+        /* HERO SCROLL */
+        document.getElementById('heroCta2')?.addEventListener('click', () => document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' }));
+
+        /* MODAL */
+        let _mo = false;
+        function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; _mo = true; setTimeout(() => document.getElementById('fName')?.focus(), 400); }
+        function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; _mo = false; resetModal(); }
+        function resetModal() { showStep(1); switchTab('new');['fName', 'fEmail', 'fPhone', 'codeInp'].forEach(id => { const el = document.getElementById(id); if (el) { el.value = ''; el.classList.remove('err'); } });['payStatus', 'loginStatus'].forEach(id => { const el = document.getElementById(id); if (el) { el.textContent = ''; el.className = 'm-status'; } }); }
+        function showStep(n) { document.querySelectorAll('.m-step').forEach(s => s.classList.remove('on')); document.getElementById('ms' + n)?.classList.add('on'); }
+        function switchTab(p) { document.querySelectorAll('.m-tab').forEach(t => t.classList.toggle('on', t.dataset.pane === p)); document.querySelectorAll('.m-pane').forEach(x => x.classList.toggle('on', x.id === 'mp_' + p)); }
+        document.getElementById('modal')?.addEventListener('click', e => { const tab = e.target.closest('.m-tab'); if (tab && tab.dataset.pane) switchTab(tab.dataset.pane); if (e.target === document.getElementById('modal')) closeModal(); });
+        ['navCta', 'heroCta1', 'priceCta'].forEach(id => document.getElementById(id)?.addEventListener('click', openModal));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && _mo) closeModal(); });
+        document.getElementById('codeInp')?.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+        ['fName', 'fEmail', 'fPhone', 'codeInp'].forEach(id => document.getElementById(id)?.addEventListener('input', function () { this.classList.remove('err'); }));
+
+        /* PAYMENT — semi-automatic (Vodafone Cash / InstaPay + admin.html approval) */
+        document.getElementById('payBtn')?.addEventListener('click', initPayment);
+        async function initPayment() {
+            const name = document.getElementById('fName')?.value.trim(), email = document.getElementById('fEmail')?.value.trim(), phone = document.getElementById('fPhone')?.value.trim();
+            const st = document.getElementById('payStatus');
+            let err = false;
+            if (!name) { document.getElementById('fName')?.classList.add('err'); err = true; }
+            if (!email || !email.includes('@')) { document.getElementById('fEmail')?.classList.add('err'); err = true; }
+            if (!phone) { document.getElementById('fPhone')?.classList.add('err'); err = true; }
+            if (err) { if (st) { st.textContent = i18n.cur === 'ar' ? 'يرجى ملء جميع الحقول.' : 'Please fill all fields.'; st.className = 'm-status e'; } return; }
+            const params = new URLSearchParams({ product: 'Viaa Access Code', amount: '99', name, email, phone });
+            window.location.href = `payment.html?${params.toString()}`;
+        }
+
+        /* LOGIN */
+        document.getElementById('loginBtn')?.addEventListener('click', doLogin);
+        async function doLogin() {
+            const inp = document.getElementById('codeInp'), st = document.getElementById('loginStatus'), btn = document.getElementById('loginBtn');
+            const code = inp?.value.trim();
+            inp?.classList.remove('err'); if (st) { st.textContent = ''; st.className = 'm-status'; }
+            if (!code) { inp?.classList.add('err'); if (st) { st.textContent = i18n.cur === 'ar' ? 'أدخل كود الوصول.' : 'Please enter your access code.'; st.className = 'm-status e'; } return; }
+            if (btn) { btn.disabled = true; btn.innerHTML = `<span class="spin"></span>${i18n.cur === 'ar' ? 'جاري التحقق…' : 'Checking…'}`; }
+            try {
+                const { data, error } = await db.from('users').select('id,access_code,remaining_generations,active').eq('access_code', code).maybeSingle();
+                if (error) throw new Error(i18n.cur === 'ar' ? 'خطأ في الاتصال.' : 'Connection error.');
+                if (!data) { inp?.classList.add('err'); if (st) { st.textContent = i18n.cur === 'ar' ? 'الكود غير موجود.' : 'Code not found.'; st.className = 'm-status e'; } return; }
+                if (!data.active) { if (st) { st.textContent = i18n.cur === 'ar' ? 'هذا الكود غير نشط.' : 'This code is inactive.'; st.className = 'm-status e'; } return; }
+                if (data.remaining_generations <= 0) { if (st) { st.textContent = i18n.cur === 'ar' ? 'لا توجد صفحات متبقية.' : 'No generations remaining.'; st.className = 'm-status e'; } return; }
+                try { localStorage.setItem('lgUser', JSON.stringify({ id: data.id, access_code: data.access_code, remaining_generations: data.remaining_generations, active: data.active })); } catch (_) { }
+                if (st) { st.textContent = i18n.cur === 'ar' ? '✓ تم! جاري التوجيه…' : '✓ Access granted! Redirecting…'; st.className = 'm-status s'; }
+                setTimeout(() => window.location.assign('app.html'), 700);
+            } catch (e) { if (st) { st.textContent = e.message; st.className = 'm-status e'; } }
+            finally { if (btn && btn.disabled) { btn.disabled = false; btn.innerHTML = i18n.t('loginBtn'); } }
+        }
+        document.getElementById('goBuilderBtn')?.addEventListener('click', () => window.location.assign('app.html'));
+        document.getElementById('langBtn')?.addEventListener('click', () => i18n.toggle());
+
+        /* INIT */
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', () => { i18n.init(); updatePhTimer(); ptRestart(); }); } else { i18n.init(); ptRestart(); }
+    </script>
+    <script src="theme-toggle.js"></script>
+</body>
+</html>
