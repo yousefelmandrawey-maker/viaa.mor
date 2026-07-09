@@ -1,0 +1,19 @@
+{
+  "name": "viaa-payment-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Semi-automatic payment system (Vodafone Cash / InstaPay + Telegram notification + admin.html approval + Brevo email + Supabase storage/db)",
+  "engines": { "node": "18.x" },
+  "scripts": {
+    "build:optional": "node build.config.js",
+    "build:analyze": "node build.config.js --analyze"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "busboy": "^1.6.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "clean-css": "^5.3.3"
+  }
+}
