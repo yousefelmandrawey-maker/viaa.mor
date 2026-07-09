@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment — Viaa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --coral: #FF5FA2;
+            --coral-d: #E8005E;
+            --coral3: rgba(255,95,162,.10);
+            --purple: #7C4DFF;
+            --cyan: #00D4FF;
+            --gold: #FFB800;
+            --text: #1E293B;
+            --muted: #64748B;
+            --muted2: #94A3B8;
+            --bord: rgba(0,0,0,.07);
+            --bord2: rgba(0,0,0,.11);
+            --sh-sm: 0 1px 4px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+            --sh-md: 0 4px 20px rgba(0,0,0,.09), 0 2px 8px rgba(0,0,0,.05);
+            --sh-lg: 0 14px 50px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.07);
+            --r-sm: 10px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --sp-1: 4px;
+            --sp-2: 8px;
+            --sp-3: 12px;
+            --sp-4: 16px;
+            --sp-5: 20px;
+            --sp-6: 24px;
+            --sp-8: 32px;
+            --fd: 'Playfair Display',Georgia,serif;
+            --fu: 'Inter',system-ui,sans-serif;
+            --ease: cubic-bezier(.16,1,.3,1);
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--fu);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 28px 16px 60px;
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+            body::before, body::after {
+                content: '';
+                position: fixed;
+                border-radius: 50%;
+                filter: blur(72px);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            body::before {
+                width: min(540px,120vw);
+                height: min(540px,120vw);
+                top: -20%;
+                left: -18%;
+                background: radial-gradient(circle,#FF89C0,#FF5FA2);
+                opacity: .5;
+            }
+
+            body::after {
+                width: min(480px,110vw);
+                height: min(480px,110vw);
+                bottom: -18%;
+                right: -14%;
+                background: radial-gradient(circle,#A78BFA,#7C4DFF);
+                opacity: .5;
+            }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrap {
+            max-width: 460px;
+            margin: 0 auto;
+            animation: fadeUp .5s var(--ease);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color .18s var(--ease);
+        }
+
+            .back:hover {
+                color: var(--text);
+            }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--bord);
+            border-radius: var(--r-lg);
+            padding: 30px 26px;
+            box-shadow: var(--sh-md);
+        }
+
+        h1 {
+            font-family: var(--fd);
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -.01em;
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 26px;
+            line-height: 1.55;
+        }
+
+        .amount-box {
+            background: var(--coral3);
+            border: 1px solid rgba(255,95,162,.20);
+            border-radius: var(--r-md);
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+            .amount-box .label {
+                font-size: 13px;
+                color: var(--muted);
+                font-weight: 500;
+            }
+
+            .amount-box .value {
+                font-family: var(--fd);
+                font-size: 21px;
+                color: var(--coral-d);
+                font-weight: 700;
+            }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 10px;
+        }
+
+        .method-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 13px 10px;
+            border-radius: var(--r-md);
+            border: 1.5px solid var(--bord);
+            background: #fff;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            color: var(--muted);
+            transition: all .18s var(--ease);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+            .method-tab .mi {
+                font-size: 17px;
+            }
+
+            .method-tab:hover {
+                border-color: var(--bord2);
+            }
+
+            .method-tab.active {
+                border-color: var(--coral);
+                color: var(--coral-d);
+                background: var(--coral3);
+                box-shadow: 0 0 0 3px rgba(255,95,162,.12);
+            }
+
+        .pay-number {
+            background: linear-gradient(135deg,#171B24,#0E1116);
+            color: #fff;
+            border-radius: var(--r-md);
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .pay-number::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at 30% 0%, rgba(255,95,162,.22), transparent 60%);
+            }
+
+            .pay-number > * {
+                position: relative;
+            }
+
+            .pay-number .pn-label {
+                font-size: 11.5px;
+                opacity: .62;
+                margin-bottom: 7px;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                font-weight: 500;
+            }
+
+            .pay-number .pn-value {
+                font-family: var(--fd);
+                font-size: 25px;
+                letter-spacing: .5px;
+                font-weight: 700;
+            }
+
+            .pay-number .pn-copy {
+                margin-top: 9px;
+                font-size: 12px;
+                color: #FFB3D9;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 5px 10px;
+                border-radius: 20px;
+                background: rgba(255,255,255,.06);
+                transition: background .18s;
+            }
+
+                .pay-number .pn-copy:hover {
+                    background: rgba(255,255,255,.11);
+                }
+
+        .steps {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.9;
+            margin-bottom: 26px;
+            padding-left: 20px;
+        }
+
+            .steps strong {
+                color: var(--text);
+            }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 7px;
+            display: block;
+        }
+
+        .cinput {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--bord);
+            font-family: var(--fu);
+            font-size: 14.5px;
+            background: #FBFCFD;
+            color: var(--text);
+            outline: none;
+            transition: border-color .18s var(--ease), box-shadow .18s var(--ease), background .18s;
+        }
+
+            .cinput::placeholder {
+                color: var(--muted2);
+            }
+
+            .cinput:focus {
+                border-color: var(--coral);
+                background: #fff;
+                box-shadow: 0 0 0 3.5px rgba(255,95,162,.14);
+            }
+
+            .cinput.err {
+                border-color: #E5484D;
+            }
+
+                .cinput.err:focus {
+                    box-shadow: 0 0 0 3.5px rgba(229,72,77,.12);
+                }
+
+        .file-drop {
+            border: 1.5px dashed var(--bord2);
+            border-radius: var(--r-md);
+            padding: 26px 18px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 13.5px;
+            transition: all .2s var(--ease);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: #FBFCFD;
+        }
+
+            .file-drop:hover {
+                border-color: var(--coral);
+                background: var(--coral3);
+            }
+
+            .file-drop .fi {
+                font-size: 22px;
+                opacity: .5;
+                transition: opacity .2s;
+            }
+
+            .file-drop:hover .fi {
+                opacity: .9;
+            }
+
+            .file-drop.has-file {
+                border-color: var(--coral);
+                border-style: solid;
+                background: var(--coral3);
+                color: var(--coral-d);
+                font-weight: 600;
+            }
+
+            .file-drop input {
+                display: none;
+            }
+
+        .preview-wrap {
+            display: none;
+            margin-top: 12px;
+            border-radius: var(--r-md);
+            overflow: hidden;
+            border: 1px solid var(--bord);
+            box-shadow: var(--sh-sm);
+            position: relative;
+        }
+
+            .preview-wrap.show {
+                display: block;
+                animation: fadeUp .3s var(--ease);
+            }
+
+        .preview {
+            display: block;
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+        }
+
+        .preview-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(22,27,34,.75);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 9px;
+            border-radius: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: var(--r-md);
+            border: none;
+            font-family: var(--fu);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: transform .2s var(--ease), box-shadow .2s var(--ease), opacity .2s;
+        }
+
+            .btn.pri {
+                background: linear-gradient(140deg,#FF6EB0 0%,#FF3380 55%,#E8005E 100%);
+                color: #fff;
+                box-shadow: 0 10px 40px rgba(255,95,162,.40);
+            }
+
+                .btn.pri:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 20px 60px rgba(255,95,162,.55);
+                }
+
+                .btn.pri:active:not(:disabled) {
+                    transform: translateY(0) scale(.98);
+                }
+
+            .btn:disabled {
+                opacity: .62;
+                cursor: not-allowed;
+                transform: none !important;
+            }
+
+        .status {
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+            min-height: 18px;
+            font-weight: 500;
+        }
+
+            .status.e {
+                color: #E5484D;
+            }
+
+            .status.s {
+                color: #1A9E5C;
+            }
+
+        .spin {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: sp .7s linear infinite;
+            margin-right: 7px;
+            vertical-align: -2px;
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width:420px) {
+            body {
+                padding: 20px 12px 48px;
+            }
+
+            .card {
+                padding: 24px 18px;
+                border-radius: var(--r-md);
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <a class="back" href="index.html">← Back</a>
+        <div class="card">
+            <h1 id="productTitle">Complete Your Payment</h1>
+            <p class="sub">Pay via Vodafone Cash or InstaPay, upload your screenshot, and we'll confirm within minutes.</p>
+
+            <div class="amount-box">
+                <span class="label" id="productLabel">Viaa Access Code</span>
+                <span class="value" id="amountLabel">99 EGP</span>
+            </div>
+
+            <p class="section-label">Payment Method</p>
+            <div class="method-tabs">
+                <div class="method-tab active" data-method="vodafone_cash"><span class="mi">📱</span>Vodafone Cash</div>
+                <div class="method-tab" data-method="instapay"><span class="mi">🏦</span>InstaPay</div>
+            </div>
+
+            <div class="pay-number">
+                <div class="pn-label">Send payment to</div>
+                <div class="pn-value">01060577088</div>
+                <div class="pn-copy" id="copyNum">📋 Tap to copy</div>
+            </div>
+
+            <ol class="steps">
+                <li>Send the exact amount above to <strong>01060577088</strong>.</li>
+                <li>Take a screenshot of the confirmation.</li>
+                <li>Fill in the form below and upload the screenshot.</li>
+                <li>You'll get your access code by email once approved (usually within minutes).</li>
+            </ol>
+
+            <form id="payForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input class="cinput" id="pName" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input class="cinput" id="pEmail" type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input class="cinput" id="pPhone" type="tel" placeholder="01xxxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Number you paid from</label>
+                    <input class="cinput" id="pSender" placeholder="01xxxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Payment Screenshot</label>
+                    <label class="file-drop" id="dropZone">
+                        <span class="fi">📎</span>
+                        <span id="dropText">Tap to upload screenshot</span>
+                        <input type="file" id="pFile" accept="image/*" required>
+                    </label>
+                    <div class="preview-wrap" id="previewWrap">
+                        <img class="preview" id="preview" alt="">
+                        <span class="preview-badge">Screenshot attached</span>
+                    </div>
+                </div>
+                <button class="btn pri" type="submit" id="submitBtn">Submit Payment</button>
+                <p class="status" id="formStatus"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="payment.js"></script>
+    <script>
+        // Presentational-only enhancement — shows the preview wrapper/badge added in
+        // this redesign. payment.js still owns all submit/validation logic untouched.
+        document.getElementById('pFile')?.addEventListener('change', () => {
+            const wrap = document.getElementById('previewWrap');
+            if (document.getElementById('pFile').files[0]) wrap.classList.add('show');
+        });
+    </script>
+</body>
+</html>
