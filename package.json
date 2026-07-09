@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Semi-automatic payment system (Vodafone Cash / InstaPay + Telegram notification + admin.html approval + Brevo email + Supabase storage/db)",
-  "engines": { "node": "18.x" },
+  "engines": { "node": "24.x" },
   "scripts": {
     "build:optional": "node build.config.js",
     "build:analyze": "node build.config.js --analyze"
